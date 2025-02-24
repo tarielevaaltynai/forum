@@ -1,3 +1,4 @@
+import React from "react";
 export const App = () => {
   const ideas = [
     { nick: 'cool-idea-nick-1', name: 'Idea 1', description: 'Description of idea 1...' },
