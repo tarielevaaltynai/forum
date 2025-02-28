@@ -14,16 +14,9 @@
       margin-top: 20px;
     }
 
-    .ideaName {
-      @include h2;
+    .ideaLink {
+      @include link;
 
-      .ideaLink {
-        @include link;
-      }
-    }
-
-    .ideaDescription {
-      font-size: 18px;
     }
   }
 }
