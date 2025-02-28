@@ -1,4 +1,4 @@
--- CreateTable
+
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "nick" TEXT NOT NULL,
@@ -8,5 +8,3 @@ CREATE TABLE "User" (
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "User_nick_key" ON "User"("nick");
