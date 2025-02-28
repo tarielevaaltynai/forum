@@ -1,5 +1,4 @@
-@import '../../styles/_vars';
-@import '../../styles/_mixins';
+
 
 .segment {
   h1.title {
@@ -19,7 +18,3 @@
     margin-top: 12px;
   }
 
-  & + .segment {
-    margin-top: 40px;
-  }
-}

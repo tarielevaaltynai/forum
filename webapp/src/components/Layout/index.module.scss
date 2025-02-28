@@ -1,5 +1,4 @@
-@import '../../styles/_vars';
-@import '../../styles/_mixins';
+
 
 $breakpoint: '<=900px';
 
@@ -25,12 +24,7 @@ $breakpoint: '<=900px';
       border-bottom: 1px solid $black;
     }
 
-    .logo {
-      padding-top: 2px;
-      width: 100%;
-      max-width: 130px;
-      height: auto;
-      margin-bottom: 15px;
+
     }
 
     .menu {
@@ -53,7 +47,4 @@ $breakpoint: '<=900px';
     padding: 20px 30px;
     @include media($breakpoint) {
       overflow: visible;
-      height: auto;
-    }
-  }
-}
+
