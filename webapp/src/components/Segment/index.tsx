@@ -18,4 +18,4 @@ export const Segment = ({
       {children && <div className={css.content}>{children}</div>}
     </div>
   )
-}
+
