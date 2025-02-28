@@ -1,11 +1,11 @@
+
 import { Link } from 'react-router-dom'
 import { getViewIdeaRoute } from '../../lib/routes'
 import { trpc } from '../../lib/trpc'
 import css from './index.module.scss'
 
 export const AllIdeasPage = () => {
-  const { data, error, isLoading, isFetching, isError } = trpc.getIdeas.useQuery()
-
+  const { data, error, isLoading, isFetching, isError } = trpc.getId
   return (
     <div>
       <h1 className={css.title}>All Ideas</h1>
@@ -21,6 +21,7 @@ export const AllIdeasPage = () => {
           </div>
         ))}
       </div>
+
     </div>
   )
 }
