@@ -7,21 +7,23 @@ import css from './index.module.scss'
 export const AllIdeasPage = () => {
   const { data, error, isLoading, isFetching, isError } = trpc.getId
   return (
-    <div>
-      <h1 className={css.title}>All Ideas</h1>
+    <Segment title="All Ideas">
+
       <div className={css.ideas}>
         {data.ideas.map((idea) => (
           <div className={css.idea} key={idea.nick}>
-            <h2 className={css.ideaName}>
-              <Link className={css.ideaLink} to={getViewIdeaRoute({ ideaNick: idea.nick })}>
-                {idea.name}
-              </Link>
-            </h2>
-            <p className={css.ideaDescription}>{idea.description}</p>
+            <Segment
+              size={2}
+              title={
+                <Link className={css.ideaLink} to={getViewIdeaRoute({ ideaNick: idea.nick })}>
+                  {idea.name}
+                </Link>
+              }
+              description={idea.description}
+            />
           </div>
         ))}
       </div>
-
-    </div>
+    </Segment>
   )
 }
