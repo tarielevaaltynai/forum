@@ -22,4 +22,4 @@ export const App = () => {
       </BrowserRouter>
     </TrpcProvider>
   )
-}
+};
