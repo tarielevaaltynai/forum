@@ -12,15 +12,12 @@ export const ViewsIdeaPage = () => {
     const getIdeaResult = trpc.getIdea.useQuery({
         someNick,
     });
-    const getMeResult = trpc.getMe.useQuery()
+    const me = useMe()
 
-    if (getIdeaResult.isLoading || getIdeaResult.isFetching || getMeResult.isLoading || getMeResult.isFetching) {
+    if (getIdeaResult.isLoading || getIdeaResult.isFetching) {
         return <span>Загрузка...</span>;
     }
 
-    if (getIdeaResult.isError) {
-        return <span>Error: {getIdeaResult.error.message}</span>
-    }
 
     if (getMeResult.isError) {
         return <span>Error: {getMeResult.error.message}</span>
@@ -31,7 +28,6 @@ export const ViewsIdeaPage = () => {
     }
 
     const idea = getIdeaResult.data.idea
-    const me = getMeResult.data.me
   
 
     return (

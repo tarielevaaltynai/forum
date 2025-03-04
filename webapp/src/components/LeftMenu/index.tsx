@@ -36,20 +36,17 @@ export const LeftMenu = () => {
 };
 */
 
+
 import { Link } from 'react-router-dom';
 import { getAllIdeasRoute, getNewIdeaRoute } from '../../lib/routes';
-import { trpc } from '../../lib/trpc';
+import { useMe } from '../../lib/ctx'; // Импорт контекста
 import css from './index.module.scss';
 
 export const LeftMenu = () => {
-  const { data, isLoading, isError } = trpc.getMe.useQuery();
+  const me = useMe(); // Получение данных о пользователе из контекста
 
-  if (isLoading) {
-    return <div className={css.loading}>Loading...</div>;
-  }
-
-  if (isError || !data?.me) {
-    return null;
+  if (!me) {
+    return null; // Возвращаем null, если нет данных о пользователе
   }
 
   return (
@@ -71,3 +68,4 @@ export const LeftMenu = () => {
     </div>
   );
 };
+
