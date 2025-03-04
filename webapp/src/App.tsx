@@ -14,6 +14,7 @@ import { NewIdeaPage } from './pages/NewIdeaPage'
 import { EditIdeaPage } from './pages/EditIdeaPage'
 import './styles/global.scss'
  export const App=()=>{
+  
   return (
     <TrpcProvider>
       <AppContextProvider>
