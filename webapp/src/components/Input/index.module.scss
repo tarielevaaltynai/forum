@@ -1,4 +1,4 @@
-@import '../../styles/_vars';
+/*@import '../../styles/_vars';
 @import '../../styles/_mixins';
 
 .field {
@@ -35,4 +35,31 @@
     margin-top: 2px;
     color: $red;
   }
+}*/
+.inputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.label {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  font-size: 12px;
+  color: gray;
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+
+.invalid {
+  border-color: red;
 }

@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -8,48 +7,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id          String           @id @default(uuid())
-  nick        String           @unique
-  email       String           @unique
-  name        String           @default("")
-  avatar      String?
-  password    String
-  createdAt   DateTime         @default(now())
-  ideas       Idea[]
-  ideasLikes  IdeaLike[]
-  permissions UserPermission[]
-}
-
-enum UserPermission {
-  BLOCK_IDEAS
-  ALL
-}
-
 model Idea {
-  id           String     @id @default(uuid())
-  nick         String     @unique
-  serialNumber Int        @unique @default(autoincrement())
-  name         String
-  description  String
-  text         String
-  images       String[]
-  certificate  String?
-  documents    String[]
-  createdAt    DateTime   @default(now())
-  authorId     String
-  author       User       @relation(fields: [authorId], references: [id])
-  ideasLikes   IdeaLike[]
-  blockedAt    DateTime?
+  id          String @id @default(uuid())
+  nick        String @unique
+  name        String
+  description String
+  text        String
+  createdAt DateTime @default(now())
+  authorId    String
+  author User @relation(fields:[authorId],references:[id])
 }
 
-model IdeaLike {
-  id        String   @id @default(uuid())
+model User {
+  id String @id@default(uuid())
+  nick String @unique
+  name String 
+  surname String
+  gender String
+  birthDate DateTime 
+  password String
   createdAt DateTime @default(now())
-  idea      Idea     @relation(fields: [ideaId], references: [id])
-  ideaId    String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-
-  @@unique([ideaId, userId])
+  ideas Idea[]
 }
