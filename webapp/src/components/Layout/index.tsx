@@ -111,14 +111,13 @@ export const Layout = () => {
 };*/
 import { Link, Outlet } from 'react-router-dom';
 import { getAllIdeasRoute, getNewIdeaRoute, getSignInRoute, getSignOutRoute, getSignUpRoute } from '../../lib/routes';
-import { trpc } from '../../lib/trpc';
 import { LeftMenu } from '../LeftMenu';
 import { Button } from '../Button';
 import css from './index.module.scss';
+import { useMe } from '../../lib/ctx'
 
 export const Layout = () => {
-  const { data, isLoading, isError } = trpc.getMe.useQuery();
-  const isAuthenticated = !isLoading && !isError && data?.me;
+  const me = useMe()
 
   return (
     <div className={css.layout}>
@@ -126,12 +125,12 @@ export const Layout = () => {
         <div className={css.logo}>Beauty & Health</div>
         <ul className={css.menu}>
           
-          {isAuthenticated ? (
+          {me ?  (
             <>
               
               <li className={css.item}>
                 <Link to={getSignOutRoute()}>
-                  <Button>Выйти({data.me.nick})</Button>
+                  <Button>Выйти({me.nick})</Button>
                 </Link>
               </li>
             </>
@@ -152,7 +151,7 @@ export const Layout = () => {
         </ul>
       </div>
       <div className={css.mainContent}>
-        {isAuthenticated && <LeftMenu />}
+        {me && <LeftMenu />}
         <div className={css.content}>
           <Outlet />
         </div>
