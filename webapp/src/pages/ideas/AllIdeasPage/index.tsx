@@ -7,13 +7,27 @@ import { Alert } from '../../../components/Alert'
 import InfiniteScroll from 'react-infinite-scroller'
 import { layoutContentElRef } from '../../../components/Layout'
 import { Loader } from '../../../components/Loader'
+import { useDebounce } from "usehooks-ts";
+import * as hooks from "usehooks-ts";
 
+console.log(hooks);
+
+import { Input } from '../../../components/Input'
+import { useForm } from '../../../lib/form'
+import { zGetIdeasTrpcInput } from '@forum_project/backend/src/router/ideas/getIdeas/input'
 
 export const AllIdeasPage = () => {
+  const { formik } = useForm({
+    initialValues: { search: '' },
+    validationSchema: zGetIdeasTrpcInput.pick({ search: true }),
+  })
+  const search = useDebounce(formik.values.search, 500)
   const { data, error, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage, isRefetching } =
   
   trpc.getIdeas.useInfiniteQuery(
-    {},
+    {
+      search,
+    },
 
     {
       getNextPageParam: (lastPage) => {
@@ -26,12 +40,16 @@ export const AllIdeasPage = () => {
     return (
       
       <Segment title="Форум">
-        
+              <div className={css.filter}>
+        <Input maxWidth={'100%'} label="Search" name="search" formik={formik} />
+      </div>
 
 {isLoading || isRefetching ? (
         <Loader type="section" />
       ) : isError ? (
         <Alert color="red">{error.message}</Alert>
+      ) : !data.pages[0].ideas.length ? (
+        <Alert color="brown">Nothing found by search</Alert>
       ) : (
         <div className={css.ideas}>
                    <InfiniteScroll

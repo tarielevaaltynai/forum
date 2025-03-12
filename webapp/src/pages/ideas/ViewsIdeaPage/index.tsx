@@ -6,14 +6,14 @@ import format from 'date-fns/format'
 import { LinkButton } from '../../../components/Button'
 import css from './index.module.scss'
 import { withPageWrapper } from '../../../lib/pageWrapper'
-import type { TrpcRouterOutput } from '@ideanick/backend/src/router'
+import type { TrpcRouterOutput } from '@forum_project/backend/src/router'
 
 
 const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['idea']> }) => {
   const trpcUtils = trpc.useContext()
   const setIdeaLike = trpc.setIdeaLike.useMutation({
     onMutate: ({ isLikedByMe }) => {
-      const oldGetIdeaData = trpcUtils.getIdea.getData({ ideaNick: idea.nick })
+      const oldGetIdeaData = trpcUtils.getIdea.getData({ someNick: idea.nick })
       if (oldGetIdeaData?.idea) {
         const newGetIdeaData = {
           ...oldGetIdeaData,
@@ -23,11 +23,11 @@ const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['i
             likesCount: oldGetIdeaData.idea.likesCount + (isLikedByMe ? 1 : -1),
           },
         }
-        trpcUtils.getIdea.setData({ ideaNick: idea.nick }, newGetIdeaData)
+        trpcUtils.getIdea.setData({ someNick: idea.nick }, newGetIdeaData)
       }
     },
     onSuccess: () => {
-      void trpcUtils.getIdea.invalidate({ ideaNick: idea.nick })
+      void trpcUtils.getIdea.invalidate({ someNick: idea.nick })
     },
   })
   return (
