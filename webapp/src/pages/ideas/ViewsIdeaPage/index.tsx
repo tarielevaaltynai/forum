@@ -6,7 +6,41 @@ import format from 'date-fns/format'
 import { LinkButton } from '../../../components/Button'
 import css from './index.module.scss'
 import { withPageWrapper } from '../../../lib/pageWrapper'
+import type { TrpcRouterOutput } from '@ideanick/backend/src/router'
 
+
+const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['idea']> }) => {
+  const trpcUtils = trpc.useContext()
+  const setIdeaLike = trpc.setIdeaLike.useMutation({
+    onMutate: ({ isLikedByMe }) => {
+      const oldGetIdeaData = trpcUtils.getIdea.getData({ ideaNick: idea.nick })
+      if (oldGetIdeaData?.idea) {
+        const newGetIdeaData = {
+          ...oldGetIdeaData,
+          idea: {
+            ...oldGetIdeaData.idea,
+            isLikedByMe,
+            likesCount: oldGetIdeaData.idea.likesCount + (isLikedByMe ? 1 : -1),
+          },
+        }
+        trpcUtils.getIdea.setData({ ideaNick: idea.nick }, newGetIdeaData)
+      }
+    },
+    onSuccess: () => {
+      void trpcUtils.getIdea.invalidate({ ideaNick: idea.nick })
+    },
+  })
+  return (
+    <button
+      className={css.likeButton}
+      onClick={() => {
+        void setIdeaLike.mutateAsync({ ideaId: idea.id, isLikedByMe: !idea.isLikedByMe })
+      }}
+    >
+      {idea.isLikedByMe ? 'Unlike' : 'Like'}
+    </button>
+  )
+}
 
 export const ViewsIdeaPage = withPageWrapper({
   useQuery: () => {
@@ -22,6 +56,7 @@ export const ViewsIdeaPage = withPageWrapper({
 
     me: ctx.me,
   }),
+  showLoaderOnFetching: false,
 })(({ idea, me }) => (
 <Segment title={idea.name} description={idea.description}>
   <div className={css.createdAt}>Создано: {format(idea.createdAt, 'yyyy-MM-dd')}</div>
@@ -32,7 +67,15 @@ export const ViewsIdeaPage = withPageWrapper({
   </div>
   
   <div className={css.text} dangerouslySetInnerHTML={{ __html: idea.text }} />
-  
+  <div className={css.likes}>
+      Likes: {idea.likesCount}
+      {me && (
+        <>
+          <br />
+          <LikeButton idea={idea} />
+        </>
+      )}
+    </div>
   {me?.id === idea.authorId && (
     <div className={css.editButton}>
       <LinkButton to={getEditIdeaRoute({ someNick: idea.nick })}>Редактировать</LinkButton>
