@@ -48,6 +48,10 @@
     margin-bottom: 16px;
   }
 
+  
+  & + .segment {
+    margin-top: 40px;
+  }
   .footer {
     display: flex;
     align-items: center;

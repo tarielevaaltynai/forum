@@ -109,15 +109,19 @@ export const Layout = () => {
     </div>
   );
 };*/
+import { createRef } from 'react'
 import { Link, Outlet } from 'react-router-dom';
 import { getAllIdeasRoute, getNewIdeaRoute, getSignInRoute, getSignOutRoute, getSignUpRoute } from '../../lib/routes';
+import { trpc } from '../../lib/trpc';
 import { LeftMenu } from '../LeftMenu';
 import { Button } from '../Button';
 import css from './index.module.scss';
 import { useMe } from '../../lib/ctx'
+export const layoutContentElRef = createRef<HTMLDivElement>()
 
 export const Layout = () => {
   const me = useMe()
+  console.log('Layout re-rendered, me:', me);
 
   return (
     <div className={css.layout}>
@@ -125,14 +129,10 @@ export const Layout = () => {
         <div className={css.logo}>Beauty & Health</div>
         <ul className={css.menu}>
           
-          {me ?  (
+          {me? (
             <>
               
-              <li className={css.item}>
-                <Link to={getSignOutRoute()}>
-                  <Button>Выйти({me.nick})</Button>
-                </Link>
-              </li>
+            
             </>
           ) : (
             <>
@@ -152,7 +152,7 @@ export const Layout = () => {
       </div>
       <div className={css.mainContent}>
         {me && <LeftMenu />}
-        <div className={css.content}>
+        <div className={css.content} ref={layoutContentElRef}>
           <Outlet />
         </div>
       </div>
