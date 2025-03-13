@@ -1,9 +1,6 @@
-import { ExpectedError } from '../../../lib/error'
-import { trpcLoggedProcedure } from '../../../lib/trpc'
-import { canEditIdea } from '../../../utils/can'
+import { trpc } from '../../../lib/trpc'
 import { zUpdateIdeaTrpcInput } from './input'
-
-export const updateIdeaTrpcRoute = trpcLoggedProcedure.input(zUpdateIdeaTrpcInput).mutation(async ({ ctx, input }) => {
+export const updateIdeaTrpcRoute = trpc.procedure.input(zUpdateIdeaTrpcInput).mutation(async ({ ctx, input }) => {
   const { ideaId, ...ideaInput } = input
   if (!ctx.me) {
     throw new Error('UNAUTHORIZED')
@@ -16,7 +13,7 @@ export const updateIdeaTrpcRoute = trpcLoggedProcedure.input(zUpdateIdeaTrpcInpu
   if (!idea) {
     throw new Error('NOT_FOUND')
   }
-  if (!canEditIdea(ctx.me, idea)) {
+  if (ctx.me.id !== idea.authorId) {
     throw new Error('NOT_YOUR_IDEA')
   }
   if (idea.nick !== input.nick) {
@@ -26,7 +23,7 @@ export const updateIdeaTrpcRoute = trpcLoggedProcedure.input(zUpdateIdeaTrpcInpu
       },
     })
     if (exIdea) {
-      throw new ExpectedError('Idea with this nick already exists')
+      throw new Error('Idea with this nick already exists')
     }
   }
   await ctx.prisma.idea.update({

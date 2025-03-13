@@ -1,4 +1,5 @@
-
+/*@import '../../styles/_vars.scss';
+@import '../../styles/_mixins.scss';
 
 $breakpoint: '<=900px';
 
@@ -24,7 +25,10 @@ $breakpoint: '<=900px';
       border-bottom: 1px solid $black;
     }
 
-
+    .logo {
+      font-weight: bold;
+      font-size: 20px;
+      margin-bottom: 10px;
     }
 
     .menu {
@@ -47,4 +51,83 @@ $breakpoint: '<=900px';
     padding: 20px 30px;
     @include media($breakpoint) {
       overflow: visible;
+      flex: 0 0 auto;
+      height: auto;
+    }
+  }
+}*/
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    color: #333;
+    padding: 15px 20px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    font-family: Arial;
+  }
+
+  .menu {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+
+    .item {
+      .link {
+        text-decoration: none;
+        font-size: 18px;
+        color: #007bff;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: #0056b3;
+        }
+      }
+    }
+  }
+
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+
+    .register {
+      background-color: #e7f3ff;
+      color: #007bff;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .login {
+      background-color: transparent;
+      color: #007bff;
+      padding: 8px 16px;
+      border: 2px solid #007bff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+
+  .mainContent {
+    display: flex;
+    flex: 1;
+  }
+
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+}
 

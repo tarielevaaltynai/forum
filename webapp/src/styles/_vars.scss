@@ -1,10 +1,22 @@
-$white: #fff;
+$white: #ffffff;
 $black: #000;
 $blue: #00c;
 $red: #c00;
+$gray: #ccc;
+$blues:#73bcd6;
 
-$defaultFontFamily: 'Helvetica', 'Arial', sans-serif;
+$defaultFontFamily: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 $defaultFontSize: 14px;
-$defaultBackgroundColor: $white;
+$defaultBackgroundColor: #fafafa;
 $defaultTextColor: $black;
 $defaultLineHeight: 1.2;
+$borderRadiusSmall: 3px;
+
+
+// Подключение шрифтов через @font-face
+@font-face {
+  font-family: 'Roboto';
+  src: url('../assets/roboto/Roboto-VariableFont_wdth\,wght.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}

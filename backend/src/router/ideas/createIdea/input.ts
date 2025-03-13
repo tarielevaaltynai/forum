@@ -1,12 +1,11 @@
-import { zNickRequired, zStringMin, zStringRequired } from '@ideanick/shared/src/zod'
 import { z } from 'zod'
 
 export const zCreateIdeaTrpcInput = z.object({
-  name: zStringRequired,
-  nick: zNickRequired,
-  description: zStringRequired,
-  text: zStringMin(100),
-  images: z.array(zStringRequired),
-  certificate: z.string().nullable(),
-  documents: z.array(zStringRequired),
+  name: z.string().min(1),
+  nick: z
+    .string()
+    .min(1)
+    .regex(/^[a-z0-9-]+$/, 'Ник может содержать только строчные буквы, цифры и дефисы.'),
+  description: z.string().min(1,'Текст должен быть не короче 1 символа.'),
+  text: z.string().min(100, 'Текст должен быть не короче 100 символов.'),
 })
