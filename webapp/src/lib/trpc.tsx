@@ -26,7 +26,6 @@ const trpcClient=trpc.createClient({
 
             headers: () => {
                 const token = Cookies.get('token')
-                console.log(token);
                 return {
                   ...(token && { authorization: `Bearer ${token}` }),
                 }
