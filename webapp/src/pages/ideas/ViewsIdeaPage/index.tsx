@@ -1,6 +1,7 @@
 import { trpc } from "../../../lib/trpc";
 import { useParams } from "react-router-dom";
 import { Segment } from "../../../components/Segment";
+import { Icon } from "../../../components/Icon";
 import {
   getEditIdeaRoute,
   type ViewIdeaRouteParams,
@@ -46,7 +47,11 @@ const LikeButton = ({
         });
       }}
     >
-      {idea.isLikedByMe ? "Unlike" : "Like"}
+      <Icon
+        size={32}
+        className={css.likeIcon}
+        name={idea.isLikedByMe ? "likeFilled" : "likeEmpty"}
+      />
     </button>
   );
 };
