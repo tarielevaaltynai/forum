@@ -14,9 +14,13 @@ console.log(hooks);
 
 import { Input } from "../../../components/Input";
 import { useForm } from "../../../lib/form";
+import { withPageWrapper } from "../../../lib/pageWrapper";
 import { zGetIdeasTrpcInput } from "@forum_project/backend/src/router/ideas/getIdeas/input";
 
-export const AllIdeasPage = () => {
+export const AllIdeasPage = withPageWrapper({
+  title: "IdeaNick",
+  isTitleExact: true,
+})(() => {
   const { formik } = useForm({
     initialValues: { search: "" },
     validationSchema: zGetIdeasTrpcInput.pick({ search: true }),
@@ -102,4 +106,4 @@ export const AllIdeasPage = () => {
       )}
     </Segment>
   );
-};
+});
