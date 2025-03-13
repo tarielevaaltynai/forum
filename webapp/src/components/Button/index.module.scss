@@ -25,6 +25,7 @@
     color: #d9d9d9;
   }
 }*/
+@use "sass:color";
 @import "../../styles/_vars";
 @import "../../styles/_mixins";
 
@@ -38,7 +39,6 @@
   cursor: pointer;
   user-select: none;
   position: relative;
-
 
   &:hover {
     background-color: #3399ff;
@@ -95,7 +95,7 @@
     }
     &.loading {
       @include loader($borderWidth: 3px, $size: 20px, $color: $white);
-  
+
       .text {
         opacity: 0;
       }
