@@ -25,9 +25,9 @@
     color: #d9d9d9;
   }
 }*/
-@use 'sass:color';
-@import '../../styles/_vars';
-@import '../../styles/_mixins';
+@use "sass:color";
+@import "../../styles/_vars";
+@import "../../styles/_mixins";
 
 .button {
   padding: 10px 15px;
@@ -39,7 +39,6 @@
   cursor: pointer;
   user-select: none;
   position: relative;
-
 
   &:hover {
     background-color: #3399ff;
@@ -59,7 +58,7 @@
   &.green {
     background-color: #0a980a;
     color: $white;
-    
+
     &:hover {
       background-color: #21b821;
     }
@@ -89,14 +88,14 @@
     background-color: $white;
     color: #0055aa; // синий шрифт
     border: 2px solid #0055aa;
-    padding:8 px;
+    padding: 8 px;
 
     &:hover {
       background-color: #f0f0f0;
     }
     &.loading {
       @include loader($borderWidth: 3px, $size: 20px, $color: $white);
-  
+
       .text {
         opacity: 0;
       }
@@ -110,4 +109,3 @@
     margin-top: 20px;
   }
 }
-

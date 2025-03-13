@@ -1,7 +1,7 @@
-import * as dotenv from 'dotenv'
-import { z } from 'zod'
+import * as dotenv from "dotenv";
+import { z } from "zod";
 
-dotenv.config()
+dotenv.config();
 
 const zEnv = z.object({
   PORT: z.string().trim().min(1),
@@ -9,7 +9,7 @@ const zEnv = z.object({
   JWT_SECRET: z.string().trim().min(1),
   PASSWORD_SALT: z.string().trim().min(1),
   INITIAL_ADMIN_PASSWORD: z.string().trim().min(1),
-})
+});
 
 // eslint-disable-next-line node/no-process-env
-export const env = zEnv.parse(process.env)
+export const env = zEnv.parse(process.env);
