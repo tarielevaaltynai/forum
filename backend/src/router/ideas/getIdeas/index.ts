@@ -17,6 +17,35 @@ export const getIdeasTrpcRoute = trpc.procedure.input(zGetIdeasTrpcInput).query(
         },
       },
     },
+
+
+    /*  84
+    where: {
+      blockedAt: null,
+      ...(!normalizedSearch     
+        ? {}
+        : {
+            OR: [
+              {
+                name: {
+                  search: normalizedSearch,
+                },
+              },
+              {
+                description: {
+                  search: normalizedSearch,
+                },
+              },
+              {
+                text: {
+                  search: normalizedSearch,
+                },
+              },
+            ],
+          }),
+    }, */
+
+
     orderBy: [
       {
         createdAt: 'desc',
