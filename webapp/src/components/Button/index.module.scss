@@ -31,19 +31,21 @@
 .button {
   padding: 10px 15px;
   color: $white;
-  background-color: #0a980a;
+  background-color: #00aaff;
   border: none;
   font-weight: bold;
   border-radius: $borderRadiusSmall;
   cursor: pointer;
   user-select: none;
+  position: relative;
+
 
   &:hover {
-    background-color: #21b821;
+    background-color: #3399ff;
   }
 
   &:active {
-    background-color: #39d039;
+    background-color: #0077cc;
   }
 
   &.disabled {
@@ -90,6 +92,13 @@
 
     &:hover {
       background-color: #f0f0f0;
+    }
+    &.loading {
+      @include loader($borderWidth: 3px, $size: 20px, $color: $white);
+  
+      .text {
+        opacity: 0;
+      }
     }
 
     &:active {

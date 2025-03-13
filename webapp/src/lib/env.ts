@@ -6,3 +6,4 @@ export const zEnv = z.object({
 
 // eslint-disable-next-line no-restricted-syntax
 export const env = zEnv.parse(import.meta.env)
+const school:string="scgend"
