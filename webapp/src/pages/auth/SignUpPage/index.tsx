@@ -1,37 +1,18 @@
-<<<<<<< HEAD:webapp/src/pages/SignUpPage/index.tsx
-import { zSignUpTrpcInput } from "@forum_project/backend/src/router/signUp/input";
+import { zSignUpTrpcInput } from "@forum_project/backend/src/router/auth/signUp/input";
 import { z } from "zod";
 import Cookies from "js-cookie";
-import { useForm } from "../../lib/form";
+import { useForm } from "../../../lib/form";
 
-import { useNavigate } from "react-router-dom";
-import { Alert } from "../../components/Alert";
-import { Button } from "../../components/Button";
-import { FormItems } from "../../components/FormItems";
-import { Input } from "../../components/Input";
-import { Segment } from "../../components/Segment";
-import { trpc } from "../../lib/trpc";
-import { getAllIdeasRoute } from "../../lib/routes";
+import { Alert } from "../../../components/Alert";
+import { Button } from "../../../components/Button";
+import { FormItems } from "../../../components/FormItems";
+import { Input } from "../../../components/Input";
+import { Segment } from "../../../components/Segment";
+import { trpc } from "../../../lib/trpc";
+import { withPageWrapper } from "../../../lib/pageWrapper";
 import css from "./index.module.scss";
-import { DatePickerInput } from "../../components/DatePickerInput";
-import { SelectInput } from "../../components/SelectInput";
-=======
-import { zSignUpTrpcInput } from '@forum_project/backend/src/router/auth/signUp/input'
-import { z } from 'zod'
-import Cookies from 'js-cookie'
-import { useForm } from '../../../lib/form'
-
-import { Alert } from '../../../components/Alert'
-import { Button } from '../../../components/Button'
-import { FormItems } from '../../../components/FormItems'
-import { Input } from '../../../components/Input'
-import { Segment } from '../../../components/Segment'
-import { trpc } from '../../../lib/trpc'
-import { withPageWrapper } from '../../../lib/pageWrapper'
-import css from './index.module.scss'
-import { DatePickerInput } from '../../../components/DatePickerInput'
-import { SelectInput } from '../../../components/SelectInput'
->>>>>>> aydana:webapp/src/pages/auth/SignUpPage/index.tsx
+import { DatePickerInput } from "../../../components/DatePickerInput";
+import { SelectInput } from "../../../components/SelectInput";
 /*
 export const SignUpPage = () => {
   const navigate = useNavigate()
@@ -124,18 +105,9 @@ export const SignUpPage = withPageWrapper({
       }),
 
     onSubmit: async (values) => {
-<<<<<<< HEAD:webapp/src/pages/SignUpPage/index.tsx
       const { token } = await signUp.mutateAsync(values);
       Cookies.set("token", token, { expires: 99999 });
       void trpcUtils.invalidate();
-      navigate(getAllIdeasRoute());
-=======
-      const { token } = await signUp.mutateAsync(values)
-      Cookies.set('token', token, { expires: 99999 })
-      void trpcUtils.invalidate()
-
-
->>>>>>> aydana:webapp/src/pages/auth/SignUpPage/index.tsx
     },
     resetOnSuccess: false,
   });
@@ -153,7 +125,6 @@ export const SignUpPage = withPageWrapper({
               <Input label="Ник" name="nick" formik={formik} />
               <Input label="Имя" name="name" formik={formik} />
               <Input label="Фамилия" name="surname" formik={formik} />
-<<<<<<< HEAD:webapp/src/pages/SignUpPage/index.tsx
               <Input
                 label="Пароль"
                 name="password"
@@ -167,23 +138,16 @@ export const SignUpPage = withPageWrapper({
                 formik={formik}
               />
               <DatePickerInput
-                label="birtate"
+                label="Дата рождения"
                 name="birthDate"
                 formik={formik}
               />
               <SelectInput
                 options={options}
-                label="gender"
+                label="Пол"
                 name="gender"
                 formik={formik}
               />
-=======
-              <Input label="Пароль" name="password" type="password" formik={formik} />
-              <Input label="Повторите пароль" name="passwordAgain" type="password" formik={formik} />
-              <DatePickerInput label="Дата рождения" name="birthDate" formik={formik} />
-              <SelectInput options={options} label="Пол" name="gender" formik={formik} />
-        
->>>>>>> aydana:webapp/src/pages/auth/SignUpPage/index.tsx
 
               <Alert {...alertProps} />
               <Button {...buttonProps}>Зарегистрироваться</Button>
@@ -200,9 +164,4 @@ export const SignUpPage = withPageWrapper({
       </section>
     </main>
   );
-<<<<<<< HEAD:webapp/src/pages/SignUpPage/index.tsx
-};
-=======
-})
-
->>>>>>> aydana:webapp/src/pages/auth/SignUpPage/index.tsx
+});

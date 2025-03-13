@@ -5,9 +5,5 @@ export const zEnv = z.object({
 });
 
 // eslint-disable-next-line no-restricted-syntax
-<<<<<<< HEAD
 export const env = zEnv.parse(import.meta.env);
-=======
-export const env = zEnv.parse(import.meta.env)
-const school:string="scgend"
->>>>>>> aydana
+const school: string = "scgend";
