@@ -1,22 +1,17 @@
-@import '../../styles/_vars.scss';
-@import '../../styles/_mixins.scss';
-
-
+@import "../../styles/_vars.scss";
+@import "../../styles/_mixins.scss";
 
 .ideas {
   .idea {
     padding: 20px;
-    
+
     border-radius: 10px;
     & + .idea {
       margin-top: 20px;
     }
 
-
-      .ideaLink {
-        @include link;
-      }
-
- 
+    .ideaLink {
+      @include link;
+    }
   }
 }

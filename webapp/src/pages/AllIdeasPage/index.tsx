@@ -1,28 +1,31 @@
-import { getViewIdeaRoute } from '../../lib/routes';
-import {trpc} from '../../lib/trpc';
-import { Segment } from '../../components/Segment'
-import {Link} from 'react-router-dom'
-import css from './index.module.scss'
+import { getViewIdeaRoute } from "../../lib/routes";
+import { trpc } from "../../lib/trpc";
+import { Segment } from "../../components/Segment";
+import { Link } from "react-router-dom";
+import css from "./index.module.scss";
 
 export const AllIdeasPage = () => {
-    const {data,error,isLoading,isFetching,isError}=trpc.getIdeas.useQuery()
-    if (isLoading || isFetching ){
-        return <span>Загрузка</span>
-    }
-    if (isError){
-        return <span>Ошибка</span>
-    }
-  
-    return (
-      <Segment title="Форум">
+  const { data, error, isLoading, isFetching, isError } =
+    trpc.getIdeas.useQuery();
+  if (isLoading || isFetching) {
+    return <span>Загрузка</span>;
+  }
+  if (isError) {
+    return <span>Ошибка</span>;
+  }
 
+  return (
+    <Segment title="Форум">
       <div className={css.ideas}>
         {data.ideas.map((idea) => (
           <div className={css.idea} key={idea.nick}>
             <Segment
               size={2}
               title={
-                <Link className={css.ideaLink} to={getViewIdeaRoute({someNick: idea.nick })}>
+                <Link
+                  className={css.ideaLink}
+                  to={getViewIdeaRoute({ someNick: idea.nick })}
+                >
                   {idea.name}
                 </Link>
               }
@@ -31,6 +34,6 @@ export const AllIdeasPage = () => {
           </div>
         ))}
       </div>
-      </Segment>
-    )
-  }
+    </Segment>
+  );
+};
