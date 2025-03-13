@@ -1,46 +1,9 @@
-/*import { Link } from 'react-router-dom';
-import { getAllIdeasRoute, getNewIdeaRoute } from '../../lib/routes';
-import { trpc } from '../../lib/trpc';
-import css from './index.module.scss';
-
-export const LeftMenu = () => {
-  const { data, isLoading, isError } = trpc.getMe.useQuery();
-
-  if (isLoading) {
-    // Можно добавить анимацию загрузки или просто вернуть "Loading..."
-    return <div className={css.loading}>Loading...</div>;
-  }
-
-  if (isError || !data?.me) {
-    // Возвращаем null или компонент, если ошибка или нет данных
-    return null;
-  }
-
-  return (
-    <div className={css.sidebar}>
-      <div className={css.logo}>Ideas</div>
-      <ul className={css.menu}>
-        <li className={css.item}>
-          <Link className={css.link} to={getAllIdeasRoute()}>
-            All Ideas
-          </Link>
-        </li>
-        <li className={css.item}>
-          <Link className={css.link} to={getNewIdeaRoute()}>
-            New Idea
-          </Link>
-        </li>
-      </ul>
-    </div>
-  );
-};
-*/
-
-
 import { Link } from 'react-router-dom';
-import { getAllIdeasRoute, getNewIdeaRoute } from '../../lib/routes';
+import { getAllIdeasRoute, getNewIdeaRoute, getEditProfileRoute ,getSignOutRoute} from '../../lib/routes';
 import { useMe } from '../../lib/ctx'; // Импорт контекста
 import css from './index.module.scss';
+import avatar from '../../assets/images/user.png'
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export const LeftMenu = () => {
   const me = useMe(); // Получение данных о пользователе из контекста
@@ -51,21 +14,46 @@ export const LeftMenu = () => {
 
   return (
     <div className={css.sidebar}>
-      <ul className={css.menu}>
-        <li className={css.item}>
-          <Link className={css.link} to={getAllIdeasRoute()}>
-            <i className="fas fa-lightbulb mr-3"></i>
-            Главная страница
-          </Link>
-        </li>
-        <li className={css.item}>
-          <Link className={css.link} to={getNewIdeaRoute()}>
-            <i className="fas fa-plus-circle mr-3"></i>
-            Создать обсуждение
-          </Link>
-        </li>
-      </ul>
+      <div className={css.profile}>
+        <img
+          alt="Profile picture of the user"
+          className="rounded-full mx-auto"
+          height="100"
+          src={avatar}
+          width="100"
+        />
+        <h2>{me.nick}</h2>
+      
+      </div>
+
+      <nav>
+        <ul className={css.menu}>
+          <li className={css.item}>
+            <Link className={css.link} to={getAllIdeasRoute()}>
+              <i className="fas fa-home mr-2"></i>
+              Главная страница
+            </Link>
+          </li>
+          <li className={css.item}>
+            <Link className={css.link} to={getNewIdeaRoute()}>
+              <i className="fas fa-plus-circle mr-2"></i>
+              Создать обсуждение
+            </Link>
+          </li>
+          <li className={css.item}>
+            <Link className={css.link} to={getEditProfileRoute()}>
+              <i className="fas fa-user-edit mr-2"></i>
+              Профиль
+            </Link>
+          </li>
+          <li className={css.item}>
+                <Link to={getSignOutRoute()}>
+                <i className="fas fa-sign-out-alt mr-2"></i>
+                  Выйти({me.nick})
+                </Link>
+              </li>
+        </ul>
+      </nav>
     </div>
   );
 };
-

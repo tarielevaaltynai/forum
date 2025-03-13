@@ -6,13 +6,17 @@ export const SelectInput = ({
   name,
   label,
   formik,
-  options,
+  options = [
+    { value: 'Мужской', label: 'Мужской' },
+    { value: 'Женский', label: 'Женский' },
+    { value: 'Другой', label: 'Другой' },
+  ],
   maxWidth,
 }: {
   name: string;
   label: string;
   formik: FormikProps<any>;
-  options: { value: string; label: string }[]; // Массив объектов с метками и значениями
+  options?: { value: string; label: string }[]; // Массив объектов с метками и значениями
   maxWidth?: number;
 }) => {
   const value = formik.values[name];
