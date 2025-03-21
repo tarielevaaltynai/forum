@@ -92,6 +92,7 @@ export const ViewsIdeaPage = withPageWrapper({
     me: ctx.me,
   }),
   showLoaderOnFetching: false,
+  title: ({ idea }) => idea.name,
 })(({ idea, me }) => (
   <div className={css.twitterPostContainer}>
     <div className={css.postWrapper}>

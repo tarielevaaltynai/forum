@@ -199,6 +199,7 @@ export const EditProfilePage = withPageWrapper({
   setProps: ({ getAuthorizedMe }) => ({
     me: getAuthorizedMe(),
   }),
+  title: 'Edit Profile',
 })(({ me }) => {
 
       return (

@@ -9,14 +9,17 @@ import { layoutContentElRef } from '../../../components/Layout'
 import { Loader } from '../../../components/Loader'
 import { useDebounce } from "usehooks-ts";
 import * as hooks from "usehooks-ts";
-
+import { withPageWrapper } from '../../../lib/pageWrapper'
 console.log(hooks);
 
 import { Input } from '../../../components/Input'
 import { useForm } from '../../../lib/form'
 import { zGetIdeasTrpcInput } from '@forum_project/backend/src/router/ideas/getIdeas/input'
+export const AllIdeasPage = withPageWrapper({
+  title: 'Beauty and Health',
+  isTitleExact: true,
+})(() => {
 
-export const AllIdeasPage = () => {
   const { formik } = useForm({
     initialValues: { search: '' },
     validationSchema: zGetIdeasTrpcInput.pick({ search: true }),
@@ -92,4 +95,4 @@ export const AllIdeasPage = () => {
       )}
       </Segment>
     )
-  }
+  })

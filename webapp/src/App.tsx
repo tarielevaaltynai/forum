@@ -8,7 +8,7 @@ import { NewIdeaPage } from './pages/ideas/NewIdeaPage'
 import { ViewsIdeaPage } from './pages/ideas/ViewsIdeaPage'
 import { NotFoundPage } from './pages/other/NotFoundPage'
 import { EditProfilePage } from './pages/auth/EditProfilePage'
-
+import { HelmetProvider } from 'react-helmet-async'
 import { viewIdeaRouteParams } from "./lib/routes";
 import { AppContextProvider } from './lib/ctx';
 import * as routes from './lib/routes';
@@ -20,6 +20,7 @@ import { Layout } from "./components/Layout";
 import './styles/global.scss'
  export const App=()=>{
   return (
+    <HelmetProvider>
     <TrpcProvider>
       <AppContextProvider>
         <BrowserRouter>
@@ -40,6 +41,7 @@ import './styles/global.scss'
         </BrowserRouter>
       </AppContextProvider>
     </TrpcProvider>
+     </HelmetProvider>
   )
 
  }

@@ -53,6 +53,7 @@ export const SignInPage = () => {
 
 export const SignInPage = withPageWrapper({
   redirectAuthorized: true,
+  title: 'Sign In',
 })(() => {
   const trpcUtils = trpc.useContext();
   const signIn = trpc.signIn.useMutation();
