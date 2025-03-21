@@ -2,7 +2,7 @@ import { Alert } from '../Alert'
 import { Segment } from '../Segment'
 
 export const ErrorPageComponent = ({
-  title = 'Oops, error',
+  title = 'Ошибка',
   message = 'Something went wrong',
 }: {
   title?: string

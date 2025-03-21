@@ -25,8 +25,10 @@
     color: #d9d9d9;
   }
 }*/
+@use 'sass:color';
 @import '../../styles/_vars';
 @import '../../styles/_mixins';
+
 
 .button {
   padding: 10px 15px;
@@ -40,8 +42,24 @@
   position: relative;
 
 
-  &:hover {
-    background-color: #3399ff;
+  &.color-green {
+    background-color: #0a980a;
+
+    &:hover {
+      background-color: #21b821;
+    }
+
+    &.color-red {
+      background-color: $red;
+  
+      &:hover {
+        background-color: color.scale($red, $lightness: 10%);
+      }
+  
+      &:active {
+        background-color: color.scale($red, $lightness: 30%);
+      }
+    }
   }
 
   &:active {

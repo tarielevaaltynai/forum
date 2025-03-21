@@ -41,7 +41,7 @@ export const AllIdeasPage = () => {
       
       <Segment title="Форум">
               <div className={css.filter}>
-        <Input maxWidth={'100%'} label="Search" name="search" formik={formik} />
+        <Input maxWidth={'100%'} label="Поиск" name="search" formik={formik} />
       </div>
 
 {isLoading || isRefetching ? (
@@ -83,7 +83,7 @@ export const AllIdeasPage = () => {
                     }
                     description={idea.description}
                     >
-                    Likes: {idea.likesCount}
+                    Лайки: {idea.likesCount}
                   </Segment>
                 </div>
               ))}

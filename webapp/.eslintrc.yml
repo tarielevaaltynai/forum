@@ -16,5 +16,7 @@ rules:
             - '@forum_project/backend/**'
             - '!@forum_project/backend/**/'
             - '!@forum_project/backend/**/input'
+            - '!@forum_project/backend/src/utils/can'
+
           allowTypeImports: true
           message: 'Only types and input schemas are allowed to be imported from backend workspace'

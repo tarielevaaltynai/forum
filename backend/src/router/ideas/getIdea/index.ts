@@ -37,6 +37,9 @@ export const getIdeaTrpcRoute = trpc.procedure
         },
       },
     })
+    if (rawIdea?.blockedAt) {
+      throw new Error('Обсуждение заблокировано администратором')
+    }
     const isLikedByMe = !!rawIdea?.ideasLikes.length
     const likesCount = rawIdea?._count.ideasLikes || 0
     const idea = rawIdea && { ..._.omit(rawIdea, ['ideasLikes', '_count']), isLikedByMe, likesCount }

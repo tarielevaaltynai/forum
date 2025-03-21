@@ -11,7 +11,7 @@ import { useForm } from '../../../lib/form'
 import { getViewIdeaRoute, type EditIdeaRouteParams } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 import { withPageWrapper } from '../../../lib/pageWrapper'
-
+import { canEditIdea } from '@forum_project/backend/src/utils/can'
 export const EditIdeaPage = withPageWrapper({
   authorizedOnly: true,
   useQuery: () => {
@@ -22,7 +22,8 @@ export const EditIdeaPage = withPageWrapper({
   },
   setProps: ({ queryResult, ctx, checkExists, checkAccess }) => {
     const idea = checkExists(queryResult.data.idea, 'Обсуждение не найдено')
-    checkAccess(ctx.me?.id === idea.authorId, 'Обсуждение может редактировать только автор')
+    
+    checkAccess(canEditIdea(ctx.me, idea), 'An idea can only be edited by the author')
     return {
       idea,
     }
