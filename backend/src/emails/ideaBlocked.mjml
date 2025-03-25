@@ -1,6 +1,6 @@
 <mjml>
   <mj-head>
-    <mj-title>Your Idea Blocked!</mj-title>
+    <mj-title>Ваше обсуждение заблокировано!</mj-title>
     <mj-include path="./_head.mjml" />
   </mj-head>
   <mj-body mj-class="body">
