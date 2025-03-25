@@ -1,5 +1,6 @@
 import { trpc } from '../../../lib/trpc';
 import { useParams } from 'react-router-dom';
+import { Icon } from '../../../components/Icon'
 import { Segment } from '../../../components/Segment';
 import { getEditIdeaRoute, type ViewIdeaRouteParams } from '../../../lib/routes';
 import format from 'date-fns/format';
@@ -51,10 +52,11 @@ const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['i
         void setIdeaLike.mutateAsync({ ideaId: idea.id, isLikedByMe: !liked });
       }}
     >
-      <Heart
+      {/*<Heart
         size={32}
         className={`${css.heart} ${liked ? css.liked : css.unliked}`} // Динамически меняем класс
-      />
+      />*/}
+           <Icon size={32} className={css.likeIcon} name={idea.isLikedByMe ? 'likeFilled' : 'likeEmpty'} />
     </button>
   );
 };

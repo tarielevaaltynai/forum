@@ -35,6 +35,7 @@ model User {
   password String
   createdAt DateTime @default(now())
   ideas Idea[]
+  email String @unique
 
   ideasLikes IdeaLike[]
     permissions UserPermission[]

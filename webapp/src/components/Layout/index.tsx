@@ -113,6 +113,7 @@ import { createRef } from 'react'
 import { Link, Outlet } from 'react-router-dom';
 import { getAllIdeasRoute, getNewIdeaRoute, getSignInRoute, getSignOutRoute, getSignUpRoute } from '../../lib/routes';
 import { trpc } from '../../lib/trpc';
+import { ReactComponent as Logo } from '../../assets/images/beauty_icon.svg'
 import { LeftMenu } from '../LeftMenu';
 import { Button } from '../Button';
 import css from './index.module.scss';
@@ -126,7 +127,7 @@ export const Layout = () => {
   return (
     <div className={css.layout}>
       <div className={css.navigation}>
-        <div className={css.logo}>Beauty & Health</div>
+   {/*<Logo className={css.logo} />*/}
         <ul className={css.menu}>
           
           {me? (

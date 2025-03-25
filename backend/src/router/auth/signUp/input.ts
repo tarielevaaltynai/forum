@@ -8,6 +8,7 @@ export const zSignUpTrpcInput = z.object({
   password: z.string().min(1),
   surname:z.string().min(1),
   name:z.string().min(1),
+  email: z.string().min(1).email(),
   gender:z.string().min(1),
   birthDate: z
   .coerce.date() // Преобразует строку в дату

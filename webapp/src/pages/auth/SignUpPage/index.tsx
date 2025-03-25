@@ -127,6 +127,7 @@ export const SignUpPage = withPageWrapper({
               <Input label="Ник" name="nick" formik={formik} />
               <Input label="Имя" name="name" formik={formik} />
               <Input label="Фамилия" name="surname" formik={formik} />
+              <Input label="E-mail" name="email" formik={formik} />
               <Input label="Пароль" name="password" type="password" formik={formik} />
               <Input label="Повторите пароль" name="passwordAgain" type="password" formik={formik} />
               <DatePickerInput label="Дата рождения" name="birthDate" formik={formik} />

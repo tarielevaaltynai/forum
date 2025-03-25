@@ -72,10 +72,12 @@ $breakpoint: '<=900px';
   }
 
   .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    font-family: Arial;
+   
+    padding-top: 2px;
+      width: 100%;
+      max-width: 130px;
+      height: auto;
+      margin-bottom: 15px;
   }
 
   .menu {
