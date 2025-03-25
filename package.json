@@ -9,10 +9,11 @@
         "types": "concurrently 'pnpm b types' 'pnpm w types'",
         "lint": "concurrently 'pnpm b lint' 'pnpm w lint'",
         "prettify": "pnpm -r --parallel prettify",
-        "prepare":"husky install"
+        "prepare": "husky install"
     },
     "devDependencies": {
         "concurrently": "^8.2.0",
+        "copyfiles": "^2.4.1",
         "eslint": "^8.47.0",
         "eslint-config-prettier": "^9.0.0",
         "eslint-config-react-app": "^7.0.1",

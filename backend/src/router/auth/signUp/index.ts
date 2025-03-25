@@ -2,7 +2,7 @@ import { trpc } from '../../../lib/trpc'
 import { zSignUpTrpcInput } from './input'
 import { getPasswordHash } from '../../../utils/getPasswordHash'
 import { signJWT } from '../../../utils/signJWT'
-
+import { sendWelcomeEmail } from '../../../lib/emails'
 export const signUpTrpcRoute = trpc.procedure.input(zSignUpTrpcInput).mutation(async ({ ctx, input }) => {
   const exUserWithNick = await ctx.prisma.user.findUnique({
     where: {
@@ -35,6 +35,7 @@ export const signUpTrpcRoute = trpc.procedure.input(zSignUpTrpcInput).mutation(a
 
     },
   })
+  void sendWelcomeEmail({ user })
   const token = signJWT(user.id)
   return { token }
 })
