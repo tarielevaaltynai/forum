@@ -25,6 +25,7 @@ model Idea {
 model User {
   id String @id@default(uuid())
   nick String @unique
+  email       String           @unique
   name String 
   surname String
   gender String
