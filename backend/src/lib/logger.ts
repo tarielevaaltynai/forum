@@ -6,7 +6,8 @@ import pc from 'picocolors'
 import { MESSAGE } from 'triple-beam'
 import winston from 'winston'
 import * as yaml from 'yaml'
-
+import debug from 'debug'
+import { deepMap } from '../utils/deepMap'
 export const winstonLogger = winston.createLogger({
   level: 'debug',
   format: winston.format.combine(
@@ -58,18 +59,33 @@ export const winstonLogger = winston.createLogger({
     }),
   ],
 })
+type Meta = Record<string, any> | undefined
+const prettifyMeta = (meta: Meta): Meta => {
+  return deepMap(meta, ({ key, value }) => {
+    if (['email', 'password', 'newPassword', 'oldPassword', 'token', 'text', 'description'].includes(key)) {
+      return '🙈'
+    }
+    return value
+  })
+}
 
 export const logger = {
-  info: (logType: string, message: string, meta?: Record<string, any>) => {
-    winstonLogger.info(message, { logType, ...meta })
+    info: (logType: string, message: string, meta?: Meta) => {
+    if (!debug.enabled(`forum_project:${logType}`)) {
+        return
+      }
+      winstonLogger.info(message, { logType, ...prettifyMeta(meta) })
   },
-  error: (logType: string, error: any, meta?: Record<string, any>) => {
+  error: (logType: string, error: any, meta?: Meta) => {
+    if (!debug.enabled(`forum_project:${logType}`)) {
+        return
+      }
     const serializedError = serializeError(error)
     winstonLogger.error(serializedError.message || 'Unknown error', {
       logType,
       error,
       errorStack: serializedError.stack,
-      ...meta,
+      ...prettifyMeta(meta),
     })
   },
 }
