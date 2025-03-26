@@ -76,6 +76,7 @@ importers:
         version: 4.0.1
       prisma:
         specifier: ^5.2.0
+
         version: 5.22.0
       superjson:
         specifier: ^1.13.1
@@ -114,6 +115,7 @@ importers:
 
   webapp:
     dependencies:
+
       '@fortawesome/fontawesome-free':
         specifier: ^6.7.2
         version: 6.7.2
@@ -1060,6 +1062,7 @@ packages:
   '@floating-ui/utils@0.2.9':
     resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
 
+
   '@fortawesome/fontawesome-free@6.7.2':
     resolution: {integrity: sha512-JUOtgFW6k9u4Y+xeIaEiLr3+cjoUPiAuLXoyKOJSia6Duzb7pq+A76P9ZdPDoAoxHdHzq6gE9/jKBGXlZT8FbA==}
     engines: {node: '>=6'}
@@ -1121,8 +1124,13 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
+<<<<<<< HEAD
+  '@prisma/client@5.2.0':
+    resolution: {integrity: sha512-AiTjJwR4J5Rh6Z/9ZKrBBLel3/5DzUNntMohOy7yObVnVoTNVFi2kvpLZlFuKO50d7yDspOtW6XBpiAd0BVXbQ==}
+=======
   '@prisma/client@5.22.0':
     resolution: {integrity: sha512-M0SVXfyHnQREBKxCgyo7sffrKttwE6R8PMq330MIUF0pTwjUhLbW84pFDlf06B27XyCR++VtjugEnIHdr07SVA==}
+>>>>>>> 86a7df334fea7ba7a63de2896d1ccb4aaf556964
     engines: {node: '>=16.13'}
     peerDependencies:
       prisma: '*'
@@ -4606,6 +4614,7 @@ snapshots:
     dependencies:
       '@prisma/debug': 5.22.0
 
+
   '@remix-run/router@1.22.0': {}
 
   '@rtsao/scc@1.1.0': {}
@@ -5924,8 +5933,11 @@ snapshots:
 
   flatted@3.3.3: {}
 
+<<<<<<< HEAD
+=======
   font-awesome@4.7.0: {}
 
+>>>>>>> 86a7df334fea7ba7a63de2896d1ccb4aaf556964
   for-each@0.3.5:
     dependencies:
       is-callable: 1.2.7
@@ -6643,6 +6655,7 @@ snapshots:
       '@prisma/engines': 5.22.0
     optionalDependencies:
       fsevents: 2.3.3
+
 
   prop-types@15.8.1:
     dependencies:
