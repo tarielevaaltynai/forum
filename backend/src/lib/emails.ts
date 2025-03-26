@@ -6,7 +6,7 @@ import _ from 'lodash'
 import { env } from './env'
 import Handlebars from 'handlebars'
 import { sendEmailThroughBrevo } from './brevo'
-
+import { getNewIdeaRoute } from '@forum_project/webapp/src/lib/routes'
 const getHbrTemplates = _.memoize(async () => {
   const htmlPathsPattern = path.resolve(__dirname, '../emails/dist/**/*.html')
   const htmlPaths = fg.sync(htmlPathsPattern)
@@ -65,7 +65,7 @@ export const sendWelcomeEmail = async ({ user }: { user: Pick<User, 'nick' | 'em
     templateName: 'welcome',
     templateVariables: {
       userNick: user.nick,
-      addIdeaUrl: `${env.WEBAPP_URL}/ideas/new`,
+      addIdeaUrl: `${getNewIdeaRoute({ abs: true })}`,
     },
   })
 }

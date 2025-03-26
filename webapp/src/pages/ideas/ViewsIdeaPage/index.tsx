@@ -1,13 +1,11 @@
 import { trpc } from '../../../lib/trpc';
-import { useParams } from 'react-router-dom';
 import { Icon } from '../../../components/Icon'
 import { Segment } from '../../../components/Segment';
-import { getEditIdeaRoute, type ViewIdeaRouteParams } from '../../../lib/routes';
+import { getEditIdeaRoute, getViewIdeaRoute } from '../../../lib/routes'
 import format from 'date-fns/format';
 import { Alert } from '../../../components/Alert';
 import { Button, LinkButton } from '../../../components/Button';
 import { FormItems } from '../../../components/FormItems';
-import { Heart } from 'lucide-react';
 import css from './index.module.scss';
 import { withPageWrapper } from '../../../lib/pageWrapper';
 import type { TrpcRouterOutput } from '@forum_project/backend/src/router';
@@ -86,7 +84,7 @@ const BlockIdea = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['id
 
 export const ViewsIdeaPage = withPageWrapper({
   useQuery: () => {
-    const { someNick } = useParams() as ViewIdeaRouteParams;
+    const { someNick } = getViewIdeaRoute.useParams()
     return trpc.getIdea.useQuery({ someNick });
   },
   setProps: ({ queryResult, checkExists, ctx }) => ({
