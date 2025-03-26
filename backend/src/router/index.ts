@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { trpc } from '../lib/trpc'
 // @index('./**/index.ts', f => `import { ${f.path.split('/').slice(0, -1).pop()}TrpcRoute } from '${f.path.split('/').slice(0, -1).join('/')}'`)
 import { getMeTrpcRoute } from './auth/getMe'
@@ -37,3 +38,45 @@ export const trpcRouter = trpc.router({
 export type TrpcRouter = typeof trpcRouter
 export type TrpcRouterInput = inferRouterInputs<TrpcRouter>
 export type TrpcRouterOutput = inferRouterOutputs<TrpcRouter>
+=======
+import { trpc } from "../lib/trpc";
+// @index('./**/index.ts', f => `import { ${f.path.split('/').slice(0, -1).pop()}TrpcRoute } from '${f.path.split('/').slice(0, -1).join('/')}'`)
+import { getMeTrpcRoute } from "./auth/getMe";
+import { signInTrpcRoute } from "./auth/signIn";
+import { signUpTrpcRoute } from "./auth/signUp";
+import { createIdeaTrpcRoute } from "./ideas/createIdea";
+import { getIdeaTrpcRoute } from "./ideas/getIdea";
+import { setIdeaLikeTrpcRoute } from "./ideas/setIdeaLIke";
+import { getIdeasTrpcRoute } from "./ideas/getIdeas";
+import { blockIdeaTrpcRoute } from "./ideas/blockIdea";
+import { updateIdeaTrpcRoute } from "./ideas/updateIdea";
+import { updateProfileTrpcRoute } from "./auth/updateProfile";
+import { updatePasswordTrpcRoute } from "./auth/updatePassword";
+
+import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
+// @endindex
+
+export const trpcRouter = trpc.router({
+  // @index('./**/index.ts', f => `${f.path.split('/').slice(0, -1).pop()}: ${f.path.split('/').slice(0, -1).pop()}TrpcRoute,`)
+
+  getMe: getMeTrpcRoute,
+  signIn: signInTrpcRoute,
+  signUp: signUpTrpcRoute,
+  updateProfile: updateProfileTrpcRoute,
+  updatePassword: updatePasswordTrpcRoute,
+
+  blockIdea: blockIdeaTrpcRoute,
+
+  createIdea: createIdeaTrpcRoute,
+  getIdea: getIdeaTrpcRoute,
+  getIdeas: getIdeasTrpcRoute,
+  setIdeaLike: setIdeaLikeTrpcRoute,
+  updateIdea: updateIdeaTrpcRoute,
+
+  // @endindex
+});
+
+export type TrpcRouter = typeof trpcRouter;
+export type TrpcRouterInput = inferRouterInputs<TrpcRouter>;
+export type TrpcRouterOutput = inferRouterOutputs<TrpcRouter>;
+>>>>>>> d7d1fffabf09f567df420b0e3df5ed632c29940c
