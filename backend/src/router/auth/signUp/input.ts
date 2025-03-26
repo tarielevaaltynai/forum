@@ -1,3 +1,4 @@
+
 import { z } from "zod";
 
 export const zSignUpTrpcInput = z.object({
@@ -26,3 +27,4 @@ export const zSignUpTrpcInput = z.object({
       return date <= birthDateLimit;
     }, "Вам должно быть не менее 6 лет."),
 });
+

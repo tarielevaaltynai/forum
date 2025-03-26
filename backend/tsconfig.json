@@ -1,3 +1,37 @@
+<<<<<<< HEAD
+{
+  "ts-node": {
+    "files": true,
+    "transpileOnly": true
+  },
+  "compilerOptions": {
+    "plugins": [{ "transform": "typescript-transform-paths" }],
+    "paths": {
+      "@forum_project/webapp/*": ["../webapp/*"]
+    },
+    "outDir": "./dist",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "sourceMap": true,
+    "sourceRoot": "/",
+    "resolveJsonModule": true,
+    "inlineSources": true,
+    "isolatedModules": false,
+    "lib": ["ES2021"],
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    "target": "ES2021"
+  },
+  "include": ["src"]
+}
+=======
 {
   "ts-node": {
     "files": true,
@@ -26,3 +60,4 @@
   },
   "include": ["src"]
 }
+>>>>>>> d7d1fffabf09f567df420b0e3df5ed632c29940c
