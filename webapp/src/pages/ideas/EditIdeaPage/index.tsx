@@ -1,3 +1,4 @@
+
 import { zUpdateIdeaTrpcInput } from "@forum_project/backend/src/router/ideas/updateIdea/input";
 import pick from "lodash/pick";
 import { useNavigate, useParams } from "react-router-dom";
@@ -67,4 +68,4 @@ export const EditIdeaPage = withPageWrapper({
       </form>
     </Segment>
   );
-});
+}}
