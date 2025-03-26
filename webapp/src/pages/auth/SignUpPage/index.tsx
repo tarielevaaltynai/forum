@@ -2,7 +2,7 @@ import { zSignUpTrpcInput } from '@forum_project/backend/src/router/auth/signUp/
 import { z } from 'zod'
 import Cookies from 'js-cookie'
 import { useForm } from '../../../lib/form'
-
+import { zPasswordsMustBeTheSame, zStringRequired } from '@forum_project/shared/src/zod'
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'
@@ -93,17 +93,10 @@ export const SignUpPage = withPageWrapper({
     },
     validationSchema: zSignUpTrpcInput
       .extend({
-        passwordAgain: z.string().min(1),
+        passwordAgain: zStringRequired,
       })
-      .superRefine((val, ctx) => {
-        if (val.password !== val.passwordAgain) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: 'Passwords must be the same',
-            path: ['passwordAgain'],
-          })
-        }
-      }),
+      .superRefine(zPasswordsMustBeTheSame('password', 'passwordAgain')),
+
 
 
     onSubmit: async (values) => {

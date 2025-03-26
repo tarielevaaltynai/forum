@@ -1,6 +1,7 @@
 import { z } from 'zod'
-
+import { zStringRequired } from '@forum_project/shared/src/zod'
 export const zSignInTrpcInput = z.object({
-  nick: z.string().min(1),
-  password: z.string().min(1),
+  nick: zStringRequired,
+  password: zStringRequired,
+
 })

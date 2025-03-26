@@ -5,9 +5,10 @@
     "scripts": {
         "b": "pnpm --filter @forum_project/backend",
         "w": "pnpm --filter @forum_project/webapp",
+        "sh": "pnpm --filter @forum_project/shared",
         "dev": "pnpm --r --parallel dev",
-        "types": "concurrently 'pnpm b types' 'pnpm w types'",
-        "lint": "concurrently 'pnpm b lint' 'pnpm w lint'",
+        "types": "concurrently 'pnpm b types' 'pnpm w types' 'pnpm sh types'",
+        "lint": "concurrently 'pnpm b lint' 'pnpm w lint' 'pnpm sh lint'",
         "prettify": "pnpm -r --parallel prettify",
 
         "prepare": "husky install"

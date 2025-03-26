@@ -7,7 +7,8 @@
   "compilerOptions": {
     "plugins": [{ "transform": "typescript-transform-paths" }],
     "paths": {
-      "@forum_project/webapp/*": ["../webapp/*"]
+      "@forum_project/webapp/*": ["../webapp/*"],
+      "@forum_project/shared/*": ["../shared/*"]
     },
     "outDir": "./dist",
     "allowJs": true,
