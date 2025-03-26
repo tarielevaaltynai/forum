@@ -8,6 +8,8 @@ import { Input } from '../../../components/Input'
 import { Segment } from '../../../components/Segment'
 import { Textarea } from '../../../components/Textarea'
 import { useForm } from '../../../lib/form'
+import { canEditIdea } from '@forum_project/backend/src/utils/can'
+
 import { getViewIdeaRoute, type EditIdeaRouteParams } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 import { withPageWrapper } from '../../../lib/pageWrapper'
@@ -22,7 +24,8 @@ export const EditIdeaPage = withPageWrapper({
   },
   setProps: ({ queryResult, ctx, checkExists, checkAccess }) => {
     const idea = checkExists(queryResult.data.idea, 'Обсуждение не найдено')
-    checkAccess(ctx.me?.id === idea.authorId, 'Обсуждение может редактировать только автор')
+   /* checkAccess(ctx.me?.id === idea.authorId, 'Обсуждение может редактировать только автор')*/
+    checkAccess(canEditIdea(ctx.me, idea), 'Обсуждение может редактировать только автор')
     return {
       idea,
     }
