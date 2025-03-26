@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 $white: #ffffff;
 $black: #000;
 $blue: #00c;
@@ -29,27 +28,4 @@ $borderRadiusSmall: 3px;
   src: url('../assets/roboto/Roboto-VariableFont_wdth\,wght.ttf') format('woff');
   font-weight: normal;
   font-style: normal;
-=======
-$white: #ffffff;
-$black: #000;
-$blue: #00c;
-$red: #c00;
-$gray: #ccc;
-$blues:#73bcd6;
-
-$defaultFontFamily: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-$defaultFontSize: 14px;
-$defaultBackgroundColor: #fafafa;
-$defaultTextColor: $black;
-$defaultLineHeight: 1.2;
-$borderRadiusSmall: 3px;
-
-
-// Подключение шрифтов через @font-face
-@font-face {
-  font-family: 'Roboto';
-  src: url('../assets/roboto/Roboto-VariableFont_wdth\,wght.ttf') format('woff');
-  font-weight: normal;
-  font-style: normal;
->>>>>>> d7d1fffabf09f567df420b0e3df5ed632c29940c
 }

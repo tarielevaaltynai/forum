@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import axios, { type AxiosResponse } from 'axios'
 import _ from 'lodash'
 import { env } from './env'
@@ -49,18 +48,3 @@ export const sendEmailThroughBrevo = async ({ to, subject, html }: { to: string;
     },
   })
 }
-=======
-
-
-
-
-if (!env.BREVO_API_KEY) {
-    return {
-      loggableResponse: {
-        status: 200,
-        statusText: 'OK',
-        data: { message: 'BREVO_API_KEY is not set' },
-      },
-    }
-  }
->>>>>>> fb062d1a24c27a29d9bebb5197bfdce88d7c645c

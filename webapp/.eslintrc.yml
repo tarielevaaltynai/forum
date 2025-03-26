@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 extends:
   - react-app
   - ../.eslintrc.yml
@@ -21,26 +21,3 @@ rules:
 
           allowTypeImports: true
           message: 'Only types and input schemas are allowed to be imported from backend workspace'
-=======
-extends:
-  - react-app
-  - ../.eslintrc.yml
-parserOptions:
-  project: ./tsconfig.app.json
-overrides:
-  - files:
-      - vite.config.ts
-    parserOptions:
-      project: ./tsconfig.node.json
-rules:
-  "@typescript-eslint/no-restricted-imports":
-    - error
-    - patterns:
-        - group:
-            - "@forum_project/backend/**"
-            - "!@forum_project/backend/**/"
-            - "!@forum_project/backend/**/input"
-            - "!@forum_project/backend/src/utils/can"
-          allowTypeImports: true
-          message: "Only types and input schemas are allowed to be imported from backend workspace"
->>>>>>> d7d1fffabf09f567df420b0e3df5ed632c29940c

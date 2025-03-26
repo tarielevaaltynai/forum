@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*@import '../../../styles/_vars';
 @import '../../../styles/_mixins';
 // SCSS styles
@@ -344,33 +343,3 @@
     }
   }
 }
-=======
-@import '../../../styles/_vars';
-@import '../../../styles/_mixins';
-.createdAt {
-  font-size: 12px;
-  margin-bottom: 10px;
-}
-
-
-
-.text {
-  font-size: 14px;
-
-  & > *:not(:first-child) {
-    margin-top: 10px;
-  }
-}
-.author{
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 20px;
-}
-.likes {
-  margin-top: 20px;
-
-  .likeButton {
-    @include link;
-  }
-}
->>>>>>> d7d1fffabf09f567df420b0e3df5ed632c29940c
