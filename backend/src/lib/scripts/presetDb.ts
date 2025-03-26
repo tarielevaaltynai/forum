@@ -1,19 +1,20 @@
-import { type AppContext } from '../lib/ctx'
-import { env } from '../lib/env'
-import { getPasswordHash } from '../utils/getPasswordHash'
+import { type AppContext } from "../lib/ctx";
+import { env } from "../lib/env";
+import { getPasswordHash } from "../utils/getPasswordHash";
 
 export const presetDb = async (ctx: AppContext) => {
   await ctx.prisma.user.upsert({
     where: {
-      nick: 'admin',
+      nick: "admin",
     },
     create: {
-      nick: 'admin',
+      nick: "admin",
+      email: "admin@example.com",
       password: getPasswordHash(env.INITIAL_ADMIN_PASSWORD),
-      permissions: ['ALL'],
+      permissions: ["ALL"],
     },
     update: {
-      permissions: ['ALL'],
+      permissions: ["ALL"],
     },
-  })
-}
+  });
+};

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { Idea, User, UserPermission } from '@prisma/client'
 
 type MaybeUser = Pick<User, 'permissions' | 'id'> | null
@@ -13,4 +14,21 @@ export const canBlockIdeas = (user: MaybeUser) => {
 
 export const canEditIdea = (user: MaybeUser, idea: MaybeIdea) => {
   return !!user && !!idea && user?.id === idea?.authorId
+=======
+import type { Idea, User, UserPermission } from '@prisma/client'
+
+type MaybeUser = Pick<User, 'permissions' | 'id'> | null
+type MaybeIdea = Pick<Idea, 'authorId'> | null
+
+const hasPermission = (user: MaybeUser, permission: UserPermission) => {
+  return user?.permissions.includes(permission) || user?.permissions.includes('ALL') || false
+}
+
+export const canBlockIdeas = (user: MaybeUser) => {
+  return hasPermission(user, 'BLOCK_IDEAS')
+}
+
+export const canEditIdea = (user: MaybeUser, idea: MaybeIdea) => {
+  return !!user && !!idea && user?.id === idea?.authorId
+>>>>>>> d7d1fffabf09f567df420b0e3df5ed632c29940c
 }
