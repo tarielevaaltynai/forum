@@ -1,16 +1,10 @@
 
 import { z } from "zod";
-
+import { zEmailRequired, zNickRequired, zStringRequired } from '@forum_project/shared/src/zod'
 export const zSignUpTrpcInput = z.object({
-  nick: z
-    .string()
-    .min(1)
-    .regex(
-      /^[a-z0-9-]+$/,
-      "Ник может содержать только строчные буквы, цифры и дефисы."
-    ),
-  email: z.string().min(1).email(),
-  password: z.string().min(1),
+  nick: zNickRequired,
+  email: zEmailRequired,
+  password: zStringRequired,
   surname: z.string().min(1),
   name: z.string().min(1),
   gender: z.string().min(1),

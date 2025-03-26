@@ -108,7 +108,7 @@ import type { TrpcRouterOutput } from '@forum_project/backend/src/router'
 import { zUpdatePasswordTrpcInput } from '@forum_project/backend/src/router/auth/updatePassword/input'
 import { zUpdateProfileTrpcInput } from '@forum_project/backend/src/router/auth/updateProfile/input'
 import { Alert } from '../../../components/Alert'
-import { z } from 'zod'
+import { zPasswordsMustBeTheSame, zStringRequired } from '@forum_project/shared/src/zod'
 import { Button } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'
 import { Input } from '../../../components/Input'
@@ -164,17 +164,9 @@ const Password = () => {
     },
     validationSchema: zUpdatePasswordTrpcInput
       .extend({
-        newPasswordAgain: z.string().min(1),
+        newPasswordAgain: zStringRequired,
       })
-      .superRefine((val, ctx) => {
-        if (val.newPassword !== val.newPasswordAgain) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: 'Пароли должны совпадать',
-            path: ['newPasswordAgain'],
-          })
-        }
-      }),
+      .superRefine(zPasswordsMustBeTheSame('newPassword', 'newPasswordAgain')),
     onSubmit: async ({ newPassword, oldPassword }) => {
       await updatePassword.mutateAsync({ newPassword, oldPassword })
     },
