@@ -30,5 +30,5 @@
     "moduleResolution": "Node",
     "target": "ES2021"
   },
-  "include": ["src"]
+  "include": ["src", "../jest.config.js"]
 }

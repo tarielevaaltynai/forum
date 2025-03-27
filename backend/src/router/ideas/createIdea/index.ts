@@ -1,6 +1,7 @@
 import { trpcLoggedProcedure } from '../../../lib/trpc'
 import { zCreateIdeaTrpcInput } from './input'
 import { TRPCError } from '@trpc/server'
+import { ExpectedError } from '../../../lib/error'
 
 export const createIdeaTrpcRoute = trpcLoggedProcedure.input(zCreateIdeaTrpcInput).mutation(async ({ input, ctx }) => {
   if (!ctx.me) {
@@ -17,10 +18,7 @@ export const createIdeaTrpcRoute = trpcLoggedProcedure.input(zCreateIdeaTrpcInpu
   })
 
   if (exIdea) {
-    throw new TRPCError({
-      code: 'CONFLICT',
-      message: 'Обсуждение с этим ником уже существует.',
-    })
+    throw new ExpectedError('Обсуждение с этим ником уже существует.')
   }
 
   try {

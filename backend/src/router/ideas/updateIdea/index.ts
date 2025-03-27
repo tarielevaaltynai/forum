@@ -1,6 +1,6 @@
 import { trpcLoggedProcedure } from '../../../lib/trpc'
 import { zUpdateIdeaTrpcInput } from './input'
-
+import { ExpectedError } from '../../../lib/error'
 import { canEditIdea } from '../../../utils/can'
 export const updateIdeaTrpcRoute = trpcLoggedProcedure.input(zUpdateIdeaTrpcInput).mutation(async ({ ctx, input }) => {
   const { ideaId, ...ideaInput } = input
@@ -25,7 +25,7 @@ export const updateIdeaTrpcRoute = trpcLoggedProcedure.input(zUpdateIdeaTrpcInpu
       },
     })
     if (exIdea) {
-      throw new Error('Idea with this nick already exists')
+      throw new ExpectedError('Idea with this nick already exists')
     }
   }
   await ctx.prisma.idea.update({
