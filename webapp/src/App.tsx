@@ -14,6 +14,7 @@ import { NotAuthRouteTracker } from './components/NotAuthRouteTracker'
 import { viewIdeaRouteParams } from "./lib/routes";
 import { AppContextProvider } from './lib/ctx';
 import * as routes from './lib/routes';
+import { SentryUser } from './lib/sentry'
 import { BrowserRouter,Route,Routes} from 'react-router-dom'
 import { getAllIdeasRoute,getViewIdeaRoute } from "./lib/routes";
 
@@ -26,6 +27,8 @@ import './styles/global.scss'
     <TrpcProvider>
       <AppContextProvider>
         <BrowserRouter>
+        <SentryUser />
+
         <NotAuthRouteTracker />
           <Routes>
           <Route path={routes.getSignOutRoute.definition} element={<SignOutPage />} />
