@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "eslint --cache --cache-location ./node_modules/.cache/.eslintcache --ext .ts .",
     "dev": "ts-node-dev --watch ./src/emails/dist,./.env --rs --exit-child ./src/index.ts",
+    "test": "jest --runInBand",
     "build-emails": "rimraf ./src/emails/dist && mkdir ./src/emails/dist && mjml ./src/emails/[!_]*.mjml -o ./src/emails/dist",
     "watch-emails": "mjml -w ./src/emails/[!_]*.mjml -o ./src/emails/dist",
     "copy-emails": "copyfiles ./src/emails/dist/*.html ./dist/backend",
@@ -47,6 +48,7 @@
     "@trpc/server": "^10.37.1",
     "winston": "^3.10.0",
     "axios": "^1.5.0",
+    "date-fns": "^2.30.0",
     "debug": "^4.3.4",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",

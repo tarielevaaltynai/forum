@@ -7,6 +7,7 @@
         "w": "pnpm --filter @forum_project/webapp",
         "sh": "pnpm --filter @forum_project/shared",
         "dev": "pnpm --r --parallel dev",
+        "test": "pnpm -r test",
         "types": "concurrently 'pnpm b types' 'pnpm w types' 'pnpm sh types'",
         "lint": "concurrently 'pnpm b lint' 'pnpm w lint' 'pnpm sh lint'",
         "prettify": "pnpm -r --parallel prettify",
@@ -14,6 +15,7 @@
         "prepare": "husky install"
     },
     "devDependencies": {
+        "@types/jest": "^29.5.5",
         "concurrently": "^8.2.0",
         "copyfiles": "^2.4.1",
 
@@ -21,10 +23,13 @@
         "eslint-config-prettier": "^9.0.0",
         "eslint-config-react-app": "^7.0.1",
         "eslint-config-standard-with-typescript": "^37.0.0",
+        "eslint-plugin-jest": "^27.4.0",
         "husky": "^8.0.3",
+        "jest": "^29.7.0",
         "lint-staged": "^14.0.0",
         "prettier": "^3.0.2",
         "rimraf": "^5.0.1",
+        "ts-jest": "^29.1.1",
         "ts-node": "^10.9.1",
         "ts-node-dev": "^2.0.0",
 
