@@ -10,6 +10,7 @@ import { ViewsIdeaPage } from './pages/ideas/ViewsIdeaPage'
 import { NotFoundPage } from './pages/other/NotFoundPage'
 import { EditProfilePage } from './pages/auth/EditProfilePage'
 import { HelmetProvider } from 'react-helmet-async'
+import { NotAuthRouteTracker } from './components/NotAuthRouteTracker'
 import { viewIdeaRouteParams } from "./lib/routes";
 import { AppContextProvider } from './lib/ctx';
 import * as routes from './lib/routes';
@@ -25,6 +26,7 @@ import './styles/global.scss'
     <TrpcProvider>
       <AppContextProvider>
         <BrowserRouter>
+        <NotAuthRouteTracker />
           <Routes>
           <Route path={routes.getSignOutRoute.definition} element={<SignOutPage />} />
             <Route element={<Layout />}>
