@@ -5,6 +5,8 @@ import fg from 'fast-glob'
 import _ from 'lodash'
 import { env } from './env'
 import Handlebars from 'handlebars'
+import { logger } from './logger'
+
 import { sendEmailThroughBrevo } from './brevo'
 import { getNewIdeaRoute } from '@forum_project/webapp/src/lib/routes'
 const getHbrTemplates = _.memoize(async () => {
@@ -44,7 +46,7 @@ const sendEmail = async ({
     }
     const html = await getEmailHtml(templateName, fullTemplateVaraibles)
     const { loggableResponse } = await sendEmailThroughBrevo({ to, html, subject })
-    console.info('sendEmail', {
+    logger.info('email', 'sendEmail', {
       to,
       templateName,
       templateVariables,
@@ -53,7 +55,11 @@ const sendEmail = async ({
     })
     return { ok: true }
   } catch (error) {
-    console.error(error)
+    logger.error('email', error, {
+      to,
+      templateName,
+      templateVariables,
+    })
     return { ok: false }
   }
 }
