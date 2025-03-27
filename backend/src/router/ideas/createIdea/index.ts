@@ -1,8 +1,9 @@
-import { trpc } from '../../../lib/trpc'
+import { trpcLoggedProcedure } from '../../../lib/trpc'
 import { zCreateIdeaTrpcInput } from './input'
 import { TRPCError } from '@trpc/server'
+import { ExpectedError } from '../../../lib/error'
 
-export const createIdeaTrpcRoute = trpc.procedure.input(zCreateIdeaTrpcInput).mutation(async ({ input, ctx }) => {
+export const createIdeaTrpcRoute = trpcLoggedProcedure.input(zCreateIdeaTrpcInput).mutation(async ({ input, ctx }) => {
   if (!ctx.me) {
     throw new TRPCError({
       code: 'UNAUTHORIZED',
@@ -17,10 +18,7 @@ export const createIdeaTrpcRoute = trpc.procedure.input(zCreateIdeaTrpcInput).mu
   })
 
   if (exIdea) {
-    throw new TRPCError({
-      code: 'CONFLICT',
-      message: 'Обсуждение с этим ником уже существует.',
-    })
+    throw new ExpectedError('Обсуждение с этим ником уже существует.')
   }
 
   try {
