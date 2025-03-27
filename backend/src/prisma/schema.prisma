@@ -1,7 +1,8 @@
 
 generator client {
     provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+    previewFeatures = ["fullTextSearch", "filterJson"]
+  // previewFeatures = ["fullTextSearch"]
 }
 
 
@@ -17,13 +18,15 @@ model Idea {
   name        String
   serialNumber Int      @unique @default(autoincrement())
   description String
-  text        String
+  text        String?
   createdAt DateTime @default(now())
   authorId    String
   author User @relation(fields:[authorId],references:[id])
 
   ideasLikes IdeaLike[]
   blockedAt    DateTime?
+
+   @@index([name, description, text], type: Gist)  // Используем Gin-индекс для триграмм
 }
 
 model User {
