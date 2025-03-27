@@ -11,6 +11,7 @@ import { deepMap } from '../utils/deepMap'
 import { TRPCError } from '@trpc/server'
 import { ExpectedError } from './error'
 import { sentryCaptureException } from './sentry'
+import { omit } from '@forum_project/shared/src/omit'
 
 export const winstonLogger = winston.createLogger({
   level: 'debug',
@@ -37,7 +38,8 @@ export const winstonLogger = winston.createLogger({
               const levelAndType = `${logData.level} ${logData.logType}`
               const topMessage = `${setColor(levelAndType)} ${pc.green(logData.timestamp as string)}${EOL}${logData.message}`
 
-              const visibleMessageTags = _.omit(logData, [
+              const visibleMessageTags = omit(logData, [
+
                 'level',
                 'logType',
                 'timestamp',

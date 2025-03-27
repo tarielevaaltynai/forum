@@ -1,12 +1,19 @@
 import { type Idea, type User } from '@prisma/client'
 import _ from 'lodash'
+import '../lib/brevo.mock'
+import '../lib/emails/utils.mock'
+import '../lib/sentry.mock'
+
 import { createAppContext } from '../lib/ctx'
 import { getTrpcContext } from '../lib/trpc'
 import { trpcRouter } from '../router'
 import { deepMap } from '../utils/deepMap'
 import { getPasswordHash } from '../utils/getPasswordHash'
 import { type ExpressRequest } from '../utils/types'
-
+if (env.NODE_ENV !== 'test') {
+    throw new Error('Run integration tests only with NODE_ENV=test')
+  }
+  
 export const appContext = createAppContext()
 
 afterAll(appContext.stop)
@@ -26,7 +33,7 @@ export const withoutNoize = (input: any): any => {
   return deepMap(input, ({ value }) => {
     if (_.isObject(value) && !_.isArray(value)) {
       return _.entries(value).reduce((acc, [objectKey, objectValue]: [string, any]) => {
-        if ([/^id$/, /Id$/, /At$/].some((regex) => regex.test(objectKey))) {
+        if ([/^id$/, /Id$/, /At$/, /^url$/].some((regex) => regex.test(objectKey))) {
           return acc
         }
         return {
@@ -40,15 +47,21 @@ export const withoutNoize = (input: any): any => {
 }
 
 export const createUser = async ({ user = {}, number = 1 }: { user?: Partial<User>; number?: number } = {}) => {
-  return await appContext.prisma.user.create({
-    data: {
-      nick: `user${number}`,
-      email: `user${number}@example.com`,
-      password: getPasswordHash(user.password || '1234'),
-      ..._.omit(user, ['password']),
-    },
-  })
-}
+    return await appContext.prisma.user.create({
+      data: {
+        nick: `user${number}`,
+        email: `user${number}@example.com`,
+        password: getPasswordHash(user.password || '1234'),
+        name: user.name || `User ${number}`, // Добавляем значение по умолчанию
+        surname: user.surname || '', // Убираем undefined
+        gender: user.gender || 'unknown', // Убираем undefined
+        birthDate: user.birthDate ? new Date(user.birthDate) : new Date('2000-01-01'), // Дата по умолчанию
+        createdAt: new Date(), // Убираем undefined
+        permissions: user.permissions || [], // Убираем undefined
+        ..._.omit(user, ['password']),
+      },
+    })
+  }
 
 export const createIdea = async ({
   idea = {},
