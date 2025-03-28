@@ -27,6 +27,7 @@ model Idea {
   blockedAt    DateTime?
 
    @@index([name, description, text], type: Gist)  // Используем Gin-индекс для триграмм
+   
 }
 
 model User {
