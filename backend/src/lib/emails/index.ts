@@ -18,7 +18,7 @@ export const sendWelcomeEmail = async ({ user }: { user: Pick<User, 'nick' | 'em
 export const sendIdeaBlockedEmail = async ({ user, idea }: { user: Pick<User, 'email'>; idea: Pick<Idea, 'nick'> }) => {
   return await sendEmail({
     to: user.email,
-    subject: 'Your Idea Blocked!',
+    subject: 'Ваше обсуждение заблокировано',
     templateName: 'ideaBlocked',
     templateVariables: {
       someNick: idea.nick,

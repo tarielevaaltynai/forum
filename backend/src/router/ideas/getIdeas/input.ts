@@ -7,3 +7,4 @@ export const zGetIdeasTrpcInput = z.object({
   search: zStringOptional,
 
 })
+

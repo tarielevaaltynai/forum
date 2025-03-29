@@ -2,6 +2,7 @@ import { toClientMe } from '../../../lib/models'
 import { trpcLoggedProcedure } from '../../../lib/trpc'
 import { zUpdateProfileTrpcInput } from './input'
 import { ExpectedError } from '../../../lib/error'
+
 export const updateProfileTrpcRoute = trpcLoggedProcedure
   .input(zUpdateProfileTrpcInput)
   .mutation(async ({ ctx, input }) => {

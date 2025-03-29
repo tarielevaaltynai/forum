@@ -120,6 +120,7 @@ import { SelectInput } from '../../../components/SelectInput'
 import { DatePickerInput } from '../../../components/DatePickerInput'
 import styles from './index.module.scss'
 import avatar from '../../../assets/images/user.png'
+import { UploadToCloudinary } from '../../../components/UploadToCloudinary'
 const General = ({ me }: { me: NonNullable<TrpcRouterOutput['getMe']['me']> }) => {
   const trpcUtils = trpc.useContext()
   const updateProfile = trpc.updateProfile.useMutation()
@@ -127,6 +128,7 @@ const General = ({ me }: { me: NonNullable<TrpcRouterOutput['getMe']['me']> }) =
     initialValues: {
       nick: me.nick,
       name: me.name,
+      avatar: me.avatar,
       surname: me.surname,
       gender: me.gender,
       birthDate: me.birthDate,
@@ -142,9 +144,11 @@ const General = ({ me }: { me: NonNullable<TrpcRouterOutput['getMe']['me']> }) =
   return (
     <form onSubmit={formik.handleSubmit}>
       <FormItems>
+
         <Input label="Ник" name="nick" formik={formik} />
         <Input label="Имя" name="name" formik={formik} />
         <Input label="Фамилия" name="surname" formik={formik} />
+        <UploadToCloudinary label="Avatar" name="avatar" type="avatar" preset="big" formik={formik} />
         <DatePickerInput label="Дата рождения" name="birthDate" formik={formik} />
         <SelectInput label="Пол" name="gender" formik={formik} />
         <Alert {...alertProps} />

@@ -3,7 +3,7 @@ import { Segment } from '../Segment'
 
 export const ErrorPageComponent = ({
   title = 'Ошибка',
-  message = 'Something went wrong',
+  message = 'Что-то пошло не так',
   children,
 }: {
   title?: string

@@ -15,6 +15,7 @@ export const getIdeaTrpcRoute = trpcLoggedProcedure.input(zGetIdeaTrpcInput).que
           id: true,
           nick: true,
           name: true,
+          avatar: true,
         },
       },
       ideasLikes: {
@@ -33,7 +34,7 @@ export const getIdeaTrpcRoute = trpcLoggedProcedure.input(zGetIdeaTrpcInput).que
     },
   })
   if (rawIdea?.blockedAt) {
-    throw new ExpectedError('Idea is blocked by administrator')
+    throw new ExpectedError('Обсуждение заблокировано администратором')
   }
   const isLikedByMe = !!rawIdea?.ideasLikes.length
   const likesCount = rawIdea?._count.ideasLikes || 0

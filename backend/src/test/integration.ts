@@ -3,7 +3,7 @@ import _ from 'lodash'
 import '../lib/brevo.mock'
 import '../lib/emails/utils.mock'
 import '../lib/sentry.mock'
-
+import { env } from '../lib/env'
 import { createAppContext } from '../lib/ctx'
 import { getTrpcContext } from '../lib/trpc'
 import { trpcRouter } from '../router'
