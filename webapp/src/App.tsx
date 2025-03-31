@@ -40,6 +40,7 @@ import './styles/global.scss'
                 <Route path={routes.getViewIdeaRoute.definition} element={<ViewsIdeaPage />} />
                 <Route path={routes.getEditIdeaRoute.definition} element={<EditIdeaPage />} />
                 <Route path={routes.getNewIdeaRoute.definition} element={<NewIdeaPage />} />
+                
               <Route path="*" element={<NotFoundPage />} />
               
             </Route>

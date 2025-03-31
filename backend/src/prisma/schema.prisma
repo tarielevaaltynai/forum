@@ -1,11 +1,9 @@
 
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["fullTextSearch", "filterJson"]
-  // previewFeatures = ["fullTextSearch"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+
 }
-
-
 
 datasource db {
   provider = "postgresql"
@@ -13,51 +11,76 @@ datasource db {
 }
 
 model Idea {
-  id          String @id @default(uuid())
-  nick        String @unique
-  name        String
-  serialNumber Int      @unique @default(autoincrement())
-  description String
-  text        String?
-  createdAt DateTime @default(now())
-  authorId    String
-  author User @relation(fields:[authorId],references:[id])
-
-  ideasLikes IdeaLike[]
+  id           String    @id @default(uuid())
+  nick         String    @unique
+  name         String
+  serialNumber Int       @unique @default(autoincrement())
+  description  String
+  text         String
+  createdAt    DateTime  @default(now())
+  authorId     String
+  author       User      @relation(fields: [authorId], references: [id])
+  ideasLikes   IdeaLike[]
   blockedAt    DateTime?
+  comments     Comment[]
+  
+  @@index([authorId])
 
-   @@index([name, description, text], type: Gist)  // Используем Gin-индекс для триграмм
-   
 }
 
 model User {
-  id String @id@default(uuid())
-  nick String @unique
-  name String 
-  avatar String?
-  surname String
-  gender String
-  birthDate DateTime 
-  password String
-  createdAt DateTime @default(now())
-  ideas Idea[]
-  email String @unique
-
-  ideasLikes IdeaLike[]
-    permissions UserPermission[]
+  id          String      @id @default(uuid())
+  nick        String      @unique
+  name        String
+  avatar      String?
+  surname     String
+  gender      String
+  birthDate   DateTime
+  password    String
+  createdAt   DateTime    @default(now())
+  ideas       Idea[]
+  email       String      @unique
+  ideasLikes  IdeaLike[]
+  permissions UserPermission[]
+  comments    Comment[]
 }
 
-
-
-model IdeaLike{
-  id String @id@default(uuid())
+model IdeaLike {
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
-  idea Idea @relation(fields:[ideaId],references:[id])
-  ideaId String
-  user User @relation(fields:[userId],references:[id])
-  userId String
-  @@unique([ideaId,userId])
+  idea      Idea     @relation(fields: [ideaId], references: [id])
+  ideaId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  
+  @@unique([ideaId, userId])
+  @@index([userId])
 }
+
+model Comment {
+  id          String    @id @default(uuid())
+  content     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  isEdited    Boolean   @default(false)
+  isBlocked   Boolean   @default(false)
+  blockedAt   DateTime?
+  
+  // Relations
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    String
+  idea        Idea      @relation(fields: [ideaId], references: [id])
+  ideaId      String
+  parent      Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  parentId    String?
+  replies     Comment[] @relation("CommentReplies")
+  
+  @@index([authorId])
+  @@index([ideaId])
+  @@index([parentId])
+  @@index([isBlocked])
+}
+
 enum UserPermission {
   BLOCK_IDEAS
   ALL

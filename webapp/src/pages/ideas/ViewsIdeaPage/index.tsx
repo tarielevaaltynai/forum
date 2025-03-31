@@ -1,8 +1,8 @@
 
 import { trpc } from '../../../lib/trpc';
-import { Icon } from '../../../components/Icon'
+import { Icon } from '../../../components/Icon';
 import { Segment } from '../../../components/Segment';
-import { getEditIdeaRoute, getViewIdeaRoute } from '../../../lib/routes'
+import { getEditIdeaRoute, getViewIdeaRoute } from '../../../lib/routes';
 import format from 'date-fns/format';
 import { Alert } from '../../../components/Alert';
 import { Button, LinkButton } from '../../../components/Button';
@@ -12,7 +12,8 @@ import { withPageWrapper } from '../../../lib/pageWrapper';
 import type { TrpcRouterOutput } from '@forum_project/backend/src/router';
 import { canBlockIdeas, canEditIdea } from '@forum_project/backend/src/utils/can';
 import { useForm } from '../../../lib/form';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { CommentList, CreateCommentForm } from '../../../components/CommentsList'; // Импортируем ваши компоненты
 
 const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['idea']> }) => {
   const trpcUtils = trpc.useContext();
@@ -20,7 +21,7 @@ const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['i
 
   const setIdeaLike = trpc.setIdeaLike.useMutation({
     onMutate: ({ isLikedByMe }) => {
-      setLiked(isLikedByMe); // Мгновенно меняем состояние для визуального отклика
+      setLiked(isLikedByMe);
       const oldGetIdeaData = trpcUtils.getIdea.getData({ someNick: idea.nick });
       if (oldGetIdeaData?.idea) {
         const newGetIdeaData = {
@@ -35,14 +36,10 @@ const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['i
       }
     },
     onSuccess: (data) => {
-      setLiked(data.idea?.isLikedByMe || false); // Обновляем по данным с сервера
+      setLiked(data.idea?.isLikedByMe || false);
       void trpcUtils.getIdea.invalidate({ someNick: idea.nick });
     },
   });
-
-  useEffect(() => {
-    setLiked(idea.isLikedByMe); // Синхронизируем с сервером при загрузке
-  }, [idea.isLikedByMe]);
 
   return (
     <button
@@ -51,15 +48,10 @@ const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['i
         void setIdeaLike.mutateAsync({ ideaId: idea.id, isLikedByMe: !liked });
       }}
     >
-      {/*<Heart
-        size={32}
-        className={`${css.heart} ${liked ? css.liked : css.unliked}`} // Динамически меняем класс
-      />*/}
-           <Icon size={32} className={css.likeIcon} name={idea.isLikedByMe ? 'likeFilled' : 'likeEmpty'} />
+      <Icon size={32} className={css.likeIcon} name={liked ? 'likeFilled' : 'likeEmpty'} />
     </button>
   );
 };
-
 
 const BlockIdea = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['idea']> }) => {
   const blockIdea = trpc.blockIdea.useMutation();
@@ -82,7 +74,38 @@ const BlockIdea = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['id
   );
 };
 
+const CommentSection = ({ ideaId }: { ideaId: string }) => {
+  const [showComments, setShowComments] = useState(false);
+  const { data: commentsData, isLoading } = trpc.getComments.useQuery(
+    { ideaId },
+    { enabled: showComments }
+  );
 
+  return (
+    <Segment className={css.commentSection}>
+      <button 
+        onClick={() => setShowComments(!showComments)}
+      >
+        {showComments ? 'Скрыть комментарии' : 'Показать комментарии'}
+        {!showComments && commentsData && ` (${commentsData.comments.length})`}
+      </button>
+      
+      {showComments && (
+        <div className={css.commentsContainer}>
+          {isLoading ? (
+            <div>Загрузка комментариев...</div>
+          ) : (
+            <>
+              {/* Теперь передаём только массив comments */}
+              <CommentList comments={commentsData?.comments} />
+              <CreateCommentForm ideaId={ideaId} />
+            </>
+          )}
+        </div>
+      )}
+    </Segment>
+  );
+};
 export const ViewsIdeaPage = withPageWrapper({
   useQuery: () => {
     const { someNick } = getViewIdeaRoute.useParams()
@@ -98,7 +121,6 @@ export const ViewsIdeaPage = withPageWrapper({
   <div className={css.twitterPostContainer}>
     <div className={css.postWrapper}>
       {/* Автор поста */}
-
       <div className={css.authorSection}>
         <div className={css.authorInfo}>
           <span className={css.authorName}>
@@ -106,13 +128,13 @@ export const ViewsIdeaPage = withPageWrapper({
           </span>
           <i className={`fas fa-check-circle ${css.verifiedIcon}`}></i>
           <span className={css.authorNick}>@{idea.author.nick}</span>
-          <span className={css.authorNick}> {format(idea.createdAt, 'yyyy-MM-dd')}</span>
+          <span className={css.postDate}>{format(idea.createdAt, 'yyyy-MM-dd')}</span>
         </div>
       </div>
       
-      {/* Текст поста */}
+      {/* Содержимое поста */}
       <div className={css.postContent}>
-        <div className={css.postTitle}>{idea.name}</div>
+        <h1 className={css.postTitle}>{idea.name}</h1>
         <div className={css.postDescription}>{idea.description}</div>
         <div 
           className={css.text} 
@@ -120,32 +142,34 @@ export const ViewsIdeaPage = withPageWrapper({
         />
       </div>
       
-      {/* Реакции */}
-      <div className={css.reactions}>
-        <div className={css.likes}>
-        {me && <LikeButton idea={idea} />}
+      {/* Лайки и действия */}
+      <div className={css.postFooter}>
+        <div className={css.reactions}>
+          {me && <LikeButton idea={idea} />}
           <span className={css.likeCount}>
             {idea.likesCount} {idea.likesCount === 1 ? 'лайк' : 'лайков'}
           </span>
         </div>
-      </div>
-      {canEditIdea(me, idea) && (
-          
-            <LinkButton to={getEditIdeaRoute({ someNick: idea.nick })}>
+
+        <div className={css.actions}>
+          {canEditIdea(me, idea) && (
+            <LinkButton 
+              to={getEditIdeaRoute({ someNick: idea.nick })}
+              className={css.editButton}
+            >
               Редактировать
             </LinkButton>
-          
-        )}
-      {/* Кнопки действий */}
-      <div className={css.actions}>
-        
-        {canBlockIdeas(me) && (
-          <div className={css.blockIdea}>
-            <BlockIdea idea={idea} />
-          </div>
-        )}
+          )}
+          {canBlockIdeas(me) && (
+            <div className={css.blockIdea}>
+              <BlockIdea idea={idea} />
+            </div>
+          )}
+        </div>
       </div>
+
+      {/* Секция комментариев */}
+      <CommentSection ideaId={idea.id} />
     </div>
   </div>
 ));
-
