@@ -11,9 +11,13 @@ import { getIdeasTrpcRoute } from './ideas/getIdeas'
 import { updateIdeaTrpcRoute } from './ideas/updateIdea'
 import { updateProfileTrpcRoute } from './auth/updateProfile'
 import { updatePasswordTrpcRoute } from './auth/updatePassword'
+import { updateAvatarTrpcRoute } from './auth/updateAvatar'
 import { prepareCloudinaryUploadTrpcRoute } from './upload/prepareCloudinaryUpload'
 import { blockIdeaTrpcRoute } from './ideas/blockIdea'
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server'
+import { createCommentTrpcRoute } from './ideas/createComment'
+import { getCommentsTrpcRoute } from './ideas/getComments'
+import { getRepliesTrpcRoute } from './ideas/getReplies'
 // @endindex
 export const trpcRouter = createTrpcRouter({
   // @index('./**/index.ts', f => `${f.path.split('/').slice(0, -1).pop()}: ${f.path.split('/').slice(0, -1).pop()}TrpcRoute,`)
@@ -22,7 +26,10 @@ export const trpcRouter = createTrpcRouter({
   signIn: signInTrpcRoute,
   signUp: signUpTrpcRoute,
   updateProfile: updateProfileTrpcRoute,
-  
+  updateAvatar: updateAvatarTrpcRoute,
+  createComment:createCommentTrpcRoute,
+getComments:getCommentsTrpcRoute,
+getReplies:getRepliesTrpcRoute,
   blockIdea: blockIdeaTrpcRoute,
   updatePassword: updatePasswordTrpcRoute,
 
