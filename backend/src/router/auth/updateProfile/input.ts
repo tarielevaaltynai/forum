@@ -5,6 +5,7 @@ export const zUpdateProfileTrpcInput = z.object({
 
 
   name: z.string().max(50).default(''),
+  avatar: z.string().nullable(),
   surname: z.string().max(50).default(''),
   gender:z.string().min(1),
   birthDate: z

@@ -34,6 +34,7 @@ model User {
   id String @id@default(uuid())
   nick String @unique
   name String 
+  avatar String?
   surname String
   gender String
   birthDate DateTime 

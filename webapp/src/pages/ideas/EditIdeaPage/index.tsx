@@ -1,6 +1,6 @@
 
 import { zUpdateIdeaTrpcInput } from '@forum_project/backend/src/router/ideas/updateIdea/input'
-import pick from 'lodash/pick'
+import { pick } from '@forum_project/shared/src/pick'
 import { useNavigate } from 'react-router-dom'
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'

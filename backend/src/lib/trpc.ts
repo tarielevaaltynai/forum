@@ -22,7 +22,7 @@ const getCreateTrpcContext =
   
 type TrpcContext = inferAsyncReturnType<ReturnType<typeof getCreateTrpcContext>>
 
-const trpc = initTRPC.context<TrpcContext>().create({
+export const trpc = initTRPC.context<TrpcContext>().create({
   transformer: superjson,
   errorFormatter: ({ shape, error }) => {
     const isExpected = error.cause instanceof ExpectedError

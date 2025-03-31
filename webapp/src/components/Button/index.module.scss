@@ -29,7 +29,13 @@
 @import '../../styles/_vars';
 @import '../../styles/_mixins';
 
+.buttons {
+  margin-right: -5px;
 
+  & > * {
+    margin-right: 5px;
+  }
+}
 .button {
   padding: 10px 15px;
   color: $white;

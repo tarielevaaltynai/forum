@@ -7,10 +7,12 @@ import { applyPassportToExpressApp } from './lib/passport'
 import { env } from './lib/env'
 import { logger } from './lib/logger'
 import { presetDb } from './scripts/presetDb'
+import { initSentry } from './lib/sentry'
 
 void (async () => {
   let ctx: AppContext | null = null
   try {
+    initSentry()
     ctx = createAppContext()
     await presetDb(ctx)
     const expressApp = express()

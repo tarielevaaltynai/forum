@@ -4,15 +4,23 @@
   "version": "0.0.0",
   "scripts": {
     "lint": "eslint --cache --cache-location ./node_modules/.cache/.eslintcache --ext .ts .",
-    "dev": "ts-node-dev --watch ./src/emails/dist,./.env --rs --exit-child ./src/index.ts",
+
+    "dev": "cross-env NODE_ENV=development ts-node-dev --watch ./src/emails/dist,./.env --rs --exit-child ./src/index.ts",
+    "test": "jest --runInBand",
     "build-emails": "rimraf ./src/emails/dist && mkdir ./src/emails/dist && mjml ./src/emails/[!_]*.mjml -o ./src/emails/dist",
     "watch-emails": "mjml -w ./src/emails/[!_]*.mjml -o ./src/emails/dist",
     "copy-emails": "copyfiles ./src/emails/dist/*.html ./dist/backend",
-    "build-ts": "rimraf ./dist && tsc --build ./tsconfig.json",
+    
+    "sentry-release": "dotenv -- bash -c 'sentry-cli releases new ${SOURCE_VERSION} --finalize --org ideanick-f76e1b5dd --project backend --auth-token ${SENTRY_AUTH_TOKEN}'",
+    "sentry-sourcemaps": "dotenv -- bash -c 'sentry-cli releases files ${SOURCE_VERSION} upload-sourcemaps ./dist --org ideanick-f76e1b5dd --project backend'",
+    "sentry": "pnpm sentry-release && pnpm sentry-sourcemaps",
+    "build-ts": "rimraf ./dist && tsc --build ./tsconfig.build.json",
+
     "build": "pnpm build-ts && pnpm build-emails && pnpm copy-emails",
     "pmd": "prisma migrate dev",
+    "pmt": "dotenv -e ./.env.test prisma migrate deploy",
     "pgc": "prisma generate",
-    "start": "node ./dist/backend/src/index.js",
+    "start": "cross-env NODE_ENV=production node ./dist/backend/src/index.js",
     "prettify": "prettier --loglevel warn --cache --write '{src/**/*,*}.{ts,tsx,js,json,yml,scss}' '!**/{node_modules,dist}/**/*'",
     "prepare": "pnpm pgc && ts-patch install -s"
   },
@@ -35,6 +43,10 @@
   "dependencies": {
     "@prisma/client": "^6.5.0",
     "@trpc/server": "^10.37.1",
+
+    "winston": "^3.10.0",
+    "cloudinary": "^1.41.0",
+
     "axios": "^1.5.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",

@@ -5,6 +5,7 @@ import { getPasswordHash } from '../../../utils/getPasswordHash'
 import { signJWT } from '../../../utils/signJWT'
 import { sendWelcomeEmail } from '../../../lib/emails'
 export const signUpTrpcRoute = trpcLoggedProcedure.input(zSignUpTrpcInput).mutation(async ({ ctx, input }) => {
+  console.log("Полученные данные:", input)
   const exUserWithNick = await ctx.prisma.user.findUnique({
     where: {
       nick: input.nick,

@@ -98,6 +98,7 @@ export const ViewsIdeaPage = withPageWrapper({
   <div className={css.twitterPostContainer}>
     <div className={css.postWrapper}>
       {/* Автор поста */}
+
       <div className={css.authorSection}>
         <div className={css.authorInfo}>
           <span className={css.authorName}>

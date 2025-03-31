@@ -128,7 +128,7 @@ export const Layout = () => {
   return (
     <div className={css.layout}>
       <div className={css.navigation}>
-   {/*<Logo className={css.logo} />*/}
+      <div className={css.logo}>Beauty and Health</div> 
         <ul className={css.menu}>
           
           {me? (
