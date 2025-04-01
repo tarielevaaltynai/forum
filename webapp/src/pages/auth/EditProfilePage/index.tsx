@@ -340,9 +340,9 @@ const Avatar = ({ me }: { me: NonNullable<TrpcRouterOutput['getMe']['me']> }) =>
     <form onSubmit={formik.handleSubmit}>
       <FormItems>
         
-      <UploadToCloudinary label="Аватар" name="avatar" type="avatar" preset="big" formik={formik} />
+      <UploadToCloudinary label="" name="avatar" type="avatar" preset="big" formik={formik} />
       <Alert {...alertProps} />
-      <Button type="submit" disabled={formik.isSubmitting}>Сохранить</Button>
+      
       </FormItems>
     </form>
   )
