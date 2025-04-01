@@ -80,18 +80,17 @@
 
   // Зеленая кнопка (по умолчанию)
   &.green {
-    background-color: #0a980a;
-    color: $white;
-    
+    background-color: #00aaff;
+    color: #040d52; // синий шрифт
+
     &:hover {
-      background-color: #21b821;
+      background-color: #3399ff;
     }
 
     &:active {
-      background-color: #39d039;
+      background-color: #0077cc;
     }
   }
-
   // Голубая кнопка с синим шрифтом
   &.blue {
     background-color: #00aaff;

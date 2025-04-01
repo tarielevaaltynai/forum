@@ -1,10 +1,10 @@
-$white: #ffffff;
+/*$white: #ffffff;
 $black: #000;
 $blue: #00c;
 $red: #c00;
 $gray: #ccc;
 $grayLight: #eee;
-$blues:#73bcd6;
+$blues:#73bcd6;*/
 // _vars.scss
 $primary-color: #3490dc; // Голубой
 $secondary-color: #ff0000; // Красный
@@ -14,7 +14,60 @@ $font-size-base: 14px;
 $font-size-large: 16px;
 $transition-duration: 0.3s;
 
+// _vars.scss - обновленный файл с переменными
+$white: #ffffff;
+$black: #000000;
+$blue: #0000cc;
+$red: #cc0000;
+$gray: #cccccc;
+$grayLight: #eeeeee;
+$blues: #73bcd6;
 
+$primary: #3490dc; // Голубой (основной)
+$secondary: #ff0000; // Красный
+$grayDark: #6b7280; // Темно-серый
+$textPrimary: #333333; // Основной цвет текста
+$textSecondary: #666666; // Вторичный цвет текста
+$error: #dc3545; // Цвет ошибок
+$success: #28a745; // Цвет успеха
+$warning: #ffc107; // Цвет предупреждения
+$borderColor: #dddddd; // Цвет границ
+
+// Размеры шрифтов
+$fontSizeSmall: 12px;
+$fontSizeBase: 14px;
+
+
+// Транзиции
+$transitionDuration: 0.3s;
+$transitionTiming: ease;
+
+// Шрифты
+$defaultFontFamily: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+$defaultBackgroundColor: #fafafa;
+$defaultTextColor: $black;
+$defaultLineHeight: 1.5;
+
+// Радиусы скругления
+$borderRadiusSmall: 3px;
+$borderRadiusMedium: 6px;
+$borderRadiusLarge: 9px;
+
+// Тени
+$shadowSmall: 0 1px 3px rgba(0, 0, 0, 0.1);
+$shadowMedium: 0 4px 6px rgba(0, 0, 0, 0.1);
+$shadowLarge: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+// Отступы
+$spacingXs: 4px;
+$spacingSm: 8px;
+$spacingMd: 16px;
+$spacingLg: 24px;
+$spacingXl: 32px;
+
+// Ширины
+$maxContentWidth: 1200px;
+$sidebarWidth: 250px;
 
 $defaultFontFamily: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 $defaultFontSize: 14px;
