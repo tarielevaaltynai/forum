@@ -18,6 +18,7 @@ import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server'
 import { createCommentTrpcRoute } from './ideas/createComment'
 import { getCommentsTrpcRoute } from './ideas/getComments'
 import { getRepliesTrpcRoute } from './ideas/getReplies'
+import { createReplyTrpcRoute } from './ideas/createReply'
 // @endindex
 export const trpcRouter = createTrpcRouter({
   // @index('./**/index.ts', f => `${f.path.split('/').slice(0, -1).pop()}: ${f.path.split('/').slice(0, -1).pop()}TrpcRoute,`)
@@ -32,7 +33,7 @@ getComments:getCommentsTrpcRoute,
 getReplies:getRepliesTrpcRoute,
   blockIdea: blockIdeaTrpcRoute,
   updatePassword: updatePasswordTrpcRoute,
-
+createReply:createReplyTrpcRoute,
   createIdea: createIdeaTrpcRoute,
   getIdea: getIdeaTrpcRoute,
   getIdeas: getIdeasTrpcRoute,

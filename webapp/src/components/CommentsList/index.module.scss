@@ -1,84 +1,136 @@
-.commentList {
-    margin-top: 1rem;
+/* index.module.scss */
+
+.comment {
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  background: #f9f9f9;
+  padding: 1rem;
+}
+
+.commentContent {
+  display: flex;
+  gap: 1rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.commentBody {
+  flex: 1;
+}
+
+.commentHeader {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.authorName {
+  font-weight: bold;
+}
+
+.commentDate {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.commentText {
+  margin: 0.5rem 0;
+}
+
+.commentActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.replyButton,
+.toggleRepliesBtn {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+
+  &:hover {
+    text-decoration: underline;
   }
-  
-  .noComments {
-    color: #666;
-    text-align: center;
-    padding: 1rem;
+}
+
+.replyForm {
+  margin-top: 1rem;
+  padding-left: 2rem;
+
+  textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
   }
-  
-  .comment {
-    margin-bottom: 1rem;
-    padding: 1rem;
-    background: #f5f5f5;
-    border-radius: 8px;
-  }
-  
-  .commentContent {
-    margin-bottom: 0.5rem;
-  }
-  
-  .commentHeader {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-  }
-  
-  .authorName {
-    font-weight: bold;
-  }
-  
-  .commentDate {
-    color: #666;
-  }
-  
-  .toggleRepliesBtn {
-    background: none;
-    border: none;
-    color: #0066cc;
+}
+
+.replyFormButtons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+
+  button {
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background: #fff;
     cursor: pointer;
-    padding: 0;
-    font-size: 0.9rem;
-  
-    &:disabled {
-      color: #999;
-      cursor: default;
+
+    &:hover {
+      background: #f0f0f0;
     }
   }
-  
-  .replies {
-    margin-top: 1rem;
-    margin-left: 1rem;
-    padding-left: 1rem;
-    border-left: 2px solid #ddd;
+}
+
+.cancelButton {
+  background: #f5f5f5 !important;
+}
+
+.replies {
+  margin-top: 1rem;
+  border-left: 2px solid #eee;
+  padding-left: 1rem;
+}
+
+.commentForm {
+  margin-top: 1rem;
+
+  textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
   }
-  
-  .commentForm {
-    margin-top: 1.5rem;
-  }
-  
-  .errorInput {
-    border-color: #ff4444 !important;
-  }
-  
-  .errorMessage {
-    color: #ff4444;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
-  }
-  
-  .submitButton {
+
+  button {
     margin-top: 0.5rem;
     padding: 0.5rem 1rem;
-    background: #0066cc;
+    background: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-  
+
+    &:hover {
+      background: #0069d9;
+    }
+
     &:disabled {
-      background: #cccccc;
+      background: #ccc;
+      cursor: not-allowed;
     }
   }
+}

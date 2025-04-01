@@ -373,6 +373,7 @@ const Avatar = ({
           formik={formik}
         />
         <Alert {...alertProps} />
+        <Button {...buttonProps}>Изменить пароль</Button>
       </FormItems>
     </form>
   );

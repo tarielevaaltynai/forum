@@ -17,11 +17,15 @@ export const createCommentTrpcRoute = trpcLoggedProcedure
     // 2. Проверка существования идеи (аналог проверки ника у Idea)
     const ideaExists = await ctx.prisma.idea.findUnique({
       where: { id: input.ideaId },
-      select: { id: true }
+      select: { 
+        id: true, 
+        blockedAt: true // Changed from isBlocked to blockedAt
+      }
     })
-
-    if (!ideaExists) {
-      throw new ExpectedError('Обсуждение не найдено')
+    
+    // Then check if blockedAt is not null
+    if (ideaExists?.blockedAt) {
+      throw new ExpectedError('Нельзя оставлять комментарии в заблокированном обсуждении')
     }
 
     // 3. Проверка родительского комментария (если указан)

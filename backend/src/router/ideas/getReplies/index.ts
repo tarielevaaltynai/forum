@@ -1,8 +1,12 @@
 import { trpcLoggedProcedure } from '../../../lib/trpc'
+import {z} from 'zod'
+//import { zGetRepliesTrpcInput } from './input'
 
-import { zGetRepliesTrpcInput } from './input'
-
-
+export const zGetRepliesTrpcInput = z.object({
+  parentId: z.string().uuid(),
+  limit: z.number().min(1).max(100).default(10),
+  cursor: z.string().uuid().optional()
+})
 export const getRepliesTrpcRoute = trpcLoggedProcedure
   .input(zGetRepliesTrpcInput)
   .query(async ({ ctx, input }) => {

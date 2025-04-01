@@ -83,9 +83,7 @@ const CommentSection = ({ ideaId }: { ideaId: string }) => {
 
   return (
     <Segment className={css.commentSection}>
-      <button 
-        onClick={() => setShowComments(!showComments)}
-      >
+      <button onClick={() => setShowComments(!showComments)}>
         {showComments ? 'Скрыть комментарии' : 'Показать комментарии'}
         {!showComments && commentsData && ` (${commentsData.comments.length})`}
       </button>
@@ -96,8 +94,10 @@ const CommentSection = ({ ideaId }: { ideaId: string }) => {
             <div>Загрузка комментариев...</div>
           ) : (
             <>
-              {/* Теперь передаём только массив comments */}
-              <CommentList comments={commentsData?.comments} />
+              <CommentList 
+                comments={commentsData?.comments} 
+                ideaId={ideaId}  // <- Важно передать ideaId
+              />
               <CreateCommentForm ideaId={ideaId} />
             </>
           )}
