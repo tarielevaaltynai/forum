@@ -1,13 +1,12 @@
-
-@import '../Input/index.module';
-@import '../../styles/_vars';
-@import '../../styles/_mixins';
+@import "../Input/index.module";
+@import "../../styles/_vars";
+@import "../../styles/_mixins";
 
 .field {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 
   .fileInput {
     display: none;
@@ -15,7 +14,7 @@
 
   .label {
     font-weight: 500;
-    color:  $gray;
+    color: $gray;
     font-size: 14px;
   }
 
