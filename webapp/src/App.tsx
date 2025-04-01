@@ -10,9 +10,11 @@ import { ViewsIdeaPage } from './pages/ideas/ViewsIdeaPage'
 import { NotFoundPage } from './pages/other/NotFoundPage'
 import { EditProfilePage } from './pages/auth/EditProfilePage'
 import { HelmetProvider } from 'react-helmet-async'
+import { NotAuthRouteTracker } from './components/NotAuthRouteTracker'
 import { viewIdeaRouteParams } from "./lib/routes";
 import { AppContextProvider } from './lib/ctx';
 import * as routes from './lib/routes';
+import { SentryUser } from './lib/sentry'
 import { BrowserRouter,Route,Routes} from 'react-router-dom'
 import { getAllIdeasRoute,getViewIdeaRoute } from "./lib/routes";
 
@@ -25,6 +27,9 @@ import './styles/global.scss'
     <TrpcProvider>
       <AppContextProvider>
         <BrowserRouter>
+        <SentryUser />
+
+        <NotAuthRouteTracker />
           <Routes>
           <Route path={routes.getSignOutRoute.definition} element={<SignOutPage />} />
             <Route element={<Layout />}>
@@ -35,6 +40,7 @@ import './styles/global.scss'
                 <Route path={routes.getViewIdeaRoute.definition} element={<ViewsIdeaPage />} />
                 <Route path={routes.getEditIdeaRoute.definition} element={<EditIdeaPage />} />
                 <Route path={routes.getNewIdeaRoute.definition} element={<NewIdeaPage />} />
+                
               <Route path="*" element={<NotFoundPage />} />
               
             </Route>

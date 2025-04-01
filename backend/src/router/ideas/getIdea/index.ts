@@ -1,9 +1,10 @@
 
 import { z } from 'zod'
-import { trpc } from '../../../lib/trpc'
-import _ from 'lodash'
+import { trpcLoggedProcedure } from '../../../lib/trpc'
+import { omit } from '@forum_project/shared/src/omit'
+import { ExpectedError } from '../../../lib/error'
 import { zGetIdeaTrpcInput } from './input'
-export const getIdeaTrpcRoute = trpc.procedure.input(zGetIdeaTrpcInput).query(async ({ ctx, input }) => {
+export const getIdeaTrpcRoute = trpcLoggedProcedure.input(zGetIdeaTrpcInput).query(async ({ ctx, input }) => {
   const rawIdea = await ctx.prisma.idea.findUnique({
     where: {
       nick: input.someNick,
@@ -14,6 +15,7 @@ export const getIdeaTrpcRoute = trpc.procedure.input(zGetIdeaTrpcInput).query(as
           id: true,
           nick: true,
           name: true,
+          avatar: true,
         },
       },
       ideasLikes: {
@@ -32,11 +34,11 @@ export const getIdeaTrpcRoute = trpc.procedure.input(zGetIdeaTrpcInput).query(as
     },
   })
   if (rawIdea?.blockedAt) {
-    throw new Error('Idea is blocked by administrator')
+    throw new ExpectedError('Обсуждение заблокировано администратором')
   }
   const isLikedByMe = !!rawIdea?.ideasLikes.length
   const likesCount = rawIdea?._count.ideasLikes || 0
-  const idea = rawIdea && { ..._.omit(rawIdea, ['ideasLikes', '_count']), isLikedByMe, likesCount }
+  const idea = rawIdea && { ...omit(rawIdea, ['ideasLikes', '_count']), isLikedByMe, likesCount }
 
   return { idea }
 })

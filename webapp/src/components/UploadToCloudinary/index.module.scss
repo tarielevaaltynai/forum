@@ -1,0 +1,50 @@
+@import '../Input/index.module';
+@import '../../styles/_vars';
+@import '../../styles/_mixins';
+.field {
+  input {
+    display: none;
+  }
+
+  .previewPlace {
+    position: relative;
+    box-sizing: content-box;
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid $gray;
+    background-color: $grayLight;
+    border-radius: $borderRadiusSmall;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .preview {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+  .popupOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popupContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 200px;
+  }
+}

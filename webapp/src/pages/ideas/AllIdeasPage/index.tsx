@@ -52,7 +52,7 @@ export const AllIdeasPage = withPageWrapper({
       ) : isError ? (
         <Alert color="red">{error.message}</Alert>
       ) : !data.pages[0].ideas.length ? (
-        <Alert color="brown">Nothing found by search</Alert>
+        <Alert color="brown">Ничего не найденно</Alert>
       ) : (
         <div className={css.ideas}>
                    <InfiniteScroll

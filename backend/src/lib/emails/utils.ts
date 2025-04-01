@@ -3,14 +3,16 @@ import path from 'path'
 import { type Idea, type User } from '@prisma/client'
 import fg from 'fast-glob'
 import _ from 'lodash'
-import { env } from './env'
 import Handlebars from 'handlebars'
-import { sendEmailThroughBrevo } from './brevo'
+import { sendEmailThroughBrevo } from '../brevo'
+import { env } from '../env'
+import { logger } from '../logger'
 import { getNewIdeaRoute } from '@forum_project/webapp/src/lib/routes'
 const getHbrTemplates = _.memoize(async () => {
-  const htmlPathsPattern = path.resolve(__dirname, '../emails/dist/**/*.html')
+    const htmlPathsPattern = path.resolve(__dirname, '../../emails/dist/**/*.html')
   const htmlPaths = fg.sync(htmlPathsPattern)
   const hbrTemplates: Record<string, HandlebarsTemplateDelegate> = {}
+
   for (const htmlPath of htmlPaths) {
     const templateName = path.basename(htmlPath, '.html')
     const htmlTemplate = await fs.readFile(htmlPath, 'utf8')
@@ -26,7 +28,7 @@ const getEmailHtml = async (templateName: string, templateVariables: Record<stri
     return html
 }
 
-const sendEmail = async ({
+export const sendEmail = async ({
   to,
   subject,
   templateName,
@@ -44,7 +46,7 @@ const sendEmail = async ({
     }
     const html = await getEmailHtml(templateName, fullTemplateVaraibles)
     const { loggableResponse } = await sendEmailThroughBrevo({ to, html, subject })
-    console.info('sendEmail', {
+    logger.info('email', 'sendEmail', {
       to,
       templateName,
       templateVariables,
@@ -53,30 +55,11 @@ const sendEmail = async ({
     })
     return { ok: true }
   } catch (error) {
-    console.error(error)
+    logger.error('email', error, {
+      to,
+      templateName,
+      templateVariables,
+    })
     return { ok: false }
   }
-}
-
-export const sendWelcomeEmail = async ({ user }: { user: Pick<User, 'nick' | 'email'> }) => {
-  return await sendEmail({
-    to: user.email,
-    subject: 'Thanks For Registration!',
-    templateName: 'welcome',
-    templateVariables: {
-      userNick: user.nick,
-      addIdeaUrl: `${getNewIdeaRoute({ abs: true })}`,
-    },
-  })
-}
-
-export const sendIdeaBlockedEmail = async ({ user, idea }: { user: Pick<User, 'email'>; idea: Pick<Idea, 'nick'> }) => {
-  return await sendEmail({
-    to: user.email,
-    subject: 'Your Idea Blocked!',
-    templateName: 'ideaBlocked',
-    templateVariables: {
-      ideaNick: idea.nick,
-    },
-  })
 }
