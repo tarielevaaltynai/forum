@@ -13,9 +13,16 @@ type CommentType = {
     nick: string;
     avatar?: string;
   };
+  _count?: {  // Добавьте это поле
+    replies: number;
+  };
 };
-
 export function CommentList({ comments, ideaId }: { comments?: CommentType[]; ideaId: string }) {
+  console.debug('[CommentList] Rendering with:', { 
+    commentsCount: comments?.length || 0, 
+    ideaId 
+  });
+
   if (!comments || comments.length === 0) {
     return <p>Комментариев пока нет.</p>;
   }
@@ -30,41 +37,105 @@ export function CommentList({ comments, ideaId }: { comments?: CommentType[]; id
 }
 
 export function CommentItem({ comment, ideaId }: { comment: CommentType; ideaId: string }) {
+  console.debug('[CommentItem] Rendering comment:', { 
+    id: comment.id, 
+    repliesCount: comment.repliesCount 
+  });
+
   const [showReplies, setShowReplies] = useState(false);
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
   const utils = trpc.useContext();
   
-  const { data: replies, isLoading: isLoadingReplies } = trpc.getReplies.useQuery(
+  const { 
+    data: replies, 
+    isLoading: isLoadingReplies,
+    isFetching: isFetchingReplies,
+    refetch: refetchReplies
+  } = trpc.getReplies.useQuery(
     { parentId: comment.id },
-    { enabled: showReplies && comment.repliesCount > 0 }
+    { 
+      enabled: false, // Будем запускать вручную
+      onSuccess: (data) => {
+        console.debug('[getReplies] Success:', { 
+          parentId: comment.id, 
+          repliesCount: data.length 
+        });
+      },
+      onError: (error) => {
+        console.error('[getReplies] Error:', error);
+        setError('Ошибка загрузки ответов');
+      },
+      staleTime: 60 * 1000 // 1 минута
+    }
   );
 
   const createReply = trpc.createReply.useMutation({
     onSuccess: () => {
-      utils.getReplies.invalidate({ parentId: comment.id });
+      console.debug('[createReply] Success');
       utils.getComments.invalidate({ ideaId });
+      refetchReplies(); // Перезагружаем ответы
       setShowReplyForm(false);
       setError(null);
+      setIsProcessing(false);
     },
     onError: (error) => {
-      setError(error.message || 'Произошла ошибка при создании ответа');
+      console.error('[createReply] Error:', error);
+      setError(error.message || 'Ошибка при создании ответа');
+      setIsProcessing(false);
     }
   });
 
-  const handleReplySubmit = (e: React.FormEvent, content: string) => {
+  const handleToggleReplies = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     e.preventDefault();
     
-    if (!content.trim()) {
-      setError('Пожалуйста, введите текст ответа');
+    if (isProcessing) {
+      console.debug('[handleToggleReplies] Already processing, skipping');
       return;
     }
 
-    createReply.mutate({ 
-      ideaId:ideaId,
-      parentId: comment.id,
-      content:content
-    });
+    try {
+      setIsProcessing(true);
+      const newState = !showReplies;
+      console.debug('[handleToggleReplies] Toggling:', { 
+        current: showReplies, 
+        new: newState 
+      });
+
+      if (newState && comment.repliesCount > 0) {
+        console.debug('[handleToggleReplies] Fetching replies...');
+        await refetchReplies();
+      }
+
+      setShowReplies(newState);
+    } catch (err) {
+      console.error('[handleToggleReplies] Error:', err);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleReplySubmit = async (e: React.FormEvent, content: string) => {
+    e.preventDefault();
+    console.debug('[handleReplySubmit] Submitting:', { content });
+
+    if (!content.trim()) {
+      setError('Введите текст ответа');
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+      await createReply.mutateAsync({ 
+        ideaId,
+        parentId: comment.id,
+        content
+      });
+    } catch (err) {
+      console.error('[handleReplySubmit] Error:', err);
+    }
   };
 
   return (
@@ -85,20 +156,25 @@ export function CommentItem({ comment, ideaId }: { comment: CommentType; ideaId:
           
           <div className={css.commentActions}>
             <button 
-              onClick={() => setShowReplyForm(!showReplyForm)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowReplyForm(!showReplyForm);
+              }}
               className={css.replyButton}
-              disabled={createReply.isLoading}
+              disabled={isProcessing}
             >
               Ответить
             </button>
             
             {comment.repliesCount > 0 && (
               <button 
-                onClick={() => setShowReplies(!showReplies)}
+                onClick={handleToggleReplies}
                 className={css.toggleRepliesBtn}
-                disabled={isLoadingReplies}
+                disabled={isProcessing || isFetchingReplies}
               >
-                {showReplies ? 'Скрыть ответы' : `Ответы (${comment.repliesCount})`}
+                {isFetchingReplies ? 'Загрузка...' : 
+     
+            showReplies ? 'Скрыть ответы' : `Ответы (${comment.repliesCount})`}
               </button>
             )}
           </div>
@@ -109,10 +185,11 @@ export function CommentItem({ comment, ideaId }: { comment: CommentType; ideaId:
               <ReplyForm 
                 onSubmit={handleReplySubmit} 
                 onCancel={() => {
+                  console.debug('[ReplyForm] Cancelled');
                   setShowReplyForm(false);
                   setError(null);
                 }}
-                isLoading={createReply.isLoading}
+                isLoading={isProcessing}
               />
             </div>
           )}
@@ -120,16 +197,19 @@ export function CommentItem({ comment, ideaId }: { comment: CommentType; ideaId:
       </div>
       
       {showReplies && (
-        <div className={css.replies}>
-          {isLoadingReplies ? (
-            <p>Загрузка ответов...</p>
-          ) : replies && replies.length > 0 ? (
-            <CommentList comments={replies} ideaId={ideaId} />
-          ) : (
-            <p>Нет ответов</p>
-          )}
-        </div>
-      )}
+  <div className={css.replies}>
+    {isFetchingReplies ? (
+      <p>Загрузка ответов...</p>
+    ) : replies?.replies?.length ? (
+      <CommentList 
+        comments={replies.replies} 
+        ideaId={ideaId} 
+      />
+    ) : (
+      <p>Нет ответов</p>
+    )}
+  </div>
+)}
     </div>
   );
 }
@@ -147,6 +227,7 @@ function ReplyForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.debug('[ReplyForm] Submitting:', { contentLength: content.length });
     onSubmit(e, content);
   };
 
@@ -184,20 +265,23 @@ export function CreateCommentForm({ ideaId }: { ideaId: string }) {
   
   const createComment = trpc.createComment.useMutation({
     onSuccess: () => {
+      console.debug('[createComment] Success');
       setContent('');
       setError(null);
       utils.getComments.invalidate({ ideaId });
     },
     onError: (error) => {
-      setError(error.message || 'Произошла ошибка при создании комментария');
+      console.error('[createComment] Error:', error);
+      setError(error.message || 'Ошибка при создании комментария');
     }
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.debug('[CreateCommentForm] Submitting:', { contentLength: content.length });
     
     if (!content.trim()) {
-      setError('Пожалуйста, введите текст комментария');
+      setError('Введите текст комментария');
       return;
     }
 
