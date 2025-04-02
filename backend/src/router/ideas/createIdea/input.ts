@@ -1,10 +1,12 @@
-import { z } from 'zod'
-import { zNickRequired, zStringMin, zStringRequired } from '@forum_project/shared/src/zod'
+import { z } from "zod";
+import {
+  zNickRequired,
+  zStringMin,
+  zStringRequired,
+} from "@forum_project/shared/src/zod";
 export const zCreateIdeaTrpcInput = z.object({
   name: zStringRequired,
   nick: zNickRequired,
   description: zStringRequired,
-  text: zStringMin(100),
-
-
-})
+  text: zStringMin(10),
+});

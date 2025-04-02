@@ -21,23 +21,20 @@
   .previewContainer {
     position: relative;
     margin: 10px 0;
+    display: flex;
+    justify-content: center; /* Центрируем аватар */
   }
 
   .preview {
-    max-width: 100%;
-    max-height: 300px;
-    object-fit: contain;
+    width: 200px; /* Фиксированный размер круга */
+    height: 200px;
+    object-fit: cover; /* Чтобы изображение заполнило круг */
+    border-radius: 50%; /* Делает картинку круглой */
     border: 1px solid $gray;
-    border-radius: $borderRadiusSmall;
     background-color: $grayLight;
     cursor: pointer;
     transition: transform 0.2s;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-    &:hover {
-      transform: scale(1.02);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
   }
 
   .buttons {

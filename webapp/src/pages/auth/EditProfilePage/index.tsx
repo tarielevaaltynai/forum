@@ -343,6 +343,42 @@ const Password = () => {
   );
 };
 
+// const Avatar = ({
+//   me,
+// }: {
+//   me: NonNullable<TrpcRouterOutput["getMe"]["me"]>;
+// }) => {
+//   const trpcUtils = trpc.useContext();
+//   const updateAvatar = trpc.updateAvatar.useMutation();
+//   const { formik, alertProps, buttonProps } = useForm({
+//     initialValues: {
+//       avatar: me.avatar,
+//     },
+//     validationSchema: zUpdateAvatarTrpcInput,
+//     onSubmit: async (values) => {
+//       const updatedMer = await updateAvatar.mutateAsync(values);
+//       trpcUtils.getMe.setData(undefined, { me: updatedMer });
+//     },
+//     successMessage: "Avatar обновлен",
+//     resetOnSuccess: false,
+//   });
+//   return (
+//     <form onSubmit={formik.handleSubmit}>
+//       <FormItems>
+//         <UploadToCloudinary
+//           label=""
+//           name="avatar"
+//           type="avatar"
+//           preset="big"
+//           formik={formik}
+//         />
+//         <Alert {...alertProps} />
+//         <Button {...buttonProps}>Изменить пароль</Button>
+//       </FormItems>
+//     </form>
+//   );
+// };
+
 const Avatar = ({
   me,
 }: {
@@ -356,24 +392,43 @@ const Avatar = ({
     },
     validationSchema: zUpdateAvatarTrpcInput,
     onSubmit: async (values) => {
-      const updatedMer = await updateAvatar.mutateAsync(values);
-      trpcUtils.getMe.setData(undefined, { me: updatedMer });
+      // Выполняем мутацию для обновления аватара
+      const updatedUser = await updateAvatar.mutateAsync(values);
+
+      // Обновляем данные пользователя в trpcUtils после успешного обновления аватара
+      trpcUtils.getMe.setData(undefined, { me: updatedUser });
+
+      // Выводим успешное сообщение или делаем что-то еще
     },
     successMessage: "Avatar обновлен",
     resetOnSuccess: false,
   });
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <FormItems>
-        <UploadToCloudinary
-          label=""
-          name="avatar"
-          type="avatar"
-          preset="big"
-          formik={formik}
-        />
-        <Alert {...alertProps} />
-        <Button {...buttonProps}>Изменить пароль</Button>
+        <div className={styles.avatarContainer}>
+          {/* Если аватар есть, показываем его, иначе дефолтную иконку */}
+          <div className={styles.avatarWrapper}>
+            {!formik.values.avatar ? (
+              <img
+                src={avatar}
+                alt="Default Avatar"
+                className={styles.avatar}
+              />
+            ) : null}
+          </div>
+          {/* Кнопка загрузки изображения */}
+          <div className={styles.uploadButtonContainer}>
+            <UploadToCloudinary
+              label="Загрузить изображение"
+              name="avatar"
+              type="avatar"
+              preset="big"
+              formik={formik}
+            />
+          </div>
+        </div>
       </FormItems>
     </form>
   );
