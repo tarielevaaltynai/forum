@@ -8,7 +8,8 @@ import { type ExpressRequest } from '../utils/types'
 import {expressHandler} from 'trpc-playground/handlers/express'
 import { logger } from './logger'
 import { ExpectedError } from './error'
-
+import { PrismaClient } from '@prisma/client';
+export const prisma = new PrismaClient();
 export const getTrpcContext = ({ appContext, req }: { appContext: AppContext; req: ExpressRequest }) => ({
   ...appContext,
   me: req.user || null,
@@ -22,7 +23,7 @@ const getCreateTrpcContext =
   
 type TrpcContext = inferAsyncReturnType<ReturnType<typeof getCreateTrpcContext>>
 
-export const trpc = initTRPC.context<TrpcContext>().create({
+const trpc = initTRPC.context<TrpcContext>().create({
   transformer: superjson,
   errorFormatter: ({ shape, error }) => {
     const isExpected = error.cause instanceof ExpectedError
@@ -88,4 +89,5 @@ export const applyTrpcToExpressApp = async (
   );
 
   console.log("✅ TRPC Playground подключен!");
-};
+ 
+ };

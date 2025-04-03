@@ -25,6 +25,7 @@ model Idea {
   comments     Comment[]
   
   @@index([authorId])
+  
 
 }
 
