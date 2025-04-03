@@ -1,9 +1,14 @@
-import { Link } from 'react-router-dom';
-import { getAllIdeasRoute, getNewIdeaRoute, getEditProfileRoute ,getSignOutRoute} from '../../lib/routes';
-import { useMe } from '../../lib/ctx'; // Импорт контекста
-import css from './index.module.scss';
-import avatar from '../../assets/images/user.png'
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import { Link } from "react-router-dom";
+import {
+  getAllIdeasRoute,
+  getNewIdeaRoute,
+  getEditProfileRoute,
+  getSignOutRoute,
+} from "../../lib/routes";
+import { useMe } from "../../lib/ctx"; // Импорт контекста
+import css from "./index.module.scss";
+import defaultAvatar from "../../assets/images/user.png"; // Переименовал для ясности
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 export const LeftMenu = () => {
   const me = useMe(); // Получение данных о пользователе из контекста
@@ -12,18 +17,30 @@ export const LeftMenu = () => {
     return null; // Возвращаем null, если нет данных о пользователе
   }
 
+  // Определяем, какой URL использовать для аватарки
+  // Если me.avatar существует и не пустой, используем его, иначе - дефолтный
+  const avatarSrc = me.avatar || defaultAvatar;
+
   return (
     <div className={css.sidebar}>
       <div className={css.profile}>
         <img
-          alt="Profile picture of the user"
-          className="rounded-full mx-auto"
+          alt="Profile picture"
+          // Убедитесь, что классы стилей подходят для реальных аватарок
+          // Возможно, 'rounded-full mx-auto' уже достаточно
+          className="rounded-full mx-auto" // Можно добавить css.avatar если нужно
           height="100"
-          src={avatar}
+          // Используем вычисленный источник аватарки
+          src={avatarSrc}
           width="100"
+          // Добавляем обработчик ошибок на случай, если URL аватарки станет недействительным
+          onError={(e) => {
+            const target = e.target as HTMLImageElement; // Указываем тип для TypeScript
+            target.onerror = null; // Предотвращаем бесконечный цикл ошибок
+            target.src = defaultAvatar; // Показываем дефолтную при ошибке
+          }}
         />
         <h2>{me.nick}</h2>
-      
       </div>
 
       <nav>
@@ -47,11 +64,11 @@ export const LeftMenu = () => {
             </Link>
           </li>
           <li className={css.item}>
-                <Link to={getSignOutRoute()}>
-                <i className="fas fa-sign-out-alt mr-2"></i>
-                  Выйти({me.nick})
-                </Link>
-              </li>
+            <Link to={getSignOutRoute()}>
+              <i className="fas fa-sign-out-alt mr-2"></i>
+              Выйти({me.nick})
+            </Link>
+          </li>
         </ul>
       </nav>
     </div>
