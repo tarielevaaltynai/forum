@@ -397,8 +397,6 @@ const Avatar = ({
 
       // Обновляем данные пользователя в trpcUtils после успешного обновления аватара
       trpcUtils.getMe.setData(undefined, { me: updatedUser });
-
-      // Выводим успешное сообщение или делаем что-то еще
     },
     successMessage: "Avatar обновлен",
     resetOnSuccess: false,

@@ -1,21 +1,31 @@
+import { trpc } from "../../../lib/trpc";
+import { Icon } from "../../../components/Icon";
+import { Segment } from "../../../components/Segment";
+import { getEditIdeaRoute, getViewIdeaRoute } from "../../../lib/routes";
+import format from "date-fns/format";
+import { Alert } from "../../../components/Alert";
+import { Button, LinkButton } from "../../../components/Button";
+import { FormItems } from "../../../components/FormItems";
+import { BlockConfirm } from "../../../components/BlockConfirm";
+import css from "./index.module.scss";
+import { withPageWrapper } from "../../../lib/pageWrapper";
+import type { TrpcRouterOutput } from "@forum_project/backend/src/router";
+import {
+  canBlockIdeas,
+  canEditIdea,
+} from "@forum_project/backend/src/utils/can";
+import { useForm } from "../../../lib/form";
+import { useState } from "react";
+import {
+  CommentList,
+  CreateCommentForm,
+} from "../../../components/CommentsList"; // Импортируем ваши компоненты
 
-import { trpc } from '../../../lib/trpc';
-import { Icon } from '../../../components/Icon';
-import { Segment } from '../../../components/Segment';
-import { getEditIdeaRoute, getViewIdeaRoute } from '../../../lib/routes';
-import format from 'date-fns/format';
-import { Alert } from '../../../components/Alert';
-import { Button, LinkButton } from '../../../components/Button';
-import { FormItems } from '../../../components/FormItems';
-import css from './index.module.scss';
-import { withPageWrapper } from '../../../lib/pageWrapper';
-import type { TrpcRouterOutput } from '@forum_project/backend/src/router';
-import { canBlockIdeas, canEditIdea } from '@forum_project/backend/src/utils/can';
-import { useForm } from '../../../lib/form';
-import { useState } from 'react';
-import { CommentList, CreateCommentForm } from '../../../components/CommentsList'; // Импортируем ваши компоненты
-
-const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['idea']> }) => {
+const LikeButton = ({
+  idea,
+}: {
+  idea: NonNullable<TrpcRouterOutput["getIdea"]["idea"]>;
+}) => {
   const trpcUtils = trpc.useContext();
   const [liked, setLiked] = useState(idea.isLikedByMe);
 
@@ -48,29 +58,64 @@ const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['i
         void setIdeaLike.mutateAsync({ ideaId: idea.id, isLikedByMe: !liked });
       }}
     >
-      <Icon size={32} className={css.likeIcon} name={liked ? 'likeFilled' : 'likeEmpty'} />
+      <Icon
+        size={32}
+        className={css.likeIcon}
+        name={liked ? "likeFilled" : "likeEmpty"}
+      />
     </button>
   );
 };
 
-const BlockIdea = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['idea']> }) => {
+const BlockIdea = ({
+  idea,
+}: {
+  idea: NonNullable<TrpcRouterOutput["getIdea"]["idea"]>;
+}) => {
   const blockIdea = trpc.blockIdea.useMutation();
   const trpcUtils = trpc.useContext();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
   const { formik, alertProps, buttonProps } = useForm({
     onSubmit: async () => {
       await blockIdea.mutateAsync({ ideaId: idea.id });
       await trpcUtils.getIdea.refetch({ someNick: idea.nick });
+      setShowConfirmation(false);
     },
   });
+
+  const handleConfirm = () => {
+    formik.submitForm();
+  };
+
+  const handleCancel = () => {
+    setShowConfirmation(false);
+  };
+
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <FormItems>
-        <Alert {...alertProps} />
-        <Button color="red" {...buttonProps}>
-          Блокировать
-        </Button>
-      </FormItems>
-    </form>
+    <>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setShowConfirmation(true);
+        }}
+      >
+        <FormItems>
+          <Alert {...alertProps} />
+          <Button color="red" {...buttonProps}>
+            Блокировать
+          </Button>
+        </FormItems>
+      </form>
+
+      <BlockConfirm
+        isOpen={showConfirmation}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        title="Подтверждение блокировки"
+        message="Вы точно хотите заблокировать это обсуждение?"
+      />
+    </>
   );
 };
 
@@ -84,19 +129,19 @@ const CommentSection = ({ ideaId }: { ideaId: string }) => {
   return (
     <Segment className={css.commentSection}>
       <button onClick={() => setShowComments(!showComments)}>
-        {showComments ? 'Скрыть комментарии' : 'Показать комментарии'}
+        {showComments ? "Скрыть комментарии" : "Показать комментарии"}
         {!showComments && commentsData && ` (${commentsData.comments.length})`}
       </button>
-      
+
       {showComments && (
         <div className={css.commentsContainer}>
           {isLoading ? (
             <div>Загрузка комментариев...</div>
           ) : (
             <>
-              <CommentList 
-                comments={commentsData?.comments} 
-                ideaId={ideaId}  // <- Важно передать ideaId
+              <CommentList
+                comments={commentsData?.comments}
+                ideaId={ideaId} // <- Важно передать ideaId
               />
               <CreateCommentForm ideaId={ideaId} />
             </>
@@ -108,11 +153,11 @@ const CommentSection = ({ ideaId }: { ideaId: string }) => {
 };
 export const ViewsIdeaPage = withPageWrapper({
   useQuery: () => {
-    const { someNick } = getViewIdeaRoute.useParams()
+    const { someNick } = getViewIdeaRoute.useParams();
     return trpc.getIdea.useQuery({ someNick });
   },
   setProps: ({ queryResult, checkExists, ctx }) => ({
-    idea: checkExists(queryResult.data.idea, 'Обсуждение не найдено'),
+    idea: checkExists(queryResult.data.idea, "Обсуждение не найдено"),
     me: ctx.me,
   }),
   showLoaderOnFetching: false,
@@ -128,32 +173,34 @@ export const ViewsIdeaPage = withPageWrapper({
           </span>
           <i className={`fas fa-check-circle ${css.verifiedIcon}`}></i>
           <span className={css.authorNick}>@{idea.author.nick}</span>
-          <span className={css.postDate}>{format(idea.createdAt, 'yyyy-MM-dd')}</span>
+          <span className={css.postDate}>
+            {format(idea.createdAt, "yyyy-MM-dd")}
+          </span>
         </div>
       </div>
-      
+
       {/* Содержимое поста */}
       <div className={css.postContent}>
         <h1 className={css.postTitle}>{idea.name}</h1>
         <div className={css.postDescription}>{idea.description}</div>
-        <div 
-          className={css.text} 
-          dangerouslySetInnerHTML={{ __html: idea.text }} 
+        <div
+          className={css.text}
+          dangerouslySetInnerHTML={{ __html: idea.text }}
         />
       </div>
-      
+
       {/* Лайки и действия */}
       <div className={css.postFooter}>
         <div className={css.reactions}>
           {me && <LikeButton idea={idea} />}
           <span className={css.likeCount}>
-            {idea.likesCount} {idea.likesCount === 1 ? 'лайк' : 'лайков'}
+            {idea.likesCount} {idea.likesCount === 1 ? "лайк" : "лайков"}
           </span>
         </div>
 
         <div className={css.actions}>
           {canEditIdea(me, idea) && (
-            <LinkButton 
+            <LinkButton
               to={getEditIdeaRoute({ someNick: idea.nick })}
               className={css.editButton}
             >
