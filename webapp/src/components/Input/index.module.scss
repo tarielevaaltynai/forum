@@ -36,6 +36,11 @@
     color: $red;
   }
 }*/
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
 .inputWrapper {
   position: relative;
   width: 100%;

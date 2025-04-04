@@ -172,7 +172,7 @@ export const ViewsIdeaPage = withPageWrapper({
             {idea.author.name || idea.author.nick}
           </span>
           <i className={`fas fa-check-circle ${css.verifiedIcon}`}></i>
-          <span className={css.authorNick}>@{idea.author.nick}</span>
+          <span className={css.authorNick}>@{idea.author.nick} · </span>
           <span className={css.postDate}>
             {format(idea.createdAt, "yyyy-MM-dd")}
           </span>
@@ -184,6 +184,7 @@ export const ViewsIdeaPage = withPageWrapper({
         <h1 className={css.postTitle}>{idea.name}</h1>
         <div className={css.postDescription}>{idea.description}</div>
         <div
+          style={{ whiteSpace: "pre-wrap" }}
           className={css.text}
           dangerouslySetInnerHTML={{ __html: idea.text }}
         />
