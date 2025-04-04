@@ -1,5 +1,5 @@
-@import '../../styles/_vars.scss';
-@import '../../styles/_mixins.scss';
+@import "../../styles/_vars.scss";
+@import "../../styles/_mixins.scss";
 
 .sidebar {
   width: 100%;
@@ -57,7 +57,7 @@
 }
 
 .item:hover {
-  background-color: #f1f5f9;
+  background-color: #dcedfe;
 }
 
 .item i {
