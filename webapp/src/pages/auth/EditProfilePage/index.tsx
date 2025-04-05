@@ -252,6 +252,7 @@ import { SelectInput } from "../../../components/SelectInput";
 import { DatePickerInput } from "../../../components/DatePickerInput";
 import styles from "./index.module.scss";
 import avatar from "../../../assets/images/user.png";
+
 import { UploadToCloudinary } from "../../../components/UploadToCloudinary";
 const General = ({
   me,
@@ -393,12 +394,9 @@ const Avatar = ({
     validationSchema: zUpdateAvatarTrpcInput,
     onSubmit: async (values) => {
       // Выполняем мутацию для обновления аватара
-      const updatedUser = await updateAvatar.mutateAsync(values);
 
-      // Обновляем данные пользователя в trpcUtils после успешного обновления аватара
-      trpcUtils.getMe.setData(undefined, { me: updatedUser });
-
-      // Выводим успешное сообщение или делаем что-то еще
+      const updatedMer = await updateAvatar.mutateAsync(values);
+      trpcUtils.getMe.setData(undefined, { me: updatedMer });
     },
     successMessage: "Avatar обновлен",
     resetOnSuccess: false,
@@ -407,28 +405,16 @@ const Avatar = ({
   return (
     <form onSubmit={formik.handleSubmit}>
       <FormItems>
-        <div className={styles.avatarContainer}>
-          {/* Если аватар есть, показываем его, иначе дефолтную иконку */}
-          <div className={styles.avatarWrapper}>
-            {!formik.values.avatar ? (
-              <img
-                src={avatar}
-                alt="Default Avatar"
-                className={styles.avatar}
-              />
-            ) : null}
-          </div>
-          {/* Кнопка загрузки изображения */}
-          <div className={styles.uploadButtonContainer}>
-            <UploadToCloudinary
-              label="Загрузить изображение"
-              name="avatar"
-              type="avatar"
-              preset="big"
-              formik={formik}
-            />
-          </div>
-        </div>
+      <UploadToCloudinary
+  label=""
+  name="avatar"
+  type="avatar"
+  preset="big"
+  formik={formik}
+  defaultImage={avatar} // Передаем дефолтную картинку
+/>
+        <Alert {...alertProps} />
+        <Button {...buttonProps}>Сохранить</Button>
       </FormItems>
     </form>
   );
@@ -447,6 +433,7 @@ export const EditProfilePage = withPageWrapper({
       <div className={styles.profile}>
         <Avatar me={me} />
         <div className={styles.profileName}>
+        <br />
           {me.name} <br /> {me.surname}
         </div>
       </div>

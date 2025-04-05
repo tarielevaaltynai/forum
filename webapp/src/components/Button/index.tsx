@@ -2,7 +2,7 @@ import css from "./index.module.scss";
 import cn from "classnames";
 import { Link } from "react-router-dom";
 
-type ButtonColor = "red" | "green";
+type ButtonColor = "red" | "green"|"blue";
 export type ButtonProps = {
   children: React.ReactNode;
   loading?: boolean;
@@ -14,7 +14,7 @@ export type ButtonProps = {
 export const Button = ({
   children,
   loading = false,
-  color = "green",
+  color = "blue",
   type = "submit",
   disabled,
   onClick,

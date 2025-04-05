@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
-import { getAllIdeasRoute, getNewIdeaRoute, getEditProfileRoute ,getSignOutRoute} from '../../lib/routes';
+import { getAllIdeasRoute, getNewIdeaRoute, getEditProfileRoute, getSignOutRoute } from '../../lib/routes';
 import { useMe } from '../../lib/ctx'; // Импорт контекста
 import css from './index.module.scss';
-import avatar from '../../assets/images/user.png'
+import avatar from '../../assets/images/user.png'; // Это можно оставить как запасной вариант
+import { getAvatarUrl } from '@forum_project/shared/src/cloudinary'; // Для получения URL аватара
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export const LeftMenu = () => {
@@ -19,11 +20,10 @@ export const LeftMenu = () => {
           alt="Profile picture of the user"
           className="rounded-full mx-auto"
           height="100"
-          src={avatar}
+          src={getAvatarUrl(me.avatar, 'small') || avatar} // Здесь мы получаем URL аватара пользователя
           width="100"
         />
         <h2>{me.nick}</h2>
-      
       </div>
 
       <nav>
@@ -47,11 +47,11 @@ export const LeftMenu = () => {
             </Link>
           </li>
           <li className={css.item}>
-                <Link to={getSignOutRoute()}>
-                <i className="fas fa-sign-out-alt mr-2"></i>
-                  Выйти({me.nick})
-                </Link>
-              </li>
+            <Link to={getSignOutRoute()}>
+              <i className="fas fa-sign-out-alt mr-2"></i>
+              Выйти({me.nick})
+            </Link>
+          </li>
         </ul>
       </nav>
     </div>

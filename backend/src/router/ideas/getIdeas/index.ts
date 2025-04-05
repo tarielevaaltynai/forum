@@ -17,6 +17,13 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure
         description: true,
         createdAt: true,
         serialNumber: true,
+        author: {
+          select: {
+            avatar: true,
+            nick:true,
+            
+          },
+        },
         _count: {
           select: {
             ideasLikes: true,
