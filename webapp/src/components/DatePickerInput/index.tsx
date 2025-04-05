@@ -1,9 +1,9 @@
-import { FormikProps } from 'formik';
-import cn from 'classnames';
-import css from './index.module.scss';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import React, { forwardRef } from 'react';
+import { FormikProps } from "formik";
+import cn from "classnames";
+import css from "./index.module.scss";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import React, { forwardRef } from "react";
 
 export const DatePickerInput = ({
   name,
@@ -22,7 +22,6 @@ export const DatePickerInput = ({
   const invalid = !!touched && !!error;
   const disabled = formik.isSubmitting;
 
-  // Кастомный инпут с лейблом внутри
   // Custom input with label inside
   const CustomInput = forwardRef<
     HTMLInputElement,
@@ -76,4 +75,3 @@ export const DatePickerInput = ({
     </div>
   );
 };
-

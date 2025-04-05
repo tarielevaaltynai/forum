@@ -254,6 +254,7 @@ import styles from "./index.module.scss";
 import avatar from "../../../assets/images/user.png";
 
 import { UploadToCloudinary } from "../../../components/UploadToCloudinary";
+
 const General = ({
   me,
 }: {
@@ -263,6 +264,7 @@ const General = ({
   const updateProfile = trpc.updateProfile.useMutation();
   const { formik, alertProps, buttonProps } = useForm({
     initialValues: {
+      avatar: me.avatar,
       nick: me.nick,
       name: me.name,
       surname: me.surname,
@@ -344,42 +346,6 @@ const Password = () => {
   );
 };
 
-// const Avatar = ({
-//   me,
-// }: {
-//   me: NonNullable<TrpcRouterOutput["getMe"]["me"]>;
-// }) => {
-//   const trpcUtils = trpc.useContext();
-//   const updateAvatar = trpc.updateAvatar.useMutation();
-//   const { formik, alertProps, buttonProps } = useForm({
-//     initialValues: {
-//       avatar: me.avatar,
-//     },
-//     validationSchema: zUpdateAvatarTrpcInput,
-//     onSubmit: async (values) => {
-//       const updatedMer = await updateAvatar.mutateAsync(values);
-//       trpcUtils.getMe.setData(undefined, { me: updatedMer });
-//     },
-//     successMessage: "Avatar обновлен",
-//     resetOnSuccess: false,
-//   });
-//   return (
-//     <form onSubmit={formik.handleSubmit}>
-//       <FormItems>
-//         <UploadToCloudinary
-//           label=""
-//           name="avatar"
-//           type="avatar"
-//           preset="big"
-//           formik={formik}
-//         />
-//         <Alert {...alertProps} />
-//         <Button {...buttonProps}>Изменить пароль</Button>
-//       </FormItems>
-//     </form>
-//   );
-// };
-
 const Avatar = ({
   me,
 }: {
@@ -393,7 +359,7 @@ const Avatar = ({
     },
     validationSchema: zUpdateAvatarTrpcInput,
     onSubmit: async (values) => {
-      // Выполняем мутацию для обновления аватара
+
 
       const updatedMer = await updateAvatar.mutateAsync(values);
       trpcUtils.getMe.setData(undefined, { me: updatedMer });
@@ -401,10 +367,10 @@ const Avatar = ({
     successMessage: "Avatar обновлен",
     resetOnSuccess: false,
   });
-
   return (
     <form onSubmit={formik.handleSubmit}>
       <FormItems>
+
       <UploadToCloudinary
   label=""
   name="avatar"

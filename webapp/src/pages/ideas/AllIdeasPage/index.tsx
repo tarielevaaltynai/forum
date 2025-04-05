@@ -1,16 +1,17 @@
-import { getViewIdeaRoute } from '../../../lib/routes';
-import {trpc} from '../../../lib/trpc';
-import { Segment } from '../../../components/Segment'
-import {Link} from 'react-router-dom'
-import css from './index.module.scss'
-import { Alert } from '../../../components/Alert'
-import InfiniteScroll from 'react-infinite-scroller'
-import { layoutContentElRef } from '../../../components/Layout'
-import { Loader } from '../../../components/Loader'
+import { getViewIdeaRoute } from "../../../lib/routes";
+import { trpc } from "../../../lib/trpc";
+import { Segment } from "../../../components/Segment";
+import { Link } from "react-router-dom";
+import css from "./index.module.scss";
+import { Alert } from "../../../components/Alert";
+import InfiniteScroll from "react-infinite-scroller";
+import { layoutContentElRef } from "../../../components/Layout";
+import { Loader } from "../../../components/Loader";
 import { useDebounce } from "usehooks-ts";
 import * as hooks from "usehooks-ts";
-import { withPageWrapper } from '../../../lib/pageWrapper'
+import { withPageWrapper } from "../../../lib/pageWrapper";
 console.log(hooks);
+
 import { getAvatarUrl } from '@forum_project/shared/src/cloudinary'
 import { LikeButton } from '../ViewsIdeaPage';
 import { Icon } from '../../../components/Icon'
@@ -27,39 +28,44 @@ const getLikeWord = (count) => {
   }
 };
 
+
 export const AllIdeasPage = withPageWrapper({
-  title: 'Beauty and Health',
+  title: "Beauty and Health",
   isTitleExact: true,
 })(() => {
-
   const { formik } = useForm({
-    initialValues: { search: '' },
+    initialValues: { search: "" },
     validationSchema: zGetIdeasTrpcInput.pick({ search: true }),
-  })
-  const search = useDebounce(formik.values.search, 500)
-  const { data, error, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage, isRefetching } =
-  
-  trpc.getIdeas.useInfiniteQuery(
+  });
+  const search = useDebounce(formik.values.search, 500);
+  const {
+    data,
+    error,
+    isLoading,
+    isError,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    isRefetching,
+  } = trpc.getIdeas.useInfiniteQuery(
     {
       search,
     },
 
     {
       getNextPageParam: (lastPage) => {
-        return lastPage.nextCursor
+        return lastPage.nextCursor;
       },
     }
-  )
-  
+  );
 
-    return (
-      
-      <Segment title="Форум">
-              <div className={css.filter}>
-        <Input maxWidth={'100%'} label="Поиск" name="search" formik={formik} />
+  return (
+    <Segment title="Форум">
+      <div className={css.filter}>
+        <Input label="Поиск" name="search" formik={formik} />
+        {/* <i className={`fas fa-search ${css.searchIcon}`}></i> */}
       </div>
-
-{isLoading || isRefetching ? (
+      {isLoading || isRefetching ? (
         <Loader type="section" />
       ) : isError ? (
         <Alert color="red">{error.message}</Alert>
@@ -67,24 +73,27 @@ export const AllIdeasPage = withPageWrapper({
         <Alert color="brown">Ничего не найденно</Alert>
       ) : (
         <div className={css.ideas}>
-                   <InfiniteScroll
+          <InfiniteScroll
             threshold={250}
             loadMore={() => {
               if (!isFetchingNextPage && hasNextPage) {
-                void fetchNextPage()
+                void fetchNextPage();
               }
             }}
             hasMore={hasNextPage}
             loader={
               <div className={css.more} key="loader">
-               <Loader type="section" />
-
-
+                <Loader type="section" />
               </div>
             }
             getScrollParent={() => layoutContentElRef.current}
-            useWindow={(layoutContentElRef.current && getComputedStyle(layoutContentElRef.current).overflow) !== 'auto'}
+            useWindow={
+              (layoutContentElRef.current &&
+                getComputedStyle(layoutContentElRef.current).overflow) !==
+              "auto"
+            }
           >
+
 {data.pages
   .flatMap((page) => page.ideas)
   .map((idea) => (
@@ -135,9 +144,10 @@ export const AllIdeasPage = withPageWrapper({
 ))}
 
 
+
           </InfiniteScroll>
-      </div>
+        </div>
       )}
-      </Segment>
-    )
-  })
+    </Segment>
+  );
+});

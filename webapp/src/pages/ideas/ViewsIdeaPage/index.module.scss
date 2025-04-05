@@ -132,8 +132,8 @@
   margin-bottom: 20px;
 }
 */
-@import '../../../styles/_vars';
-@import '../../../styles/_mixins';
+@import "../../../styles/_vars";
+@import "../../../styles/_mixins";
 
 // Twitter-style container
 .twitterPostContainer {
@@ -151,7 +151,9 @@
   color: black;
   border-radius: 0.5rem;
   padding: 1.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
   overflow-wrap: break-word; // Позволяет переносить длинные слова
   word-wrap: break-word; // Для старых браузеров
   word-break: break-word; // Разрывает слова только если нужно
@@ -177,22 +179,20 @@
 }
 
 .verifiedIcon {
-  color: #1DA1F2;
+  color: #1da1f2;
   margin-left: 0.25rem;
 }
 
 .authorNick {
-  color: $gray-color;
-  margin-left: 0.5rem;
-  font-size: $font-size-small;
+  color: black;
+  margin: 0 0.3rem 0 0.7rem;
+  font-size: inherit;
 }
 
 // Сохраняем существующие стили и добавляем новые
 .createdAt {
-  font-size: $font-size-small;
-  margin-bottom: 10px;
-  color: $gray-color;
-  margin-left: 0.5rem;
+  font-size: var(--font-size-small);
+  margin-bottom: 6px;
 }
 
 .postContent {
@@ -301,17 +301,19 @@
     display: flex;
     align-items: center;
     margin-left: 0.5rem;
-  
+
     .heart {
       transition: all $transition-duration ease-in-out;
+
       fill: transrparent; // Серое по умолчанию
       stroke: red; // Цвет обводки по умолчанию
   
+
       &.liked {
         fill: red; // Красное, если лайкнуто
         stroke: red; // Края тоже красные, если лайкнуто
       }
-  
+
       &.unliked {
         fill: transparent; // Прозрачное, если не лайкнуто
         stroke: red; // Серые края, если не лайкнуто
@@ -331,7 +333,7 @@
   cursor: pointer;
   text-decoration: none;
   display: inline-block; // ширина зависит от содержимого
-  
+
   &:hover {
     background-color: #1a91da;
   }
@@ -348,7 +350,7 @@
     font-size: $font-size-small;
     border: none;
     cursor: pointer;
-    
+
     &:hover {
       background-color: #c01f51;
     }
@@ -360,16 +362,17 @@
   .authorInfo {
     flex-direction: column;
     align-items: flex-start;
-    
+
     .authorNick,
     .createdAt {
       margin-left: 0;
       margin-top: 0.25rem;
     }
   }
-  
+
   .actions {
-    button, a {
+    button,
+    a {
       width: 100%;
       text-align: center;
     }

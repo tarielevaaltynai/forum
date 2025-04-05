@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { getAllIdeasRoute, getNewIdeaRoute, getEditProfileRoute, getSignOutRoute } from '../../lib/routes';
 import { useMe } from '../../lib/ctx'; // Импорт контекста
@@ -6,6 +7,7 @@ import avatar from '../../assets/images/user.png'; // Это можно оста
 import { getAvatarUrl } from '@forum_project/shared/src/cloudinary'; // Для получения URL аватара
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
+
 export const LeftMenu = () => {
   const me = useMe(); // Получение данных о пользователе из контекста
 
@@ -13,15 +15,29 @@ export const LeftMenu = () => {
     return null; // Возвращаем null, если нет данных о пользователе
   }
 
+  // Определяем, какой URL использовать для аватарки
+  // Если me.avatar существует и не пустой, используем его, иначе - дефолтный
+  const avatarSrc = me.avatar || defaultAvatar;
+
   return (
     <div className={css.sidebar}>
       <div className={css.profile}>
         <img
-          alt="Profile picture of the user"
-          className="rounded-full mx-auto"
+          alt="Profile picture"
+          // Убедитесь, что классы стилей подходят для реальных аватарок
+          // Возможно, 'rounded-full mx-auto' уже достаточно
+          className="rounded-full mx-auto" // Можно добавить css.avatar если нужно
           height="100"
+
           src={getAvatarUrl(me.avatar, 'small') || avatar} // Здесь мы получаем URL аватара пользователя
+
           width="100"
+          // Добавляем обработчик ошибок на случай, если URL аватарки станет недействительным
+          onError={(e) => {
+            const target = e.target as HTMLImageElement; // Указываем тип для TypeScript
+            target.onerror = null; // Предотвращаем бесконечный цикл ошибок
+            target.src = defaultAvatar; // Показываем дефолтную при ошибке
+          }}
         />
         <h2>{me.nick}</h2>
       </div>
