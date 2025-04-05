@@ -19,6 +19,7 @@ import { createCommentTrpcRoute } from "./ideas/createComment";
 import { getCommentsTrpcRoute } from "./ideas/getComments";
 import { getRepliesTrpcRoute } from "./ideas/getReplies";
 import { createReplyTrpcRoute } from "./ideas/createReply";
+import { getMyIdeasTrpcRoute } from "./ideas/getMyIdeas";
 // @endindex
 export const trpcRouter = createTrpcRouter({
   // @index('./**/index.ts', f => `${f.path.split('/').slice(0, -1).pop()}: ${f.path.split('/').slice(0, -1).pop()}TrpcRoute,`)
@@ -40,7 +41,7 @@ export const trpcRouter = createTrpcRouter({
   setIdeaLike: setIdeaLikeTrpcRoute,
   updateIdea: updateIdeaTrpcRoute,
   prepareCloudinaryUpload: prepareCloudinaryUploadTrpcRoute,
-
+  getMyIdeas: getMyIdeasTrpcRoute,
   // @endindex
 });
 
