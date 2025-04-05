@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { getAllIdeasRoute, getNewIdeaRoute, getEditProfileRoute, getSignOutRoute, getMyIdeasRoute, getLikedIdeasRoute } from '../../lib/routes';
+import { getAllIdeasRoute, getNewIdeaRoute, getEditProfileRoute, getSignOutRoute, getMyIdeasRoute } from '../../lib/routes';
 import { useMe } from '../../lib/ctx'; // Импорт контекста
 import css from './index.module.scss';
 import avatar from '../../assets/images/user.png'; // Это можно оставить как запасной вариант
@@ -63,14 +63,6 @@ export const LeftMenu = () => {
               Мои обсуждения
             </Link>
           </li>
-
-          <li className={css.item}>
-            <Link to={getLikedIdeasRoute()}>
-              <i className="fas fa-sign-out-alt mr-2"></i>
-              Понравившиеся обсуждения
-            </Link>
-          </li>
-          
           <li className={css.item}>
             <Link className={css.link} to={getEditProfileRoute()}>
               <i className="fas fa-user-edit mr-2"></i>
