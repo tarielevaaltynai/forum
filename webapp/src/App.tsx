@@ -10,6 +10,7 @@ import { ViewsIdeaPage } from './pages/ideas/ViewsIdeaPage'
 import { NotFoundPage } from './pages/other/NotFoundPage'
 import { EditProfilePage } from './pages/auth/EditProfilePage'
 import { HelmetProvider } from 'react-helmet-async'
+import { LikedIdeasPage } from "./pages/ideas/LikedIdeasPage";
 import { NotAuthRouteTracker } from './components/NotAuthRouteTracker'
 import { viewIdeaRouteParams } from "./lib/routes";
 import { MyIdeasPage } from "./pages/ideas/MyIdeasPage";
@@ -42,6 +43,7 @@ import './styles/global.scss'
                 <Route path={routes.getEditIdeaRoute.definition} element={<EditIdeaPage />} />
                 <Route path={routes.getNewIdeaRoute.definition} element={<NewIdeaPage />} />
                 <Route path={routes.getMyIdeasRoute.definition} element={<MyIdeasPage />} />
+                <Route path={routes.getLikedIdeasRoute.definition} element={<LikedIdeasPage />} />
 
                 
               <Route path="*" element={<NotFoundPage />} />
