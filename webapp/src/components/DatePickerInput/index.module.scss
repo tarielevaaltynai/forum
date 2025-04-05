@@ -39,6 +39,41 @@
   border-color: red;
 }
 
+.disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Fix for DatePicker styling */
+:global(.react-datepicker-wrapper),
+:global(.react-datepicker__input-container) {
+  width: 100%;
+  display: block;
+}
+
+/* Ensure the datepicker doesn't add any extra styles that interfere */
+:global(.react-datepicker__input-container input) {
+  font-size: inherit;
+  background-color: transparent;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  .input {
+    max-width: 100%;
+    font-size: 15px;
+  }
+
+  .label {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .input {
+    font-size: 14px;
+  }
+}
 .error {
   color: red;
   font-size: 12px;

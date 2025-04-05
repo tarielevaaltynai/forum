@@ -28,6 +28,7 @@ import { TrpcContext } from '../../../lib/trpc';
 
 export const getIdeasTrpcRoute = trpcLoggedProcedure // Используем trpcLoggedProcedure
   .input(zGetIdeasTrpcInput)
+
   .query(async ({ ctx, input }: { ctx: TrpcContext; input: InputParams }) => {
     if (!ctx.prisma) {
       throw new Error('PrismaClient is not defined in the context');
@@ -97,6 +98,7 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure // Используем trp
       console.error('Search error:', error);
       return getDefaultIdeasList(ctx, { cursor, limit });
     }
+
   });
 
 async function getDefaultIdeasList(ctx: TrpcContext, input: InputParams) {

@@ -39,7 +39,9 @@
 .button {
   padding: 10px 15px;
   color: $white;
+
   background-color: #1682fd;
+
   border: none;
   font-weight: bold;
   border-radius: 8px;
@@ -55,8 +57,10 @@
   &.color-green {
     background-color: #35c635;
 
+
     &:hover {
       background-color: #1e911e;
+
     }
 
     &.color-red {

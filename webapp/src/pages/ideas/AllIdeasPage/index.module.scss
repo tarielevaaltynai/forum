@@ -1,6 +1,48 @@
 @import '../../../styles/_vars';
 @import '../../../styles/_mixins';
+.likeIcon {
+  cursor: pointer;
+  
+}
 
+.likeIconFilled {
+  color: #e0245e;  // Цвет для закрашенной иконки
+}
+.likes {
+  display: flex;
+  align-items: center;  // Центрируем элементы по вертикали
+}
+.transition-transform {
+  transition: transform 0.2s ease-in-out;
+}
+
+.active\:scale-90:active {
+  transform: scale(0.9);
+}
+.author {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  .avatar {
+    width: 30px; /* уменьшил размер аватарки */
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+
+  .name {
+    font-weight: bold;
+    font-size: 16px; /* увеличил шрифт имени автора */
+    color: black;
+
+    span {
+      color: black;
+      font-weight: normal;
+    }
+  }
+}
 
 .filter {
   margin-bottom: 20px;
@@ -8,21 +50,28 @@
 
 .ideas {
   .idea {
-    padding: 20px;
-    
+    padding: 15px;
+    padding-bottom: 8px;
     border-radius: 10px;
     & + .idea {
-      margin-top: 20px;
+      margin-top: 15px;
     }
 
-
-      .ideaLink {
-        @include link;
-      }
-      .more {
-        margin-top: 15px;
-      }
-
- 
+    .ideaLink {
+      @include link;
+      font-weight: bold; /* название идеи теперь жирное */
+      font-size: 25px;
+      margin-bottom: 5px; /* увеличил шрифт названия идеи */
+    }
+    
+    .description {
+      font-weight: normal; /* описание остается обычным */
+      font-size: 20px;
+      margin-bottom: 15px; /* увеличил шрифт описания */
+    }
+    
+    .more {
+      margin-top: 15px;
+    }
   }
 }

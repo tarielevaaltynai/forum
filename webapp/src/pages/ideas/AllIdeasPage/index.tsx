@@ -12,9 +12,23 @@ import * as hooks from "usehooks-ts";
 import { withPageWrapper } from "../../../lib/pageWrapper";
 console.log(hooks);
 
-import { Input } from "../../../components/Input";
-import { useForm } from "../../../lib/form";
-import { zGetIdeasTrpcInput } from "@forum_project/backend/src/router/ideas/getIdeas/input";
+import { getAvatarUrl } from '@forum_project/shared/src/cloudinary'
+import { LikeButton } from '../ViewsIdeaPage';
+import { Icon } from '../../../components/Icon'
+import { Input } from '../../../components/Input'
+import { useForm } from '../../../lib/form'
+import { zGetIdeasTrpcInput } from '@forum_project/backend/src/router/ideas/getIdeas/input'
+const getLikeWord = (count) => {
+  if (count % 10 === 1 && count % 100 !== 11) {
+    return 'лайк';
+  } else if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 10 || count % 100 >= 20)) {
+    return 'лайка';
+  } else {
+    return 'лайков';
+  }
+};
+
+
 export const AllIdeasPage = withPageWrapper({
   title: "Beauty and Health",
   isTitleExact: true,
@@ -79,26 +93,58 @@ export const AllIdeasPage = withPageWrapper({
               "auto"
             }
           >
-            {data.pages
-              .flatMap((page) => page.ideas)
-              .map((idea) => (
-                <div className={css.idea} key={idea.nick}>
-                  <Segment
-                    size={2}
-                    title={
-                      <Link
-                        className={css.ideaLink}
-                        to={getViewIdeaRoute({ someNick: idea.nick })}
-                      >
-                        {idea.name}
-                      </Link>
-                    }
-                    description={idea.description}
-                  >
-                    Лайки: {idea.likesCount}
-                  </Segment>
-                </div>
-              ))}
+
+{data.pages
+  .flatMap((page) => page.ideas)
+  .map((idea) => (
+    <div className={css.idea} key={idea.nick}>
+      <Segment size={2}>
+        {/* 1. Автор */}
+        <div className={css.author}>
+          <img
+            className={css.avatar}
+            src={getAvatarUrl(idea.author.avatar, 'small')}
+            alt="avatar"
+          />
+          <div className={css.name}>
+            {idea.author.nick}
+            {idea.author.name && <span> ({idea.author.name})</span>}
+          </div>
+        </div>
+
+        {/* 2. Информация об идее */}
+        <div className={css.ideaContent}>
+          <Link className={css.ideaLink} to={getViewIdeaRoute({ someNick: idea.nick })}>
+            {idea.name}
+          </Link>
+          <div className={css.description}>
+            {idea.description}
+          </div>
+        </div>
+
+        {/* 3. Лайки */}
+        <div className={css.likes}>
+        <Icon
+    size={32}
+    className={`${css.likeIcon} ${css.likeIconFilled} transition-transform duration-300 active:scale-90`}
+    name="likeFilled"  // Всегда используем закрашенную иконку
+    onClick={() => {
+      trpc.setIdeaLike.mutateAsync({ ideaId: idea.id, isLikedByMe: !idea.isLikedByMe });
+    }}
+    role="button"
+    aria-label="Лайк"
+    tabIndex={0}
+  />
+  <span className={css.likeCount}>
+    {idea.likesCount} {getLikeWord(idea.likesCount)}
+  </span>
+        </div>
+      </Segment>
+    </div>
+))}
+
+
+
           </InfiniteScroll>
         </div>
       )}

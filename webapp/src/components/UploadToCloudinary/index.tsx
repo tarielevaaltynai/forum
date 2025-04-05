@@ -433,13 +433,16 @@ export const UploadToCloudinary = <TTypeName extends CloudinaryUploadTypeName>({
   formik,
   type,
   preset,
+  defaultImage, // Добавляем новый пропс
 }: {
   label: string;
   name: string;
   formik: FormikProps<any>;
   type: TTypeName;
   preset: CloudinaryUploadPresetName<TTypeName>;
+  defaultImage?: string; // Объявляем пропс
 }) => {
+
   const value = formik.values[name];
   const error = formik.errors[name] as string | undefined;
   const touched = formik.touched[name] as boolean;
@@ -514,18 +517,23 @@ export const UploadToCloudinary = <TTypeName extends CloudinaryUploadTypeName>({
         </div>
       )}
 
-      {!!value && !loading && (
-        <div className={css.previewContainer}>
-          <img
-            className={css.preview}
-            alt="Preview"
-            src={getCloudinaryUploadUrl(value, type, preset)}
-            onClick={() => setShowPopup(true)}
-          />
-        </div>
-      )}
+{/* Заменяем существующее условие отображения превью */}
+{!loading && (
+  <div className={css.previewContainer}>
+    <img
+      className={css.preview}
+      alt="Preview"
+      src={
+        value 
+          ? getCloudinaryUploadUrl(value, type, preset) 
+          : defaultImage || '' // Используем дефолтное изображение
+      }
+      onClick={() => setShowPopup(true)}
+    />
+  </div>
+)}
 
-      <div className={css.buttons}>
+{/*       <div className={css.buttons}>
         <Button
           type="button"
           onClick={() => inputEl.current?.click()}
@@ -550,7 +558,7 @@ export const UploadToCloudinary = <TTypeName extends CloudinaryUploadTypeName>({
             Remove Image
           </Button>
         )}
-      </div>
+      </div> */}
 
       {showPopup && (
         <div className={css.popupOverlay}>

@@ -1,14 +1,12 @@
-import { Link } from "react-router-dom";
-import {
-  getAllIdeasRoute,
-  getNewIdeaRoute,
-  getEditProfileRoute,
-  getSignOutRoute,
-} from "../../lib/routes";
-import { useMe } from "../../lib/ctx"; // Импорт контекста
-import css from "./index.module.scss";
-import defaultAvatar from "../../assets/images/user.png"; // Переименовал для ясности
-import "@fortawesome/fontawesome-free/css/all.min.css";
+
+import { Link } from 'react-router-dom';
+import { getAllIdeasRoute, getNewIdeaRoute, getEditProfileRoute, getSignOutRoute } from '../../lib/routes';
+import { useMe } from '../../lib/ctx'; // Импорт контекста
+import css from './index.module.scss';
+import avatar from '../../assets/images/user.png'; // Это можно оставить как запасной вариант
+import { getAvatarUrl } from '@forum_project/shared/src/cloudinary'; // Для получения URL аватара
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 export const LeftMenu = () => {
   const me = useMe(); // Получение данных о пользователе из контекста
@@ -30,8 +28,9 @@ export const LeftMenu = () => {
           // Возможно, 'rounded-full mx-auto' уже достаточно
           className="rounded-full mx-auto" // Можно добавить css.avatar если нужно
           height="100"
-          // Используем вычисленный источник аватарки
-          src={avatarSrc}
+
+          src={getAvatarUrl(me.avatar, 'small') || avatar} // Здесь мы получаем URL аватара пользователя
+
           width="100"
           // Добавляем обработчик ошибок на случай, если URL аватарки станет недействительным
           onError={(e) => {
