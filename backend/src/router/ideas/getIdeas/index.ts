@@ -1,8 +1,7 @@
-import { trpc } from '../../../lib/trpc';
 import { trpcLoggedProcedure } from '../../../lib/trpc';
 import _ from 'lodash';
 import { zGetIdeasTrpcInput } from './input';
-import { PrismaClient } from '@prisma/client';
+import { TrpcContext } from '../../../lib/trpc';
 
 interface IdeaWithCount {
   id: string;
@@ -14,21 +13,22 @@ interface IdeaWithCount {
   _count: {
     ideasLikes: number;
   };
+  author: {
+    nick: string;
+    name: string | null;
+    avatar: string | null;
+  };
+  isLikedByMe?: boolean; // Optional, add if needed
 }
 
-// Тип для входных параметров
 interface InputParams {
   cursor?: number;
   limit: number;
   search?: string;
 }
 
-// Импортируем TrpcContext из trpc.ts
-import { TrpcContext } from '../../../lib/trpc';
-
-export const getIdeasTrpcRoute = trpcLoggedProcedure // Используем trpcLoggedProcedure
+export const getIdeasTrpcRoute = trpcLoggedProcedure
   .input(zGetIdeasTrpcInput)
-
   .query(async ({ ctx, input }: { ctx: TrpcContext; input: InputParams }) => {
     if (!ctx.prisma) {
       throw new Error('PrismaClient is not defined in the context');
@@ -43,7 +43,15 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure // Используем trp
 
     try {
       const rawIdeas = await ctx.prisma.$queryRaw<
-        Array<IdeaWithCount & { likesCount: number; relevance: number }>
+        Array<
+          IdeaWithCount & {
+            likesCount: number;
+            relevance: number;
+            authorNick: string;
+            authorName: string | null;
+            authorAvatar: string | null;
+          }
+        >
       >`
         WITH search_results AS (
           SELECT 
@@ -58,9 +66,13 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure // Используем trp
               similarity(i.name, ${trimmedSearch}),
               similarity(i.description, ${trimmedSearch}),
               similarity(i.text, ${trimmedSearch})
-            ) as relevance
+            ) as relevance,
+            u.nick as "authorNick",
+            u.name as "authorName",
+            u.avatar as "authorAvatar"
           FROM "Idea" i
           LEFT JOIN "IdeaLike" il ON il."ideaId" = i.id
+          LEFT JOIN "User" u ON u.id = i."authorId"
           WHERE 
             i."blockedAt" IS NULL AND
             (
@@ -68,7 +80,7 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure // Используем trp
               i.description ILIKE '%' || ${trimmedSearch} || '%' OR
               i.text ILIKE '%' || ${trimmedSearch} || '%'
             )
-          GROUP BY i.id
+          GROUP BY i.id, u.nick, u.name, u.avatar
           HAVING GREATEST(
             similarity(i.name, ${trimmedSearch}),
             similarity(i.description, ${trimmedSearch}),
@@ -85,9 +97,14 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure // Используем trp
 
       const nextIdea = rawIdeas.at(limit);
       const nextCursor = nextIdea?.serialNumber;
-      const ideasExceptNext = rawIdeas.slice(0, limit).map((idea: IdeaWithCount & { likesCount: number; relevance: number }) => ({
+      const ideasExceptNext = rawIdeas.slice(0, limit).map((idea) => ({
         ..._.omit(idea, ['relevance', '_count']),
         likesCount: idea.likesCount,
+        author: {
+          nick: idea.authorNick,
+          name: idea.authorName,
+          avatar: idea.authorAvatar,
+        },
       }));
 
       return {
@@ -98,7 +115,6 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure // Используем trp
       console.error('Search error:', error);
       return getDefaultIdeasList(ctx, { cursor, limit });
     }
-
   });
 
 async function getDefaultIdeasList(ctx: TrpcContext, input: InputParams) {
@@ -115,6 +131,13 @@ async function getDefaultIdeasList(ctx: TrpcContext, input: InputParams) {
       createdAt: true,
       serialNumber: true,
       _count: { select: { ideasLikes: true } },
+      author: {
+        select: {
+          nick: true,
+          name: true,
+          avatar: true,
+        },
+      },
     },
     where: {
       blockedAt: null,
@@ -126,7 +149,7 @@ async function getDefaultIdeasList(ctx: TrpcContext, input: InputParams) {
 
   const nextIdea = rawIdeas.at(input.limit);
   const nextCursor = nextIdea?.serialNumber;
-  const ideasExceptNext = rawIdeas.slice(0, input.limit).map((idea: IdeaWithCount) => ({
+  const ideasExceptNext = rawIdeas.slice(0, input.limit).map((idea) => ({
     ..._.omit(idea, ['_count']),
     likesCount: idea._count.ideasLikes,
   }));

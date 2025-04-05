@@ -1,25 +1,3 @@
-import { trpc } from "../../../lib/trpc";
-import { Icon } from "../../../components/Icon";
-import { Segment } from "../../../components/Segment";
-import { getEditIdeaRoute, getViewIdeaRoute } from "../../../lib/routes";
-import format from "date-fns/format";
-import { Alert } from "../../../components/Alert";
-import { Button, LinkButton } from "../../../components/Button";
-import { FormItems } from "../../../components/FormItems";
-import { BlockConfirm } from "../../../components/BlockConfirm";
-import css from "./index.module.scss";
-import { withPageWrapper } from "../../../lib/pageWrapper";
-import type { TrpcRouterOutput } from "@forum_project/backend/src/router";
-import {
-  canBlockIdeas,
-  canEditIdea,
-} from "@forum_project/backend/src/utils/can";
-import { useForm } from "../../../lib/form";
-import { useState } from "react";
-import {
-  CommentList,
-  CreateCommentForm,
-} from "../../../components/CommentsList"; // Импортируем ваши компоненты
 
 import { trpc } from '../../../lib/trpc';
 import { Segment } from '../../../components/Segment';
