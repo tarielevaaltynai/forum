@@ -10,6 +10,7 @@ import { Textarea } from "../../../components/Textarea";
 import { useForm } from "../../../lib/form";
 import { getEditIdeaRoute, getViewIdeaRoute } from "../../../lib/routes";
 import { trpc } from "../../../lib/trpc";
+import { UploadsToCloudinary } from "../../../components/UploadsToCloudinary";
 import { withPageWrapper } from "../../../lib/pageWrapper";
 import { canEditIdea } from "@forum_project/backend/src/utils/can";
 export const EditIdeaPage = withPageWrapper({
@@ -36,7 +37,13 @@ export const EditIdeaPage = withPageWrapper({
   const navigate = useNavigate();
   const updateIdea = trpc.updateIdea.useMutation();
   const { formik, buttonProps, alertProps } = useForm({
-    initialValues: pick(idea, ["name", "nick", "description", "text"]),
+    initialValues: pick(idea, [
+      "name",
+      "nick",
+      "description",
+      "text",
+      "images",
+    ]),
     validationSchema: zUpdateIdeaTrpcInput.omit({ ideaId: true }),
     onSubmit: async (values) => {
       await updateIdea.mutateAsync({ ideaId: idea.id, ...values });
@@ -55,6 +62,13 @@ export const EditIdeaPage = withPageWrapper({
           <Input label="Описание" name="description" formik={formik} />
 
           <Textarea label="Текст" name="text" formik={formik} />
+          <UploadsToCloudinary
+            label="Images"
+            name="images"
+            type="image"
+            preset="preview"
+            formik={formik}
+          />
           <Alert {...alertProps} />
           <Button {...buttonProps}>Сохранить</Button>
         </FormItems>

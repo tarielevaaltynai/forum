@@ -9,19 +9,23 @@ import { layoutContentElRef } from "../../../components/Layout";
 import { Loader } from "../../../components/Loader";
 import { useDebounce } from "usehooks-ts";
 import { withPageWrapper } from "../../../lib/pageWrapper";
-import { getAvatarUrl } from '@forum_project/shared/src/cloudinary';
-import { Icon } from '../../../components/Icon';
-import { Input } from '../../../components/Input';
-import { useForm } from '../../../lib/form';
-import { zGetIdeasTrpcInput } from '@forum_project/backend/src/router/ideas/getIdeas/input';
+import { getAvatarUrl } from "@forum_project/shared/src/cloudinary";
+import { Icon } from "../../../components/Icon";
+import { Input } from "../../../components/Input";
+import { useForm } from "../../../lib/form";
+import { zGetIdeasTrpcInput } from "@forum_project/backend/src/router/ideas/getIdeas/input";
 
 const getLikeWord = (count) => {
   if (count % 10 === 1 && count % 100 !== 11) {
-    return 'лайк';
-  } else if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 10 || count % 100 >= 20)) {
-    return 'лайка';
+    return "лайк";
+  } else if (
+    count % 10 >= 2 &&
+    count % 10 <= 4 &&
+    (count % 100 < 10 || count % 100 >= 20)
+  ) {
+    return "лайка";
   } else {
-    return 'лайков';
+    return "лайков";
   }
 };
 
@@ -79,7 +83,8 @@ export const AllIdeasPage = withPageWrapper({
             getScrollParent={() => layoutContentElRef.current}
             useWindow={
               (layoutContentElRef.current &&
-                getComputedStyle(layoutContentElRef.current).overflow) !== "auto"
+                getComputedStyle(layoutContentElRef.current).overflow) !==
+              "auto"
             }
           >
             {data.pages
@@ -91,23 +96,29 @@ export const AllIdeasPage = withPageWrapper({
                     <div className={css.author}>
                       <img
                         className={css.avatar}
-                        src={getAvatarUrl(idea.author?.avatar ?? 'default-avatar', 'small')}
+                        src={getAvatarUrl(
+                          idea.author?.avatar ?? "default-avatar",
+                          "small"
+                        )}
                         alt="avatar"
                       />
                       <div className={css.name}>
-                        {idea.author?.nick ?? 'Unknown'}
-                        {idea.author?.name && <span> ({idea.author.name})</span>}
+                        {idea.author?.nick ?? "Unknown"}
+                        {idea.author?.name && (
+                          <span> ({idea.author.name})</span>
+                        )}
                       </div>
                     </div>
 
                     {/* 2. Информация об идее */}
                     <div className={css.ideaContent}>
-                      <Link className={css.ideaLink} to={getViewIdeaRoute({ someNick: idea.nick })}>
+                      <Link
+                        className={css.ideaLink}
+                        to={getViewIdeaRoute({ someNick: idea.nick })}
+                      >
                         {idea.name}
                       </Link>
-                      <div className={css.description}>
-                        {idea.description}
-                      </div>
+                      <div className={css.description}>{idea.description}</div>
                     </div>
 
                     {/* 3. Лайки */}
@@ -117,9 +128,9 @@ export const AllIdeasPage = withPageWrapper({
                         className={`${css.likeIcon} ${css.likeIconFilled} transition-transform duration-300 active:scale-90`}
                         name="likeFilled"
                         onClick={() => {
-                          trpc.setIdeaLike.mutateAsync({ 
-                            ideaId: idea.id, 
-                            isLikedByMe: !idea.isLikedByMe 
+                          trpc.setIdeaLike.mutateAsync({
+                            ideaId: idea.id,
+                            isLikedByMe: !idea.isLikedByMe,
                           });
                         }}
                         role="button"
