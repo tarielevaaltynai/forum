@@ -1,14 +1,18 @@
 
+
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 
+
 }
+
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 
 model Idea {
   id           String    @id @default(uuid())
@@ -16,6 +20,7 @@ model Idea {
   name         String
   serialNumber Int       @unique @default(autoincrement())
   description  String
+  images String[]
   text         String
   createdAt    DateTime  @default(now())
   authorId     String
@@ -23,11 +28,13 @@ model Idea {
   ideasLikes   IdeaLike[]
   blockedAt    DateTime?
   comments     Comment[]
-  
+ 
   @@index([authorId])
-  
+ 
+
 
 }
+
 
 model User {
   id          String      @id @default(uuid())
@@ -46,6 +53,7 @@ model User {
   comments    Comment[]
 }
 
+
 model IdeaLike {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
@@ -53,10 +61,11 @@ model IdeaLike {
   ideaId    String
   user      User     @relation(fields: [userId], references: [id])
   userId    String
-  
+ 
   @@unique([ideaId, userId])
   @@index([userId])
 }
+
 
 model Comment {
   id          String    @id @default(uuid())
@@ -66,7 +75,7 @@ model Comment {
   isEdited    Boolean   @default(false)
   isBlocked   Boolean   @default(false)
   blockedAt   DateTime?
-  
+ 
   // Relations
   author      User      @relation(fields: [authorId], references: [id])
   authorId    String
@@ -75,12 +84,13 @@ model Comment {
   parent      Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
   parentId    String?
   replies     Comment[] @relation("CommentReplies")
-  
+ 
   @@index([authorId])
   @@index([ideaId])
   @@index([parentId])
   @@index([isBlocked])
 }
+
 
 enum UserPermission {
   BLOCK_IDEAS

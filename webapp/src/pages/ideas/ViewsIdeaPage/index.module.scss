@@ -7,10 +7,12 @@
     fill: transparent; // Серое по умолчанию
     stroke: gray; // Цвет обводки по умолчанию
 
+
     &.liked {
       fill: red; // Красное, если лайкнуто
       stroke: red; // Края тоже красные, если лайкнуто
     }
+
 
     &.unliked {
       fill: transparent; // Прозрачное, если не лайкнуто
@@ -19,10 +21,12 @@
   }
 }
 
+
 .createdAt {
   font-size: 12px;
   margin-bottom: 10px;
 }
+
 
 .actions {
   display: flex;
@@ -30,8 +34,10 @@
   gap: 10px;
 }
 
+
 .likes {
   margin-top: 0;
+
 
   .likeButton {
     background: none;
@@ -43,21 +49,26 @@
   }
 }
 
+
 .editButton {
   margin-top: 0;
 }
+
 
 .blockIdea {
   margin-top: 20px;
 }
 
+
 .text {
   font-size: 14px;
+
 
   & > *:not(:first-child) {
     margin-top: 10px;
   }
 }
+
 
 .author {
   font-weight: bold;
@@ -67,6 +78,7 @@
 @import '../../../styles/_vars';
 @import '../../../styles/_mixins';
 
+
 // SCSS styles
 .likeButton {
   .heart {
@@ -74,10 +86,12 @@
     fill: transparent; // Серое по умолчанию
     stroke: $gray-color; // Цвет обводки по умолчанию
 
+
     &.liked {
       fill: $secondary-color; // Красное, если лайкнуто
       stroke: $secondary-color; // Края тоже красные, если лайкнуто
     }
+
 
     &.unliked {
       fill: transparent; // Прозрачное, если не лайкнуто
@@ -86,10 +100,12 @@
   }
 }
 
+
 .createdAt {
   font-size: $font-size-small;
   margin-bottom: 10px;
 }
+
 
 .actions {
   display: flex;
@@ -97,8 +113,10 @@
   gap: 10px;
 }
 
+
 .likes {
   margin-top: 0;
+
 
   .likeButton {
     background: none;
@@ -110,21 +128,26 @@
   }
 }
 
+
 .editButton {
   margin-top: 0;
 }
+
 
 .blockIdea {
   margin-top: 20px;
 }
 
+
 .text {
   font-size: $font-size-base;
+
 
   & > *:not(:first-child) {
     margin-top: 10px;
   }
 }
+
 
 .author {
   font-weight: bold;
@@ -223,27 +246,26 @@
   }
 }
 
+.author {
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 10px 0;
+  align-items: center;
 
-  .author {
-    display: flex;
-    flex-flow: row nowrap;
-    margin: 10px 0;
-    align-items: center;
-  
-    .avatar {
-      flex: 0 0 100px;
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-    }
-  
-    .name {
-      flex: 1 1 100%;
-      font-weight: bold;
-      font-size: 16px;
-      margin-bottom: 20px;
-      margin-left: 10px;
-    }
+  .avatar {
+    flex: 0 0 100px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+
+  .name {
+    flex: 1 1 100%;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+  }
 }
 
 .actions {
@@ -307,7 +329,6 @@
 
       fill: transrparent; // Серое по умолчанию
       stroke: red; // Цвет обводки по умолчанию
-  
 
       &.liked {
         fill: red; // Красное, если лайкнуто
@@ -418,8 +439,8 @@
 }
 .likeIcon {
   transition: all 0.3s ease-in-out;
-  fill:#e91155;
-  color:#e71155;
+  fill: #e91155;
+  color: #e71155;
 }
 .toggleCommentsButton {
   background: none;
@@ -429,7 +450,9 @@
   color: var(--primary-color);
   text-decoration: underline;
   cursor: pointer;
-  transition: color 0.3s, transform 0.3s;
+  transition:
+    color 0.3s,
+    transform 0.3s;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -441,7 +464,6 @@
 
 .toggleCommentsButton.opened {
   color: var(--secondary-color);
-
 }
 
 .commentsContainer {
