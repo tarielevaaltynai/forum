@@ -1,4 +1,5 @@
 import { createTrpcRouter } from '../lib/trpc'
+//
 
 // @index('./**/index.ts', f => `import { ${f.path.split('/').slice(0, -1).pop()}TrpcRoute } from '${f.path.split('/').slice(0, -1).join('/')}'`)
 import { getMeTrpcRoute } from './auth/getMe'
@@ -18,9 +19,15 @@ import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server'
 import { createCommentTrpcRoute } from './ideas/createComment'
 import { getCommentsTrpcRoute } from './ideas/getComments'
 import { getRepliesTrpcRoute } from './ideas/getReplies'
+
+import { getUserProfileTrpcRoute } from './users/getUserProfile'
+import { blockUserTrpcRoute } from './users/blockUser'
+
+
 // @endindex
 export const trpcRouter = createTrpcRouter({
   // @index('./**/index.ts', f => `${f.path.split('/').slice(0, -1).pop()}: ${f.path.split('/').slice(0, -1).pop()}TrpcRoute,`)
+
 
   getMe: getMeTrpcRoute,
   signIn: signInTrpcRoute,
@@ -40,6 +47,9 @@ getReplies:getRepliesTrpcRoute,
   updateIdea: updateIdeaTrpcRoute,
   prepareCloudinaryUpload: prepareCloudinaryUploadTrpcRoute,
 
+  // 🔥 Новый маршрут
+  getUserProfile: getUserProfileTrpcRoute,
+  blockUser: blockUserTrpcRoute,
   // @endindex
 })
 
