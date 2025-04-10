@@ -1,0 +1,100 @@
+/* index.module.scss */
+.container {
+  display: flex;
+  min-height: 100vh;
+  padding: 2rem;
+  gap: 2rem;
+  flex-wrap: wrap; /* Позволяет элементам переноситься */
+}
+
+.profile {
+  width: 30%;
+  border-radius: 1cap; /* Ширина блока с аватаром на больших экранах */
+  background-color: #99d0f3;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  order: 1; /* Элемент будет первым */
+
+  font-size: 1.5rem; /* Это эквивалент класса text-2xl */
+  font-weight: 700; /* Это эквивалент класса font-bold */
+
+  text-align: center; /* Выравнивание текста по центру */
+}
+
+.avatarContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.avatarWrapper {
+  position: relative;
+}
+
+.avatar {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid gray;
+}
+
+.uploadButtonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px; /* Кнопка будет под аватаром */
+}
+
+.uploadButton {
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.profile img {
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.profile-name {
+  font-size: 6rem;
+  font-weight: bold;
+}
+
+.segments {
+  display: flex;
+  flex-direction: column; /* Сегменты расположены вертикально */
+  gap: 2rem;
+  flex: 1;
+  order: 2; /* Элемент будет вторым */
+}
+
+.segment {
+  width: 100%; /* Растягиваем сегменты на всю ширину */
+}
+
+/* Медиа-запрос для экранов шириной меньше 768px */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column; /* Стираем горизонтальное расположение */
+    gap: 1rem;
+  }
+
+  .profile {
+    order: -1; /* Перемещаем профиль вверх */
+    width: 100%; /* Делаем профиль на всю ширину при сужении экрана */
+  }
+  a .segments {
+    width: 100%; /* Делаем сегменты на всю ширину */
+  }
+}
+
+/* Медиа-запрос для экранов шириной меньше 1024px */
+@media (max-width: 1024px) {
+  .profile {
+    width: 100%; /* Увеличиваем ширину блока с аватаром на экранах среднего размера */
+  }
+}
