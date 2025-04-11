@@ -1,7 +1,5 @@
-// webapp/src/components/userLink/index.tsx
-import { FC } from 'react';
-import { Link } from 'react-router-dom'; // ← Заменяем next/link
-import defaultAvatar from '../../assets/images/user.png';
+// webapp/src/components/UserLink/index.tsx
+import { Link } from 'react-router-dom';
 import styles from './index.module.scss';
 
 type UserLinkProps = {
@@ -12,37 +10,51 @@ type UserLinkProps = {
   className?: string;
   showAvatar?: boolean;
   isAdminAction?: boolean;
+  showFullName?: boolean;
 };
 
-const UserLink: FC<UserLinkProps> = ({
+export const UserLink = ({
   userId,
   nick,
   name,
   avatar = null,
   className = '',
-  showAvatar = false,
-  isAdminAction = false
-}) => {
+  showAvatar = true,
+  isAdminAction = false,
+  showFullName = true
+}: UserLinkProps) => {
   const displayName = name || nick;
 
   return (
     <Link 
-      to={`/users/${userId}`} // ← Заменяем href на to
+      to={`/users/${userId}`}
       className={`${styles.userLink} ${className} ${isAdminAction ? styles.adminAction : ''}`}
     >
-      {showAvatar && (
-        <div className={styles.avatarContainer}>
-          <img // ← Заменяем next/image на обычный img
-            src={avatar || defaultAvatar} 
-            alt={displayName} 
-            className={styles.avatar}
-          />
+      <div className={styles.linkWrapper}>
+        {showAvatar && (
+          <div className={styles.avatarContainer}>
+            <img
+              src={avatar || defaultAvatar} 
+              alt={displayName}
+              className={styles.avatar}
+              width={32}
+              height={32}
+            />
+          </div>
+        )}
+        
+        <div className={styles.textContent}>
+          {showFullName && name && (
+            <span className={styles.fullName}>{name}</span>
+          )}
+          <span className={styles.nick}>@{nick}</span>
         </div>
-      )}
-      <span className={styles.userName}>{displayName}</span>
-      {isAdminAction && <span className={styles.adminBadge}>Админ</span>}
+        
+        {isAdminAction && <span className={styles.adminBadge}>Админ</span>}
+      </div>
     </Link>
   );
 };
 
-export default UserLink;
+// Добавьте в начало файла или в отдельный файл с константами
+const defaultAvatar = '/images/user.png'; // Убедитесь что файл существует в public/images

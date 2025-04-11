@@ -1,8 +1,8 @@
-// webapp/src/pages/users/[id].tsx
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { trpc } from "../../lib/trpc";
-import styles from "../../styles/userProfile.module.scss";
+import styles from "./index.module.scss";
+
 import defaultAvatar from "../../assets/images/user.png";
 import { Spinner } from "../../components/Spinner";
 import { Alert } from "../../components/Alert";
@@ -13,10 +13,8 @@ export default function UserProfilePage() {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // Получаем данные текущего пользователя
   const { data: meData, isLoading: isLoadingMe } = trpc.getMe.useQuery();
-  
-  // Получаем данные профиля пользователя
+
   const {
     data: userData,
     isLoading: isLoadingUser,
@@ -27,14 +25,12 @@ export default function UserProfilePage() {
     { enabled: !!userId }
   );
 
-  // Мутация для блокировки/разблокировки пользователя
   const blockUserMutation = trpc.blockUser.useMutation({
     onSuccess: () => {
       refetchUser();
     }
   });
 
-  // Проверяем права администратора
   useEffect(() => {
     if (meData?.me?.permissions) {
       const hasAdminPermission = meData.me.permissions.some(
@@ -44,7 +40,6 @@ export default function UserProfilePage() {
     }
   }, [meData]);
 
-  // Обработчик блокировки/разблокировки
   const handleToggleBlock = () => {
     if (userData?.user && userId) {
       blockUserMutation.mutate({
@@ -54,7 +49,6 @@ export default function UserProfilePage() {
     }
   };
 
-  // Редирект если это профиль текущего пользователя
   useEffect(() => {
     if (meData?.me?.id && userId && meData.me.id === userId) {
       navigate("/me");
@@ -92,21 +86,24 @@ export default function UserProfilePage() {
       <div className={styles.profile}>
         <div className={styles.avatarContainer}>
           <img
-            src={user.avatar || defaultAvatar}
+            src={user.avatar?.startsWith("http") ? user.avatar : defaultAvatar}
             alt={`${user.name} ${user.surname}`}
             className={styles.avatar}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = defaultAvatar;
+            }}
           />
         </div>
         <div className={styles.profileName}>{user.name} {user.surname}</div>
         <div className={styles.userNick}>@{user.nick}</div>
-        
+
         {user.blocked && (
           <Alert color="red">
             Пользователь заблокирован
             {user.blockedAt && ` (${new Date(user.blockedAt).toLocaleDateString()})`}
           </Alert>
         )}
-        
+
         {isAdmin && meData.me?.id !== user.id && (
           <button
             onClick={handleToggleBlock}
@@ -118,7 +115,7 @@ export default function UserProfilePage() {
             {user.blocked ? "Разблокировать" : "Заблокировать"}
           </button>
         )}
-        
+
         <div className={styles.userInfo}>
           <div>Пол: {user.gender === 'male' ? 'Мужской' : 'Женский'}</div>
           <div>Дата рождения: {new Date(user.birthDate).toLocaleDateString()}</div>
@@ -135,12 +132,11 @@ export default function UserProfilePage() {
             <div><strong>Лайков поставлено:</strong> {user._count?.ideasLikes || 0}</div>
           </div>
         </div>
-        
+
         <div className={styles.segment}>
           <h2>Публикации пользователя</h2>
           {user._count?.ideas ? (
             <div className={styles.ideasList}>
-              {/* Здесь будет список идей */}
               <p>Список идей пользователя</p>
             </div>
           ) : (
