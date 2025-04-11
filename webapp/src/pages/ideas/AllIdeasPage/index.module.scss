@@ -1,7 +1,12 @@
-@import "../../../styles/_vars";
-@import "../../../styles/_mixins";
-.likeIcon {
-  cursor: pointer;
+@import '../../../styles/_vars';
+@import '../../../styles/_mixins';
+
+
+.button {
+  flex: 1; /* Равная ширина для всех кнопок */
+  display: inline-flex;
+  justify-content: center;
+
 }
 
 .likeIconFilled {

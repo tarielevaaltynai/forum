@@ -3,6 +3,7 @@ import { trpcLoggedProcedure } from "../../../lib/trpc";
 import { omit } from "@forum_project/shared/src/omit";
 import { ExpectedError } from "../../../lib/error";
 import { zGetIdeaTrpcInput } from "./input";
+
 export const getIdeaTrpcRoute = trpcLoggedProcedure
   .input(zGetIdeaTrpcInput)
   .query(async ({ ctx, input }) => {
@@ -17,6 +18,13 @@ export const getIdeaTrpcRoute = trpcLoggedProcedure
             nick: true,
             name: true,
             avatar: true,
+            role: true,
+            specialist: {
+              select: {
+                specialty: true,
+                isVerified: true,
+              },
+            },
           },
         },
         ideasLikes: {
@@ -34,11 +42,14 @@ export const getIdeaTrpcRoute = trpcLoggedProcedure
         },
       },
     });
+
     if (rawIdea?.blockedAt) {
       throw new ExpectedError("Обсуждение заблокировано администратором");
     }
+
     const isLikedByMe = !!rawIdea?.ideasLikes.length;
     const likesCount = rawIdea?._count.ideasLikes || 0;
+
     const idea = rawIdea && {
       ...omit(rawIdea, ["ideasLikes", "_count"]),
       isLikedByMe,

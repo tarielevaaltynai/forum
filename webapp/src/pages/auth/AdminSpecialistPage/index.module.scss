@@ -1,0 +1,124 @@
+.container {
+    display: flex;
+    min-height: 100vh;
+    padding: 2rem;
+    gap: 2rem;
+    flex-wrap: wrap; /* Позволяет элементам переноситься */
+  }
+  
+  .profile {
+    width: 30%;
+    border-radius: 1rem;
+    background-color: #9dd0e3;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    order: 1;
+    margin-bottom: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+  }
+  
+  .segments {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    flex: 1;
+    order: 2;
+  }
+  
+  .segment {
+    width: 100%;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table th, .table td {
+    padding: 1rem;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  
+    .profile {
+      order: -1;
+      width: 100%;
+    }
+  
+    .segments {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 1024px) {
+    .profile {
+      width: 100%;
+    }
+  }
+  .likeIcon {
+    cursor: pointer;
+    
+  }
+  .segment {
+    width: 100%;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #f4f4f4;
+  }
+  
+  td {
+    vertical-align: middle;
+  }
+  .greenButton {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .redButton {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+  }
+  
+  button {
+    flex: 1; /* Все кнопки растягиваются на одинаковую ширину */
+  }
+  
