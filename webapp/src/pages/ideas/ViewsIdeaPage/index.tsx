@@ -223,7 +223,7 @@ export const ViewsIdeaPage = withPageWrapper({
               showFullscreenButton={false}
               items={idea.images.map((image) => ({
                 original: getCloudinaryUploadUrl(image, "image", "large"),
-                thumbnail: getCloudinaryUploadUrl(image, "image", "preview"),
+                // thumbnail: getCloudinaryUploadUrl(image, "image", "preview"),
               }))}
             />
           </div>
