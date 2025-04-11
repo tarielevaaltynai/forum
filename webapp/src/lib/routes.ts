@@ -1,7 +1,7 @@
 import { pgr } from '../utils/pumpGetRoute'
 
 
-
+export const getAdminSpecialistRoute=pgr(() => '/specialists')
 export const getSignUpRoute = pgr(() => '/sign-up')
 
 export const getSignInRoute = pgr(() => '/sign-in')

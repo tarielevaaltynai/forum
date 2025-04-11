@@ -6,6 +6,7 @@ import {
   getSignOutRoute,
   getMyIdeasRoute,
   getLikedIdeasRoute,
+  getAdminSpecialistRoute,
 } from "../../lib/routes";
 import { useMe } from "../../lib/ctx"; // Импорт контекста
 import css from "./index.module.scss";
@@ -15,7 +16,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 export const LeftMenu = () => {
   const me = useMe(); // Получение данных о пользователе из контекста
-
+  const hasAllPermission = me.permissions?.includes("ALL");
   if (!me) {
     return null; // Возвращаем null, если нет данных о пользователе
   }
@@ -85,6 +86,15 @@ export const LeftMenu = () => {
               Выйти({me.nick})
             </Link>
           </li>
+
+          {hasAllPermission && (
+            <li className={css.item}>
+              <Link to={getAdminSpecialistRoute()}>
+                <i className="fas fa-user-shield mr-2"></i>
+                Верификация экспертов
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
     </div>

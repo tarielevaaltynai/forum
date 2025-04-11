@@ -4,6 +4,8 @@ import { getLikedIdeasTrpcRoute } from "./ideas/getLikedIdeas";
 import { getMeTrpcRoute } from "./auth/getMe";
 import { signInTrpcRoute } from "./auth/signIn";
 import { signUpTrpcRoute } from "./auth/signUp";
+
+import {getUnverifiedSpecialists} from "./ideas/getUnverifiedSpecialists"
 import { createIdeaTrpcRoute } from "./ideas/createIdea";
 import { getIdeaTrpcRoute } from "./ideas/getIdea";
 import { setIdeaLikeTrpcRoute } from "./ideas/setIdeaLIke";
@@ -20,11 +22,17 @@ import { getCommentsTrpcRoute } from "./ideas/getComments";
 import { getRepliesTrpcRoute } from "./ideas/getReplies";
 import { createReplyTrpcRoute } from "./ideas/createReply";
 import { getMyIdeasTrpcRoute } from "./ideas/getMyIdeas";
+import { rejectSpecialist } from "./ideas/getUnverifiedSpecialists";
+import { verifySpecialist } from "./ideas/getUnverifiedSpecialists";
 // @endindex
+import { prepareS3UploadTrpcRoute } from './upload/prepareS3Upload'
 export const trpcRouter = createTrpcRouter({
   // @index('./**/index.ts', f => `${f.path.split('/').slice(0, -1).pop()}: ${f.path.split('/').slice(0, -1).pop()}TrpcRoute,`)
 getLikedIdeas:getLikedIdeasTrpcRoute,
   getMe: getMeTrpcRoute,
+  verifySpecialist:verifySpecialist,
+  rejectSpecialist:rejectSpecialist,
+  getUnverifiedSpecialists:getUnverifiedSpecialists,
   signIn: signInTrpcRoute,
   signUp: signUpTrpcRoute,
   updateProfile: updateProfileTrpcRoute,
@@ -32,6 +40,7 @@ getLikedIdeas:getLikedIdeasTrpcRoute,
   createComment: createCommentTrpcRoute,
   getComments: getCommentsTrpcRoute,
   getReplies: getRepliesTrpcRoute,
+  prepareS3Upload: prepareS3UploadTrpcRoute,
   blockIdea: blockIdeaTrpcRoute,
   updatePassword: updatePasswordTrpcRoute,
   createReply: createReplyTrpcRoute,
