@@ -124,7 +124,7 @@ export const AllIdeasPage = withPageWrapper({
                     {/* 3. Лайки */}
                     <div className={css.likes}>
                       <Icon
-                        size={32}
+                        size={20}
                         className={`${css.likeIcon} ${css.likeIconFilled} transition-transform duration-300 active:scale-90`}
                         name="likeFilled"
                         onClick={() => {
