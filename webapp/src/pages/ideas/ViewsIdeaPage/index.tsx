@@ -185,6 +185,7 @@ export const ViewsIdeaPage = withPageWrapper({
             <span className={css.likeCount}>
               {idea.likesCount} {getLikeWord(idea.likesCount)}
             </span>
+
           </div>
 
           <div className={css.actions}>

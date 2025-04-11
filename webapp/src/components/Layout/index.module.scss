@@ -1,69 +1,16 @@
-/*@import '../../styles/_vars.scss';
-@import '../../styles/_mixins.scss';
-
-$breakpoint: '<=900px';
-
-.layout {
-  display: flex;
-  flex-flow: row nowrap;
-  height: 100%;
-  @include media($breakpoint) {
-    flex-flow: column nowrap;
-  }
-
-  .navigation {
-    height: 100%;
-    overflow: auto;
-    flex: 0 0 200px;
-    padding: 20px 30px;
-    border-right: 1px solid $black;
-    @include media($breakpoint) {
-      overflow: visible;
-      flex: 0 0 auto;
-      height: auto;
-      border-right: none;
-      border-bottom: 1px solid $black;
-    }
-
-    .logo {
-      font-weight: bold;
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-
-    .menu {
-      .item {
-        &:not(:first-child) {
-          margin-top: 5px;
-        }
-
-        .link {
-          @include link;
-        }
-      }
-    }
-  }
-
-  .content {
-    height: 100%;
-    overflow: auto;
-    flex: 1 1 100%;
-    padding: 20px 30px;
-    @include media($breakpoint) {
-      overflow: visible;
-      flex: 0 0 auto;
-      height: auto;
-    }
-  }
-}*/
 @import "../../styles/_vars.scss";
 @import "../../styles/_mixins.scss";
+
 .layout {
   display: flex;
   flex-direction: column;
   height: 100vh;
 
   .navigation {
+    position: fixed; /* Фиксируем верхнюю навигацию */
+    top: 0;
+    left: 0;
+    right: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -71,16 +18,19 @@ $breakpoint: '<=900px';
     color: #333;
     padding: 15px 20px;
     border-bottom: 1px solid #ccc;
+    z-index: 1001; /* Высокий z-index, чтобы навигация была поверх всего */
+    height: 56px; /* Установите фиксированную высоту для навигации */
+    box-sizing: border-box;
   }
 
   .logo {
+    font-size: 20px;
     color: #316fad;
     padding-top: 2px;
     width: 100%;
-    max-width: 130px;
-    height: 100%;
+    max-width: 330px;
+    height: auto;
     font-weight: bold;
-    font-size: medium;
   }
 
   .menu {
@@ -102,36 +52,26 @@ $breakpoint: '<=900px';
     }
   }
 
-  .auth-buttons {
-    display: flex;
-    gap: 10px;
-
-    .register {
-      background-color: #e7f3ff;
-      color: #007bff;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .login {
-      background-color: transparent;
-      color: #007bff;
-      padding: 8px 16px;
-      border: 2px solid #007bff;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  }
-
   .mainContent {
     display: flex;
     flex: 1;
+    margin-top: 56px; /* Добавляем отступ сверху равный высоте навигации */
   }
+
+  /* Стили для LeftMenu компонента в файле соответствующего компонента */
 
   .content {
     flex: 1;
     padding: 15px;
+    margin-left: 250px; /* Отступ слева равный ширине меню */
+    width: calc(100% - 250px);
+    box-sizing: border-box;
+  }
+
+  .fullWidthContent {
+    flex: 1;
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
