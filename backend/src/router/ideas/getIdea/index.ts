@@ -54,6 +54,11 @@ export const getIdeaTrpcRoute = trpcLoggedProcedure
       ...omit(rawIdea, ["ideasLikes", "_count"]),
       isLikedByMe,
       likesCount,
+      author: {
+        ...rawIdea.author,
+        specialty: rawIdea.author.specialist?.specialty,
+        isVerified: rawIdea.author.specialist?.isVerified,
+      },
     };
 
     return { idea };

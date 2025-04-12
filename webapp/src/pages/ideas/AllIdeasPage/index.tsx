@@ -45,6 +45,8 @@ export const AllIdeasPage = withPageWrapper({
     isError,
     hasNextPage,
     fetchNextPage,
+
+    
     isFetchingNextPage,
     isRefetching,
   } = trpc.getIdeas.useInfiniteQuery(
@@ -97,7 +99,7 @@ export const AllIdeasPage = withPageWrapper({
                       <img
                         className={css.avatar}
                         src={getAvatarUrl(
-                          idea.author?.avatar ?? "default-avatar",
+                          idea.author?.avatar ,
                           "small"
                         )}
                         alt="avatar"
@@ -106,6 +108,9 @@ export const AllIdeasPage = withPageWrapper({
                         {idea.author?.nick ?? "Unknown"}
                         {idea.author?.name && (
                           <span> ({idea.author.name})</span>
+                        )}
+                        {idea.author?.specialty && (
+                          <span> ({idea.author.specialty})</span>
                         )}
                       </div>
                     </div>
