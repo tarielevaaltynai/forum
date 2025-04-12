@@ -1,13 +1,20 @@
-import { format } from "date-fns";
+import type { TrpcRouterOutput } from '@forum_project/backend/src/router'
+import { getAvatarUrl, getCloudinaryUploadUrl } from '@forum_project/shared/src/cloudinary'
 import { Icon } from "../../../components/Icon";
 import ImageGallery from "react-image-gallery";
 import { withPageWrapper } from "../../../lib/pageWrapper";
 import { trpc } from "../../../lib/trpc";
-import { getAvatarUrl, getCloudinaryUploadUrl } from "@forum_project/shared/src/cloudinary";
+import format from 'date-fns/format'
 import { LinkButton } from "../../../components/Button";
 import css from "./index.module.scss";
 import { CommentList, CreateCommentForm } from "../../../components/CommentsList";
 import { useEffect, useState } from "react";
+import { getAllIdeasRoute, getEditIdeaRoute, getViewIdeaRoute } from "../../../lib/routes";
+import { canBlockIdeas, canEditIdea } from '@forum_project/backend/src/utils/can'
+
+
+import { Segment } from '../../../components/Segment'
+
 
 const getLikeWord = (count) => {
   if (count % 10 === 1 && count % 100 !== 11) {
@@ -155,50 +162,25 @@ export const ViewsIdeaPage = withPageWrapper({
           </div>
         </div>
 
-      {/* Содержимое поста */}
-      <div className={css.postContent}>
-        <h1 className={css.postTitle}>{idea.name}</h1>
-        <div className={css.postDescription}>{idea.description}</div>
-        <div
-          style={{ whiteSpace: "pre-wrap" }}
-          className={css.text}
-          dangerouslySetInnerHTML={{ __html: idea.text }}
-        />
-        {!!idea.images.length && (
-          <div className={css.gallery}>
-            <ImageGallery
-              showPlayButton={false}
-              showFullscreenButton={false}
-              items={idea.images.map((image) => ({
-                original: getCloudinaryUploadUrl(image, "image", "large"),
-                // thumbnail: getCloudinaryUploadUrl(image, "image", "preview"),
-              }))}
-            />
-          </div>
-        )}
-      </div>
-
-      {/* Лайки и действия */}
-      <div className={css.postFooter}>
-        <div className={css.reactions}>
-          {me && <LikeButton idea={idea} />}
-          <span className={css.likeCount}>
-            {idea.likesCount} {getLikeWord(idea.likesCount)}
-          </span>
-        </div>
-
-        <div className={css.actions}>
-          {canEditIdea(me, idea) && (
-            <LinkButton
-              to={getEditIdeaRoute({ someNick: idea.nick })}
-              className={css.editButton}
-            >
-              Редактировать
-            </LinkButton>
-          )}
-          {canBlockIdeas(me) && (
-            <div className={css.blockIdea}>
-              <BlockIdea idea={idea} />
+        {/* Содержимое поста */}
+        <div className={css.postContent}>
+          <h1 className={css.postTitle}>{idea.name}</h1>
+          <div className={css.postDescription}>{idea.description}</div>
+          <div
+            style={{ whiteSpace: "pre-wrap" }}
+            className={css.text}
+            dangerouslySetInnerHTML={{ __html: idea.text }}
+          />
+          {!!idea.images.length && (
+            <div className={css.gallery}>
+              <ImageGallery
+                showPlayButton={false}
+                showFullscreenButton={false}
+                items={idea.images.map((image) => ({
+                  original: getCloudinaryUploadUrl(image, "image", "large"),
+                  thumbnail: getCloudinaryUploadUrl(image, "image", "preview"),
+                }))}
+              />
             </div>
           )}
         </div>
