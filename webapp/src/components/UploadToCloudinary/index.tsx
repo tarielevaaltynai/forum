@@ -273,7 +273,11 @@ export const UploadToCloudinary = <TTypeName extends CloudinaryUploadTypeName>({
           <div ref={overlayRef} className={css.popupContent}>
             <img
               className={css.popupImage}
-              src={getCloudinaryUploadUrl(value, type, preset)}
+              src={
+                value
+                  ? getCloudinaryUploadUrl(value, type, preset)
+                  : defaultImage || "" // Используем дефолтное изображение
+              }
               alt="Full size preview"
             />
             <div className={css.popupButtons}>
