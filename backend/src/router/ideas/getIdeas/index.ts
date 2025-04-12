@@ -17,8 +17,12 @@ interface IdeaWithCount {
     nick: string;
     name: string | null;
     avatar: string | null;
+    specialist?: {
+      specialty: string | null;
+      isVerified: boolean;
+    };
   };
-  isLikedByMe?: boolean; // Optional, add if needed
+  isLikedByMe?: boolean;
 }
 
 interface InputParams {
@@ -50,6 +54,8 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure
             authorNick: string;
             authorName: string | null;
             authorAvatar: string | null;
+            authorSpecialty: string | null;
+            authorSpecialistVerified: boolean;
           }
         >
       >`
@@ -69,10 +75,13 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure
             ) as relevance,
             u.nick as "authorNick",
             u.name as "authorName",
-            u.avatar as "authorAvatar"
+            u.avatar as "authorAvatar",
+            s.specialty as "authorSpecialty",
+            s.isVerified as "authorSpecialistVerified"
           FROM "Idea" i
           LEFT JOIN "IdeaLike" il ON il."ideaId" = i.id
           LEFT JOIN "User" u ON u.id = i."authorId"
+          LEFT JOIN "Specialist" s ON s."userId" = u.id
           WHERE 
             i."blockedAt" IS NULL AND
             (
@@ -80,7 +89,7 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure
               i.description ILIKE '%' || ${trimmedSearch} || '%' OR
               i.text ILIKE '%' || ${trimmedSearch} || '%'
             )
-          GROUP BY i.id, u.nick, u.name, u.avatar
+          GROUP BY i.id, u.nick, u.name, u.avatar, s.specialty, s.isVerified
           HAVING GREATEST(
             similarity(i.name, ${trimmedSearch}),
             similarity(i.description, ${trimmedSearch}),
@@ -104,6 +113,8 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure
           nick: idea.authorNick,
           name: idea.authorName,
           avatar: idea.authorAvatar,
+          specialty: idea.authorSpecialty,
+          isVerified: idea.authorSpecialistVerified,
         },
       }));
 
@@ -136,6 +147,12 @@ async function getDefaultIdeasList(ctx: TrpcContext, input: InputParams) {
           nick: true,
           name: true,
           avatar: true,
+          specialist: {
+            select: {
+              specialty: true,
+              isVerified: true,
+            },
+          },
         },
       },
     },
@@ -152,6 +169,13 @@ async function getDefaultIdeasList(ctx: TrpcContext, input: InputParams) {
   const ideasExceptNext = rawIdeas.slice(0, input.limit).map((idea) => ({
     ..._.omit(idea, ['_count']),
     likesCount: idea._count.ideasLikes,
+    author: {
+      nick: idea.author.nick,
+      name: idea.author.name,
+      avatar: idea.author.avatar,
+      specialty: idea.author.specialist?.specialty,
+      isVerified: idea.author.specialist?.isVerified,
+    },
   }));
 
   return {

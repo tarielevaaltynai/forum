@@ -1,29 +1,21 @@
-import { trpc } from "../../../lib/trpc";
-import { Segment } from "../../../components/Segment";
-import { getEditIdeaRoute, getViewIdeaRoute } from "../../../lib/routes";
-import format from "date-fns/format";
-import { Alert } from "../../../components/Alert";
-import { Button, LinkButton } from "../../../components/Button";
-import { FormItems } from "../../../components/FormItems";
-import css from "./index.module.scss";
+import type { TrpcRouterOutput } from '@forum_project/backend/src/router'
+import { getAvatarUrl, getCloudinaryUploadUrl } from '@forum_project/shared/src/cloudinary'
+import { Icon } from "../../../components/Icon";
 import ImageGallery from "react-image-gallery";
 import { withPageWrapper } from "../../../lib/pageWrapper";
-import type { TrpcRouterOutput } from "@forum_project/backend/src/router";
-import {
-  canBlockIdeas,
-  canEditIdea,
-} from "@forum_project/backend/src/utils/can";
-import { useForm } from "../../../lib/form";
-import { useState } from "react";
-import { Icon } from "../../../components/Icon";
-import {
-  CommentList,
-  CreateCommentForm,
-} from "../../../components/CommentsList"; // Импортируем ваши компоненты
-import {
-  getAvatarUrl,
-  getCloudinaryUploadUrl,
-} from "@forum_project/shared/src/cloudinary";
+import { trpc } from "../../../lib/trpc";
+import format from 'date-fns/format'
+import { LinkButton } from "../../../components/Button";
+import css from "./index.module.scss";
+import { CommentList, CreateCommentForm } from "../../../components/CommentsList";
+import { useEffect, useState } from "react";
+import { getAllIdeasRoute, getEditIdeaRoute, getViewIdeaRoute } from "../../../lib/routes";
+import { canBlockIdeas, canEditIdea } from '@forum_project/backend/src/utils/can'
+
+
+import { Segment } from '../../../components/Segment'
+
+
 const getLikeWord = (count) => {
   if (count % 10 === 1 && count % 100 !== 11) {
     return "лайк";
@@ -85,58 +77,6 @@ export const LikeButton = ({
   );
 };
 
-const BlockIdea = ({
-  idea,
-}: {
-  idea: NonNullable<TrpcRouterOutput["getIdea"]["idea"]>;
-}) => {
-  const blockIdea = trpc.blockIdea.useMutation();
-  const trpcUtils = trpc.useContext();
-  const [showConfirmation, setShowConfirmation] = useState(false);
-
-  const { formik, alertProps, buttonProps } = useForm({
-    onSubmit: async () => {
-      await blockIdea.mutateAsync({ ideaId: idea.id });
-      await trpcUtils.getIdea.refetch({ someNick: idea.nick });
-      setShowConfirmation(false);
-    },
-  });
-
-  const handleConfirm = () => {
-    formik.submitForm();
-  };
-
-  const handleCancel = () => {
-    setShowConfirmation(false);
-  };
-
-  return (
-    <>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          setShowConfirmation(true);
-        }}
-      >
-        <FormItems>
-          <Alert {...alertProps} />
-          <Button color="red" {...buttonProps}>
-            Блокировать
-          </Button>
-        </FormItems>
-      </form>
-
-      <BlockConfirm
-        isOpen={showConfirmation}
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
-        title="Подтверждение блокировки"
-        message="Вы точно хотите заблокировать это обсуждение?"
-      />
-    </>
-  );
-};
-
 const CommentSection = ({ ideaId }: { ideaId: string }) => {
   const [showComments, setShowComments] = useState(false);
   const { data: commentsData, isLoading } = trpc.getComments.useQuery(
@@ -149,9 +89,7 @@ const CommentSection = ({ ideaId }: { ideaId: string }) => {
       <button
         onClick={() => setShowComments(!showComments)}
         className={`${css.toggleCommentsButton} ${showComments ? css.opened : ""}`}
-        aria-label={
-          showComments ? "Скрыть комментарии" : "Показать комментарии"
-        }
+        aria-label={showComments ? "Скрыть комментарии" : "Показать комментарии"}
       >
         {showComments
           ? "Скрыть комментарии"
@@ -173,6 +111,7 @@ const CommentSection = ({ ideaId }: { ideaId: string }) => {
     </Segment>
   );
 };
+
 export const ViewsIdeaPage = withPageWrapper({
   useQuery: () => {
     const { someNick } = getViewIdeaRoute.useParams();
@@ -184,80 +123,97 @@ export const ViewsIdeaPage = withPageWrapper({
   }),
   showLoaderOnFetching: false,
   title: ({ idea }) => idea.name,
-})(({ idea, me }) => (
-  <div className={css.twitterPostContainer}>
-    <div className={css.postWrapper}>
-      {/* Автор поста */}
-      <div className={css.authorSection}>
-        <img
-          className={css.avatar}
-          alt="avatar"
-          src={getAvatarUrl(idea.author.avatar, "small") || avatar}
-        />
-        <div className={css.authorDetails}>
-          <div className={css.authorName}>
-            {idea.author.nick}
-            {idea.author.name && (
-              <span className={css.authorRealName}> ({idea.author.name})</span>
+})(({ idea, me }) => {
+  // Добавляем useEffect для отладки
+  useEffect(() => {
+    console.log("Loaded idea data:", idea);
+  }, [idea]);
+
+  return (
+    <div className={css.twitterPostContainer}>
+      <div className={css.postWrapper}>
+        {/* Автор поста */}
+        <div className={css.authorSection}>
+          <img
+            className={css.avatar}
+            alt="avatar"
+            src={getAvatarUrl(idea.author.avatar, "small") || avatar} // Путь к изображению по умолчанию
+          />
+          <div className={css.authorDetails}>
+            <div className={css.authorName}>
+              {idea.author.nick}
+              {idea.author.name && (
+                <span className={css.authorRealName}> ({idea.author.name})</span>
+              )}
+            </div>
+
+            {/* Специальность автора */}
+            {idea.author.specialty && idea.author.isVerified && (
+              <div className={css.specialty}>
+                {idea.author.specialty
+                  ? `Специализация: ${idea.author.specialty}`
+                  : "Нет специальности"}
+              </div>
             )}
-          </div>
-          <div className={css.createdAt}>
-            {format(idea.createdAt, "yyyy-MM-dd")}
+            
+            <div className={css.createdAt}>
+              {format(idea.createdAt, "yyyy-MM-dd")}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Содержимое поста */}
-      <div className={css.postContent}>
-        <h1 className={css.postTitle}>{idea.name}</h1>
-        <div className={css.postDescription}>{idea.description}</div>
-        <div
-          style={{ whiteSpace: "pre-wrap" }}
-          className={css.text}
-          dangerouslySetInnerHTML={{ __html: idea.text }}
-        />
-        {!!idea.images.length && (
-          <div className={css.gallery}>
-            <ImageGallery
-              showPlayButton={false}
-              showFullscreenButton={false}
-              items={idea.images.map((image) => ({
-                original: getCloudinaryUploadUrl(image, "image", "large"),
-                // thumbnail: getCloudinaryUploadUrl(image, "image", "preview"),
-              }))}
-            />
-          </div>
-        )}
-      </div>
-
-      {/* Лайки и действия */}
-      <div className={css.postFooter}>
-        <div className={css.reactions}>
-          {me && <LikeButton idea={idea} />}
-          <span className={css.likeCount}>
-            {idea.likesCount} {getLikeWord(idea.likesCount)}
-          </span>
-        </div>
-
-        <div className={css.actions}>
-          {canEditIdea(me, idea) && (
-            <LinkButton
-              to={getEditIdeaRoute({ someNick: idea.nick })}
-              className={css.editButton}
-            >
-              Редактировать
-            </LinkButton>
-          )}
-          {canBlockIdeas(me) && (
-            <div className={css.blockIdea}>
-              <BlockIdea idea={idea} />
+        {/* Содержимое поста */}
+        <div className={css.postContent}>
+          <h1 className={css.postTitle}>{idea.name}</h1>
+          <div className={css.postDescription}>{idea.description}</div>
+          <div
+            style={{ whiteSpace: "pre-wrap" }}
+            className={css.text}
+            dangerouslySetInnerHTML={{ __html: idea.text }}
+          />
+          {!!idea.images.length && (
+            <div className={css.gallery}>
+              <ImageGallery
+                showPlayButton={false}
+                showFullscreenButton={false}
+                items={idea.images.map((image) => ({
+                  original: getCloudinaryUploadUrl(image, "image", "large"),
+                  thumbnail: getCloudinaryUploadUrl(image, "image", "preview"),
+                }))}
+              />
             </div>
           )}
         </div>
-      </div>
 
-      {/* Секция комментариев */}
-      <CommentSection ideaId={idea.id} />
+        {/* Лайки и действия */}
+        <div className={css.postFooter}>
+          <div className={css.reactions}>
+            {me && <LikeButton idea={idea} />}
+            <span className={css.likeCount}>
+              {idea.likesCount} {getLikeWord(idea.likesCount)}
+            </span>
+          </div>
+
+          <div className={css.actions}>
+            {canEditIdea(me, idea) && (
+              <LinkButton
+                to={getEditIdeaRoute({ someNick: idea.nick })}
+                className={css.editButton}
+              >
+                Редактировать
+              </LinkButton>
+            )}
+            {canBlockIdeas(me) && (
+              <div className={css.blockIdea}>
+                <BlockIdea idea={idea} />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Секция комментариев */}
+        <CommentSection ideaId={idea.id} />
+      </div>
     </div>
-  </div>
-));
+  );
+});
