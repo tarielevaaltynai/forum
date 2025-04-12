@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import { getAllIdeasRoute, getEditIdeaRoute, getViewIdeaRoute } from "../../../lib/routes";
 import { canBlockIdeas, canEditIdea } from '@forum_project/backend/src/utils/can'
 
-
 import { Segment } from '../../../components/Segment'
 
 

@@ -26,6 +26,7 @@ export const useUploadToS3 = () => {
       .then((res) => {
         return { s3Key, res }
       })
+      
   }
 
   return { uploadToS3 }
