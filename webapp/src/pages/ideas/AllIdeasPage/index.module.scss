@@ -1,19 +1,15 @@
-@import '../../../styles/_vars';
-@import '../../../styles/_mixins';
-
-
-.button {
-  flex: 1; /* Равная ширина для всех кнопок */
-  display: inline-flex;
-  justify-content: center;
+@import "../../../styles/_vars";
+@import "../../../styles/_mixins";
+.likeIcon {
+  cursor: pointer;
 }
 
 .likeIconFilled {
-  color: #e0245e;  // Цвет для закрашенной иконки
+  color: #e0245e; // Цвет для закрашенной иконки
 }
 .likes {
   display: flex;
-  align-items: center;  // Центрируем элементы по вертикали
+  align-items: center; // Центрируем элементы по вертикали
 }
 .transition-transform {
   transition: transform 0.2s ease-in-out;
@@ -66,13 +62,13 @@
       font-size: 25px;
       margin-bottom: 5px; /* увеличил шрифт названия идеи */
     }
-    
+
     .description {
       font-weight: normal; /* описание остается обычным */
       font-size: 20px;
       margin-bottom: 15px; /* увеличил шрифт описания */
     }
-    
+
     .more {
       margin-top: 15px;
     }

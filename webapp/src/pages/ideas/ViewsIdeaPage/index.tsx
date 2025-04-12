@@ -155,25 +155,50 @@ export const ViewsIdeaPage = withPageWrapper({
           </div>
         </div>
 
-        {/* Содержимое поста */}
-        <div className={css.postContent}>
-          <h1 className={css.postTitle}>{idea.name}</h1>
-          <div className={css.postDescription}>{idea.description}</div>
-          <div
-            style={{ whiteSpace: "pre-wrap" }}
-            className={css.text}
-            dangerouslySetInnerHTML={{ __html: idea.text }}
-          />
-          {!!idea.images.length && (
-            <div className={css.gallery}>
-              <ImageGallery
-                showPlayButton={false}
-                showFullscreenButton={false}
-                items={idea.images.map((image) => ({
-                  original: getCloudinaryUploadUrl(image, "image", "large"),
-                  thumbnail: getCloudinaryUploadUrl(image, "image", "preview"),
-                }))}
-              />
+      {/* Содержимое поста */}
+      <div className={css.postContent}>
+        <h1 className={css.postTitle}>{idea.name}</h1>
+        <div className={css.postDescription}>{idea.description}</div>
+        <div
+          style={{ whiteSpace: "pre-wrap" }}
+          className={css.text}
+          dangerouslySetInnerHTML={{ __html: idea.text }}
+        />
+        {!!idea.images.length && (
+          <div className={css.gallery}>
+            <ImageGallery
+              showPlayButton={false}
+              showFullscreenButton={false}
+              items={idea.images.map((image) => ({
+                original: getCloudinaryUploadUrl(image, "image", "large"),
+                // thumbnail: getCloudinaryUploadUrl(image, "image", "preview"),
+              }))}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Лайки и действия */}
+      <div className={css.postFooter}>
+        <div className={css.reactions}>
+          {me && <LikeButton idea={idea} />}
+          <span className={css.likeCount}>
+            {idea.likesCount} {getLikeWord(idea.likesCount)}
+          </span>
+        </div>
+
+        <div className={css.actions}>
+          {canEditIdea(me, idea) && (
+            <LinkButton
+              to={getEditIdeaRoute({ someNick: idea.nick })}
+              className={css.editButton}
+            >
+              Редактировать
+            </LinkButton>
+          )}
+          {canBlockIdeas(me) && (
+            <div className={css.blockIdea}>
+              <BlockIdea idea={idea} />
             </div>
           )}
         </div>
