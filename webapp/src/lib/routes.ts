@@ -22,3 +22,4 @@ export const getEditIdeaRoute = pgr({ someNick: true }, ({ someNick }) => `/idea
 
 export const getNewIdeaRoute = pgr(() => '/ideas/new')
 
+export const gerUsersRoute = pgr(() => '/users')

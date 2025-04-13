@@ -87,5 +87,6 @@ model Comment {
 
 enum UserPermission {
   BLOCK_IDEAS
+  BLOCK_USERS
   ALL
 }

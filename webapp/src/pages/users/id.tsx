@@ -1,61 +1,59 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { trpc } from "../../lib/trpc";
 import styles from "./index.module.scss";
-
-import defaultAvatar from "../../assets/images/user.png";
 import { Spinner } from "../../components/Spinner";
 import { Alert } from "../../components/Alert";
-import cn from 'classnames';
+import { Button } from "../../components/Button";
+import { UserLink } from "../../components/UserLink";
+import { Segment } from "../../components/Segment";
+import { Icon } from "../../components/Icon";
+import { withPageWrapper } from "../../lib/pageWrapper";
+import type { TrpcRouterOutput } from "@forum_project/backend/src/router";
+import { format } from "date-fns";
+import defaultAvatar from "../../assets/images/user.png";
 
-export default function UserProfilePage() {
-  const { id: userId } = useParams<{ id: string }>();
+export const UserProfilePage = withPageWrapper({
+  setProps: ({ ctx }) => ({
+    me: ctx.me,
+  }),
+  title: ({ user }) => `${user?.name || 'Профиль'} ${user?.surname || ''}`,
+})(({ me }) => {
+  const { id: userId = "" } = useParams<{ id?: string }>();
   const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  const { data: meData, isLoading: isLoadingMe } = trpc.getMe.useQuery();
 
   const {
     data: userData,
     isLoading: isLoadingUser,
     error,
-    refetch: refetchUser
+    refetch: refetchUser,
   } = trpc.getUserProfile.useQuery(
-    { userId: userId || '' },
+    { userId },
     { enabled: !!userId }
   );
 
   const blockUserMutation = trpc.blockUser.useMutation({
     onSuccess: () => {
       refetchUser();
-    }
+    },
   });
 
   useEffect(() => {
-    if (meData?.me?.permissions) {
-      const hasAdminPermission = meData.me.permissions.some(
-        perm => perm === 'ALL' || perm === 'BLOCK_IDEAS'
-      );
-      setIsAdmin(hasAdminPermission);
+    if (me?.id && userId && me.id === userId) {
+      navigate("/me");
     }
-  }, [meData]);
+  }, [me?.id, userId, navigate]);
 
   const handleToggleBlock = () => {
     if (userData?.user && userId) {
       blockUserMutation.mutate({
         userId,
-        blocked: !userData.user.blocked
+        blocked: !userData.user.blocked,
       });
     }
   };
 
-  useEffect(() => {
-    if (meData?.me?.id && userId && meData.me.id === userId) {
-      navigate("/me");
-    }
-  }, [meData, userId, navigate]);
-
-  if (isLoadingMe || isLoadingUser || !meData) {
+  if (isLoadingUser) {
     return (
       <div className={styles.container}>
         <Spinner />
@@ -81,12 +79,20 @@ export default function UserProfilePage() {
 
   const user = userData.user;
 
+  const canBlockUsers = me?.permissions?.some(
+    (perm) => perm === "ALL" || perm === "BLOCK_USERS"
+  );
+
   return (
     <div className={styles.container}>
-      <div className={styles.profile}>
+      <div className={styles.profileHeader}>
         <div className={styles.avatarContainer}>
           <img
-            src={user.avatar?.startsWith("http") ? user.avatar : defaultAvatar}
+            src={
+              user.avatar && user.avatar.startsWith("http")
+                ? user.avatar
+                : defaultAvatar
+            }
             alt={`${user.name} ${user.surname}`}
             className={styles.avatar}
             onError={(e) => {
@@ -94,56 +100,103 @@ export default function UserProfilePage() {
             }}
           />
         </div>
-        <div className={styles.profileName}>{user.name} {user.surname}</div>
-        <div className={styles.userNick}>@{user.nick}</div>
 
-        {user.blocked && (
-          <Alert color="red">
-            Пользователь заблокирован
-            {user.blockedAt && ` (${new Date(user.blockedAt).toLocaleDateString()})`}
-          </Alert>
-        )}
+        <div className={styles.profileInfo}>
+          <h1 className={styles.profileName}>
+            {user.name} {user.surname}
+            {user.verified && (
+              <Icon name="verified" className={styles.verifiedIcon} />
+            )}
+          </h1>
 
-        {isAdmin && meData.me?.id !== user.id && (
-          <button
+          <UserLink
+            userId={user.id}
+            nick={user.nick}
+            className={styles.userNick}
+            prefix="@"
+          />
+
+          {user.blocked && (
+            <Alert color="red" className={styles.blockedAlert}>
+              Пользователь заблокирован
+              {user.blockedAt &&
+                ` (${format(new Date(user.blockedAt), "dd.MM.yyyy")})`}
+            </Alert>
+          )}
+        </div>
+
+        {canBlockUsers && me?.id !== user.id && (
+          <Button
             onClick={handleToggleBlock}
-            className={cn(styles.actionButton, {
-              [styles.unblockButton]: user.blocked,
-              [styles.blockButton]: !user.blocked
-            })}
+            color={user.blocked ? "green" : "red"}
+            className={styles.blockButton}
+            loading={blockUserMutation.isLoading}
           >
             {user.blocked ? "Разблокировать" : "Заблокировать"}
-          </button>
+          </Button>
         )}
-
-        <div className={styles.userInfo}>
-          <div>Пол: {user.gender === 'male' ? 'Мужской' : 'Женский'}</div>
-          <div>Дата рождения: {new Date(user.birthDate).toLocaleDateString()}</div>
-          <div>Зарегистрирован: {new Date(user.createdAt).toLocaleDateString()}</div>
-        </div>
       </div>
 
-      <div className={styles.segments}>
-        <div className={styles.segment}>
-          <h2>Активность пользователя</h2>
-          <div className={styles.activityStats}>
-            <div><strong>Идей опубликовано:</strong> {user._count?.ideas || 0}</div>
-            <div><strong>Комментариев оставлено:</strong> {user._count?.comments || 0}</div>
-            <div><strong>Лайков поставлено:</strong> {user._count?.ideasLikes || 0}</div>
+      <div className={styles.profileDetails}>
+        <Segment title="Основная информация">
+          <div className={styles.detailItem}>
+            <Icon name="gender" />
+            <span>
+              {user.gender === "male"
+                ? "Мужской"
+                : user.gender === "female"
+                ? "Женский"
+                : "Не указан"}
+            </span>
           </div>
-        </div>
+          <div className={styles.detailItem}>
+            <Icon name="calendar" />
+            <span>
+              {user.birthDate
+                ? format(new Date(user.birthDate), "dd.MM.yyyy")
+                : "Не указана"}
+            </span>
+          </div>
+          <div className={styles.detailItem}>
+            <Icon name="clock" />
+            <span>
+              Зарегистрирован:{" "}
+              {user.createdAt
+                ? format(new Date(user.createdAt), "dd.MM.yyyy")
+                : "Неизвестно"}
+            </span>
+          </div>
+        </Segment>
 
-        <div className={styles.segment}>
-          <h2>Публикации пользователя</h2>
+        <Segment title="Активность">
+          <div className={styles.statsGrid}>
+            <div className={styles.statItem}>
+              <div className={styles.statValue}>{user._count?.ideas ?? 0}</div>
+              <div className={styles.statLabel}>Идей</div>
+            </div>
+            <div className={styles.statItem}>
+              <div className={styles.statValue}>{user._count?.comments ?? 0}</div>
+              <div className={styles.statLabel}>Комментариев</div>
+            </div>
+            <div className={styles.statItem}>
+              <div className={styles.statValue}>
+                {user._count?.ideasLikes ?? 0}
+              </div>
+              <div className={styles.statLabel}>Лайков</div>
+            </div>
+          </div>
+        </Segment>
+
+        <Segment title="Последние идеи">
           {user._count?.ideas ? (
             <div className={styles.ideasList}>
-              <p>Список идей пользователя</p>
+              <Alert color="brown">Функционал списка идей в разработке</Alert>
             </div>
           ) : (
             <Alert color="brown">Пользователь еще не публиковал идеи</Alert>
           )}
-        </div>
+        </Segment>
       </div>
     </div>
   );
-}
+});
