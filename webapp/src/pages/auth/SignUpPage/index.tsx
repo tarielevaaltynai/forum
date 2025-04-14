@@ -9,14 +9,17 @@ import { Input } from "../../../components/Input";
 import { Segment } from "../../../components/Segment";
 import { trpc } from "../../../lib/trpc";
 import { withPageWrapper } from "../../../lib/pageWrapper";
-import css from "./index.module.scss";
+import "./index.module.scss";
 import { DatePickerInput } from "../../../components/DatePickerInput";
 import { SelectInput } from "../../../components/SelectInput";
 import { useMemo } from "react";
-import { UploadToS3 } from '../../../components/UploadToS3'
+import { UploadToS3 } from "../../../components/UploadToS3";
 
 // Функция для валидации совпадения пароля и подтверждения пароля
-const zPasswordsMustBeTheSame = (passwordField: string, confirmPasswordField: string) => {
+const zPasswordsMustBeTheSame = (
+  passwordField: string,
+  confirmPasswordField: string
+) => {
   return (data: any) => {
     if (data[passwordField] !== data[confirmPasswordField]) {
       return {
@@ -58,10 +61,12 @@ export const SignUpPage = withPageWrapper({
       specialty: "",
       document: "",
     },
-    validationSchema: z.object({
-      ...zSignUpTrpcInput.shape, // Вставляем существующие поля из zSignUpTrpcInput
-      passwordAgain: z.string().min(1, "Повторите пароль"), // Добавляем новое поле для повторного пароля
-    }).superRefine(zPasswordsMustBeTheSame("password", "passwordAgain")),
+    validationSchema: z
+      .object({
+        ...zSignUpTrpcInput.shape, // Вставляем существующие поля из zSignUpTrpcInput
+        passwordAgain: z.string().min(1, "Повторите пароль"), // Добавляем новое поле для повторного пароля
+      })
+      .superRefine(zPasswordsMustBeTheSame("password", "passwordAgain")),
     onSubmit: async (values) => {
       const { token } = await signUp.mutateAsync(values);
       Cookies.set("token", token, { expires: 99999 });
@@ -70,31 +75,77 @@ export const SignUpPage = withPageWrapper({
     resetOnSuccess: false,
   });
 
-  const isExpert = useMemo(() => formik.values.role === "EXPERT", [formik.values.role]);
+  const isExpert = useMemo(
+    () => formik.values.role === "EXPERT",
+    [formik.values.role]
+  );
 
   return (
-    <main className="sign-up-page" style={{ display: "flex", height: "100vh" }}>
-      <section className="signup-form" style={{ flex: 1, padding: "2rem" }}>
+    <main className="sign-up-page" style={{ display: "flex", height: "110vh" }}>
+      <section
+        className="signup-form"
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "5rem",
+        }}
+      >
         <Segment title="Добро пожаловать!">
           <h2 className="text-3xl font-bold mb-4">Присоединяйтесь к нам!</h2>
-          <p className="mb-6">Создайте аккаунт и начните делиться своими знаниями и идеями!</p>
+          <p style={{ marginBottom: "1rem" }}>
+            Создайте аккаунт и начните делиться своими знаниями и идеями!
+          </p>
           <form onSubmit={formik.handleSubmit}>
             <FormItems>
               <Input label="Ник" name="nick" formik={formik} />
               <Input label="Имя" name="name" formik={formik} />
               <Input label="Фамилия" name="surname" formik={formik} />
               <Input label="E-mail" name="email" formik={formik} />
-              <Input label="Пароль" name="password" type="password" formik={formik} />
-              <Input label="Повторите пароль" name="passwordAgain" type="password" formik={formik} />
-              <DatePickerInput label="Дата рождения" name="birthDate" formik={formik} />
-              <SelectInput options={genderOptions} label="Пол" name="gender" formik={formik} />
-              <SelectInput options={roleOptions} label="Роль" name="role" formik={formik} />
+              <Input
+                label="Пароль"
+                name="password"
+                type="password"
+                formik={formik}
+              />
+              <Input
+                label="Повторите пароль"
+                name="passwordAgain"
+                type="password"
+                formik={formik}
+              />
+              {/* <DatePickerInput
+                label="Дата рождения"
+                name="birthDate"
+                formik={formik}
+              /> */}
+              {/* <SelectInput
+                options={genderOptions}
+                label="Пол"
+                name="gender"
+                formik={formik}
+              /> */}
+              <SelectInput
+                options={roleOptions}
+                label="Роль"
+                name="role"
+                formik={formik}
+              />
 
               {isExpert && (
                 <>
-                  <Input label="Специальность" name="specialty" formik={formik} />
-                  <UploadToS3 label="Документ" name="document" formik={formik} />
-
+                  <Input
+                    label="Специальность"
+                    name="specialty"
+                    formik={formik}
+                  />
+                  <UploadToS3
+                    label="Документ"
+                    name="document"
+                    formik={formik}
+                  />
                 </>
               )}
 
@@ -103,6 +154,18 @@ export const SignUpPage = withPageWrapper({
             </FormItems>
           </form>
         </Segment>
+      </section>
+      <section className="image-container" style={{ flex: 1 }}>
+        <img
+          src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9kIwqQI4Wm__s70LeqFj4guuBuQuIl9IYWj-TRFFSyoSIkuvNUx6iB6rMhi-L_gfYGCT_tNUGhj_M4WfujL-wvt7dv9NjESoJmRis_6b8wbeuULO1fh-_sL6ADzkSpWtPBY5ISaZwORk/s1440/6f7fd0cb-2293-4fa5-942e-991c1eb3bedb.jpg"
+          alt="Beauty & Health"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            borderRadius: "10px 10px 10px 10px",
+          }}
+        />
       </section>
     </main>
   );

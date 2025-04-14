@@ -1,7 +1,7 @@
-import { trpcLoggedProcedure } from '../../../lib/trpc';
-import _ from 'lodash';
-import { zGetIdeasTrpcInput } from './input';
-import { TrpcContext } from '../../../lib/trpc';
+import { trpcLoggedProcedure } from "../../../lib/trpc";
+import _ from "lodash";
+import { zGetIdeasTrpcInput } from "./input";
+import { TrpcContext } from "../../../lib/trpc";
 
 interface IdeaWithCount {
   id: string;
@@ -35,7 +35,7 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure
   .input(zGetIdeasTrpcInput)
   .query(async ({ ctx, input }: { ctx: TrpcContext; input: InputParams }) => {
     if (!ctx.prisma) {
-      throw new Error('PrismaClient is not defined in the context');
+      throw new Error("PrismaClient is not defined in the context");
     }
 
     const { search: searchQuery, cursor, limit } = input;
@@ -49,6 +49,7 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure
       const rawIdeas = await ctx.prisma.$queryRaw<
         Array<
           IdeaWithCount & {
+            text: string;
             likesCount: number;
             relevance: number;
             authorNick: string;
@@ -65,6 +66,7 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure
             i.nick,
             i.name,
             i.description,
+            i.text,
             i."createdAt",
             i."serialNumber",
             COUNT(il.id)::int as "likesCount",
@@ -107,7 +109,7 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure
       const nextIdea = rawIdeas.at(limit);
       const nextCursor = nextIdea?.serialNumber;
       const ideasExceptNext = rawIdeas.slice(0, limit).map((idea) => ({
-        ..._.omit(idea, ['relevance', '_count']),
+        ..._.omit(idea, ["relevance", "_count"]),
         likesCount: idea.likesCount,
         author: {
           nick: idea.authorNick,
@@ -123,14 +125,14 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure
         nextCursor,
       };
     } catch (error) {
-      console.error('Search error:', error);
+      console.error("Search error:", error);
       return getDefaultIdeasList(ctx, { cursor, limit });
     }
   });
 
 async function getDefaultIdeasList(ctx: TrpcContext, input: InputParams) {
   if (!ctx.prisma) {
-    throw new Error('PrismaClient is not available in the context');
+    throw new Error("PrismaClient is not available in the context");
   }
 
   const rawIdeas = await ctx.prisma.idea.findMany({
@@ -139,6 +141,7 @@ async function getDefaultIdeasList(ctx: TrpcContext, input: InputParams) {
       nick: true,
       name: true,
       description: true,
+      text: true,
       createdAt: true,
       serialNumber: true,
       _count: { select: { ideasLikes: true } },
@@ -159,7 +162,7 @@ async function getDefaultIdeasList(ctx: TrpcContext, input: InputParams) {
     where: {
       blockedAt: null,
     },
-    orderBy: [{ createdAt: 'desc' }, { serialNumber: 'desc' }],
+    orderBy: [{ createdAt: "desc" }, { serialNumber: "desc" }],
     cursor: input.cursor ? { serialNumber: input.cursor } : undefined,
     take: input.limit + 1,
   });
@@ -167,7 +170,7 @@ async function getDefaultIdeasList(ctx: TrpcContext, input: InputParams) {
   const nextIdea = rawIdeas.at(input.limit);
   const nextCursor = nextIdea?.serialNumber;
   const ideasExceptNext = rawIdeas.slice(0, input.limit).map((idea) => ({
-    ..._.omit(idea, ['_count']),
+    ..._.omit(idea, ["_count"]),
     likesCount: idea._count.ideasLikes,
     author: {
       nick: idea.author.nick,
