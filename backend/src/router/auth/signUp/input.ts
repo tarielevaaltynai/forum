@@ -26,11 +26,10 @@ const baseSignUpSchema = z.object({
       return date <= birthDateLimit;
     }, "Вам должно быть не менее 6 лет."),
   role: z.enum(["USER", "EXPERT"]),
-  specialty: z.string().min(3).optional(),
-  document: z.string().url().optional(),
+  specialty: z.string().optional(), // Не обязательное поле для любого пользователя
+  document: z.string().optional(), // Не обязательное поле для любого пользователя
 });
 
-// С помощью `superRefine` можно добавлять свою логику валидации
 export const zSignUpTrpcInput = baseSignUpSchema.superRefine((data, ctx) => {
   if (data.password !== data.passwordAgain) {
     ctx.addIssue({
@@ -41,11 +40,33 @@ export const zSignUpTrpcInput = baseSignUpSchema.superRefine((data, ctx) => {
   }
 
   if (data.role === "EXPERT") {
-    if (!data.specialty || data.specialty.length < 3) {
+    // Проверка на специальность и документ, только если роль EXPRT
+    if (!data.specialty || data.specialty.trim().length < 3) {
+      ctx.addIssue({
+        path: ["specialty"],
+        code: "too_small",
+        minimum: 3,
+        type: "string",
+        inclusive: true,
+        message: "Укажите специальность (минимум 3 символа)",
+      });
+    }
+
+    if (!data.document || !/^https?:\/\/.+/.test(data.document)) {
+      ctx.addIssue({
+        path: ["document"],
+        code: "invalid_string",
+        validation: "url",
+        message: "Укажите корректную ссылку на документ",
+      });
+    }
+  } else {
+    // Если роль USER, то не должно быть specialty и document
+    if (data.specialty || data.document) {
       ctx.addIssue({
         path: ["specialty"],
         code: "custom",
-        message: "Укажите специальность (минимум 3 символа)",
+        message: "Пользователи не могут иметь специальность или документ",
       });
     }
   }

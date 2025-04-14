@@ -4,6 +4,7 @@ import { zSignUpTrpcInput } from './input'
 import { getPasswordHash } from '../../../utils/getPasswordHash'
 import { signJWT } from '../../../utils/signJWT'
 import { sendWelcomeEmail } from '../../../lib/emails'
+
 export const signUpTrpcRoute = trpcLoggedProcedure
   .input(zSignUpTrpcInput)
   .mutation(async ({ ctx, input }) => {
@@ -23,7 +24,6 @@ export const signUpTrpcRoute = trpcLoggedProcedure
       throw new ExpectedError('User with this email already exists')
     }
 
-    // Общие данные пользователя
     const baseUserData = {
       nick: input.nick,
       email: input.email,
@@ -40,21 +40,20 @@ export const signUpTrpcRoute = trpcLoggedProcedure
       if (!input.specialty) {
         throw new ExpectedError('Не указана специальность');
       }
-    
+
       user = await ctx.prisma.user.create({
         data: {
           ...baseUserData,
           role: 'EXPERT',
           specialist: {
             create: {
-              specialty: input.specialty, // теперь точно строка
+              specialty: input.specialty,
               document: input.document ?? null,
             },
           },
         },
-      });
-    }
-     else {
+      })
+    } else {
       user = await ctx.prisma.user.create({
         data: {
           ...baseUserData,
