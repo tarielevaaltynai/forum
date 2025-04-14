@@ -46,7 +46,6 @@ export const AllIdeasPage = withPageWrapper({
     hasNextPage,
     fetchNextPage,
 
-    
     isFetchingNextPage,
     isRefetching,
   } = trpc.getIdeas.useInfiniteQuery(
@@ -98,10 +97,7 @@ export const AllIdeasPage = withPageWrapper({
                     <div className={css.author}>
                       <img
                         className={css.avatar}
-                        src={getAvatarUrl(
-                          idea.author?.avatar ,
-                          "small"
-                        )}
+                        src={getAvatarUrl(idea.author?.avatar, "small")}
                         alt="avatar"
                       />
                       <div className={css.name}>
@@ -123,7 +119,11 @@ export const AllIdeasPage = withPageWrapper({
                       >
                         {idea.name}
                       </Link>
-                      <div className={css.description}>{idea.description}</div>
+
+                      {/* Добавьте этот блок для отображения полного текста идеи */}
+                      {idea.text && (
+                        <div className={css.ideaText}>{idea.text}</div>
+                      )}
                     </div>
 
                     {/* 3. Лайки */}

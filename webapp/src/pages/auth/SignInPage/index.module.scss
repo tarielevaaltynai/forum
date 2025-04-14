@@ -92,29 +92,22 @@ input {
   height: auto;
 }
 */
-.sign-in-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
 
 .login-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 450px; /* Устанавливаем максимальную ширину для формы */
-  margin-right: 200px; /* Добавляем отступ справа для разделения */
+  max-width: 100%; /* Устанавливаем максимальную ширину для формы */
 }
 
 .image-container {
   width: 200px;
-  height: auto;
+  height: 100px;
   background-color: aqua;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1;
+  flex: 2;
 }
 
 .image-container img {
