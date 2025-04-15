@@ -64,9 +64,7 @@ getLikedIdeas:getLikedIdeasTrpcRoute,
   prepareCloudinaryUpload: prepareCloudinaryUploadTrpcRoute,
 
 
-  // 🔥 Новый маршрут
-  getUserProfile: getUserProfileTrpcRoute,
-  blockUser: blockUserTrpcRoute,
+  
 
   getMyIdeas: getMyIdeasTrpcRoute,
 
