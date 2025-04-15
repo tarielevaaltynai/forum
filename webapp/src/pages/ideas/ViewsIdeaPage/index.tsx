@@ -1,19 +1,23 @@
 import type { TrpcRouterOutput } from '@forum_project/backend/src/router'
 import { getAvatarUrl, getCloudinaryUploadUrl } from '@forum_project/shared/src/cloudinary'
-import { Icon } from "../../../components/Icon";
 import ImageGallery from "react-image-gallery";
 import { withPageWrapper } from "../../../lib/pageWrapper";
 import { trpc } from "../../../lib/trpc";
 import format from 'date-fns/format'
-import { LinkButton } from "../../../components/Button";
 import css from "./index.module.scss";
 import { CommentList, CreateCommentForm } from "../../../components/CommentsList";
 import { useEffect, useState } from "react";
 import { getAllIdeasRoute, getEditIdeaRoute, getViewIdeaRoute } from "../../../lib/routes";
-import { canBlockIdeas, canEditIdea } from '@forum_project/backend/src/utils/can'
-
+import { Alert } from "../../../components/Alert";
+import { Button, LinkButton } from "../../../components/Button";
+import { FormItems } from "../../../components/FormItems";
 import { Segment } from '../../../components/Segment'
-
+import {
+  canBlockIdeas,
+  canEditIdea,
+} from "@forum_project/backend/src/utils/can";
+import { useForm } from "../../../lib/form";
+import { Icon } from "../../../components/Icon";
 
 const getLikeWord = (count) => {
   if (count % 10 === 1 && count % 100 !== 11) {
@@ -75,6 +79,58 @@ export const LikeButton = ({
     />
   );
 };
+const BlockIdea = ({
+  idea,
+}: {
+  idea: NonNullable<TrpcRouterOutput["getIdea"]["idea"]>;
+}) => {
+  const blockIdea = trpc.blockIdea.useMutation();
+  const trpcUtils = trpc.useContext();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const { formik, alertProps, buttonProps } = useForm({
+    onSubmit: async () => {
+      await blockIdea.mutateAsync({ ideaId: idea.id });
+      await trpcUtils.getIdea.refetch({ someNick: idea.nick });
+      setShowConfirmation(false);
+    },
+  });
+
+  const handleConfirm = () => {
+    formik.submitForm();
+  };
+
+  const handleCancel = () => {
+    setShowConfirmation(false);
+  };
+
+  return (
+    <>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setShowConfirmation(true);
+        }}
+      >
+        <FormItems>
+          <Alert {...alertProps} />
+          <Button color="red" {...buttonProps}>
+            Блокировать
+          </Button>
+        </FormItems>
+      </form>
+
+      <BlockConfirm
+        isOpen={showConfirmation}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        title="Подтверждение блокировки"
+        message="Вы точно хотите заблокировать это обсуждение?"
+      />
+    </>
+  );
+};
+
 
 const CommentSection = ({ ideaId }: { ideaId: string }) => {
   const [showComments, setShowComments] = useState(false);
