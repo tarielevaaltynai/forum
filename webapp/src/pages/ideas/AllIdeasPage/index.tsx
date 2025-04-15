@@ -83,9 +83,43 @@ export const AllIdeasPage = withPageWrapper({
               .flatMap((page) => page.ideas)
               .map((idea) => (
                 <div className={css.idea} key={idea.nick}>
-                  <Segment
-                    size={2}
-                    title={
+                  <Segment size={2}>
+                    {/* 1. Автор */}
+                    <div className={css.author}>
+                      <img
+                        className={css.avatar}
+                        src={getAvatarUrl(idea.author?.avatar, "small")}
+                        alt="avatar"
+                      />
+                      {/* <div className={css.name}>
+                        {idea.author?.nick ?? "Unknown"}
+                        {idea.author?.name && (
+                          <span> ({idea.author.name})</span>
+                        )}
+                        {idea.author?.specialty && (
+                          <span> ({idea.author.specialty})</span>
+                        )}
+                      </div> */
+                      <div className={css.name}>
+  {idea.author ? (
+    <Link to={`/users/${idea.author.id}`} className={css.authorLink}>
+      {idea.author.nick}
+    </Link>
+  ) : (
+    "Unknown"
+  )}
+  {idea.author?.name && (
+    <span> ({idea.author.name})</span>
+  )}
+  {idea.author?.specialty && (
+    <span> ({idea.author.specialty})</span>
+  )}
+</div>
+}
+                    </div>
+
+                    {/* 2. Информация об идее */}
+                    <div className={css.ideaContent}>
                       <Link
                         className={css.ideaLink}
                         to={getViewIdeaRoute({ someNick: idea.nick })}

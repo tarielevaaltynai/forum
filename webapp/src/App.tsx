@@ -69,8 +69,11 @@ import { HelmetProvider } from 'react-helmet-async';
 import { NotAuthRouteTracker } from './components/NotAuthRouteTracker';
 import { AppContextProvider } from './lib/ctx';
 import * as routes from './lib/routes';
-import { SentryUser } from './lib/sentry';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { SentryUser } from './lib/sentry'
+import { BrowserRouter,Route,Routes} from 'react-router-dom'
+import { getAllIdeasRoute,getViewIdeaRoute } from "./lib/routes";
+import UserProfilePage from './pages/users/id';
+
 import { Layout } from "./components/Layout";
 
 // 👇 Импортируем страницу чужого профиля
@@ -96,6 +99,10 @@ export const App = () => {
                 <Route path={routes.getViewIdeaRoute.definition} element={<ViewsIdeaPage />} />
                 <Route path={routes.getEditIdeaRoute.definition} element={<EditIdeaPage />} />
                 <Route path={routes.getNewIdeaRoute.definition} element={<NewIdeaPage />} />
+                <Route path={routes.getMyIdeasRoute.definition} element={<MyIdeasPage />} />
+                <Route path={routes.getLikedIdeasRoute.definition} element={<LikedIdeasPage />} />
+                <Route path={routes.getAdminSpecialistRoute.definition} element={<AdminSpecialistsPage />} />
+                <Route path={routes.getUserProfileRoute.definition} element={<UserProfilePage />} />
 
                 {/* ✅ Новый маршрут для чужого профиля */}
                 <Route path="/users/:id" element={<UserProfilePage />} />

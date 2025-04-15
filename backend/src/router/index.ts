@@ -2,28 +2,30 @@ import { createTrpcRouter } from '../lib/trpc'
 //
 
 // @index('./**/index.ts', f => `import { ${f.path.split('/').slice(0, -1).pop()}TrpcRoute } from '${f.path.split('/').slice(0, -1).join('/')}'`)
-import { getMeTrpcRoute } from './auth/getMe'
-import { signInTrpcRoute } from './auth/signIn'
-import { signUpTrpcRoute } from './auth/signUp'
-import { createIdeaTrpcRoute } from './ideas/createIdea'
-import { getIdeaTrpcRoute } from './ideas/getIdea'
-import { setIdeaLikeTrpcRoute } from './ideas/setIdeaLIke'
-import { getIdeasTrpcRoute } from './ideas/getIdeas'
-import { updateIdeaTrpcRoute } from './ideas/updateIdea'
-import { updateProfileTrpcRoute } from './auth/updateProfile'
-import { updatePasswordTrpcRoute } from './auth/updatePassword'
-import { updateAvatarTrpcRoute } from './auth/updateAvatar'
-import { prepareCloudinaryUploadTrpcRoute } from './upload/prepareCloudinaryUpload'
-import { blockIdeaTrpcRoute } from './ideas/blockIdea'
-import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server'
-import { createCommentTrpcRoute } from './ideas/createComment'
-import { getCommentsTrpcRoute } from './ideas/getComments'
-import { getRepliesTrpcRoute } from './ideas/getReplies'
+import { getMeTrpcRoute } from "./auth/getMe";
+import { signInTrpcRoute } from "./auth/signIn";
+import { signUpTrpcRoute } from "./auth/signUp";
 
-import { getUserProfileTrpcRoute } from './users/getUserProfile'
-import { blockUserTrpcRoute } from './users/blockUser'
-
-
+import {getUnverifiedSpecialists} from "./ideas/getUnverifiedSpecialists"
+import { createIdeaTrpcRoute } from "./ideas/createIdea";
+import { getIdeaTrpcRoute } from "./ideas/getIdea";
+import { setIdeaLikeTrpcRoute } from "./ideas/setIdeaLIke";
+import { getIdeasTrpcRoute } from "./ideas/getIdeas";
+import { updateIdeaTrpcRoute } from "./ideas/updateIdea";
+import { updateProfileTrpcRoute } from "./auth/updateProfile";
+import { updatePasswordTrpcRoute } from "./auth/updatePassword";
+import { updateAvatarTrpcRoute } from "./auth/updateAvatar";
+import { prepareCloudinaryUploadTrpcRoute } from "./upload/prepareCloudinaryUpload";
+import { blockIdeaTrpcRoute } from "./ideas/blockIdea";
+import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
+import { createCommentTrpcRoute } from "./ideas/createComment";
+import { getCommentsTrpcRoute } from "./ideas/getComments";
+import { getRepliesTrpcRoute } from "./ideas/getReplies";
+import { createReplyTrpcRoute } from "./ideas/createReply";
+import { getMyIdeasTrpcRoute } from "./ideas/getMyIdeas";
+import { rejectSpecialist } from "./ideas/getUnverifiedSpecialists";
+import { verifySpecialist } from "./ideas/getUnverifiedSpecialists";
+import { getUserByIdTrpcRoute } from "./auth/getUserById"; // ⬅️ ДОБАВЬ
 // @endindex
 export const trpcRouter = createTrpcRouter({
   // @index('./**/index.ts', f => `${f.path.split('/').slice(0, -1).pop()}: ${f.path.split('/').slice(0, -1).pop()}TrpcRoute,`)
@@ -45,6 +47,9 @@ getReplies:getRepliesTrpcRoute,
   getIdeas: getIdeasTrpcRoute,
   setIdeaLike: setIdeaLikeTrpcRoute,
   updateIdea: updateIdeaTrpcRoute,
+
+  getUserById: getUserByIdTrpcRoute,
+  
   prepareCloudinaryUpload: prepareCloudinaryUploadTrpcRoute,
 
   // 🔥 Новый маршрут

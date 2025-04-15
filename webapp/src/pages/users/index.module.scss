@@ -1,63 +1,103 @@
-// webapp/src/styles/userProfile.module.scss
 .container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.profileHeader {
-  display: flex;
-  gap: 30px;
-  align-items: flex-start;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
-}
-
-.profileInfo {
-  flex: 1;
+    display: flex;
+    min-height: 100vh;
+    padding: 2rem;
+    gap: 2rem;
+    flex-wrap: wrap; /* Позволяет элементам переноситься */
+  }
   
-  h1 {
-    margin: 0 0 5px 0;
-    font-size: 24px;
+  .profile {
+    width: 30%;
+  
+    border-radius: 1rem; /* Ширина блока с аватаром на больших экранах */
+    background-color: #9dd0e3;
+  
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    order: 1; /* Элемент будет первым */
+    margin-bottom: 0; /* Убирает отступ внизу блока с аватаром */
+    padding-bottom: 0; /* Убирает внутренний отступ */
+    font-size: 1.5rem; /* Это эквивалент класса text-2xl */
+    font-weight: 700; /* Это эквивалент класса font-bold */
+    text-align: center; /* Выравнивание текста по центру */
   }
-
-  p {
-    margin: 0 0 10px 0;
-    color: #666;
+  
+  .avatarContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
   }
-}
-
-.bio {
-  margin: 15px 0 !important;
-  color: #333 !important;
-}
-
-.stats {
-  display: flex;
-  gap: 15px;
-  margin-top: 15px;
-  font-size: 14px;
-
-  span {
-    color: #555;
+  
+  .avatarWrapper {
+    position: relative;
   }
-}
-
-.content {
-  h2 {
-    font-size: 20px;
-    margin-bottom: 15px;
+  
+  .avatar {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid gray;
   }
-}
-
-.ideas {
-  display: grid;
-  gap: 15px;
-}
-
-.idea {
-  padding: 15px;
-  border: 1px solid #eee;
-  border-radius: 8px;
-}
+  
+  .uploadButtonContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px; /* Кнопка будет под аватаром */
+  }
+  
+  .uploadButton {
+    margin-top: 10px;
+    display: inline-block;
+  }
+  
+  .profile img {
+    border-radius: 50%;
+    margin-bottom: 0; /* Убирает отступ снизу у изображения */
+  }
+  
+  .profile-name {
+    font-size: 2rem; /* Уменьшаем размер шрифта для имени */
+    font-weight: bold;
+  }
+  
+  .segments {
+    display: flex;
+    flex-direction: column; /* Сегменты расположены вертикально */
+    gap: 2rem;
+    flex: 1;
+    order: 2; /* Элемент будет вторым */
+  }
+  
+  .segment {
+    width: 100%; /* Растягиваем сегменты на всю ширину */
+  }
+  
+  /* Медиа-запрос для экранов шириной меньше 768px */
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column; /* Стираем горизонтальное расположение */
+      gap: 1rem;
+    }
+  
+    .profile {
+      order: -1; /* Перемещаем профиль вверх */
+      width: 100%; /* Делаем профиль на всю ширину при сужении экрана */
+    }
+  
+    .segments {
+      width: 100%; /* Делаем сегменты на всю ширину */
+    }
+  }
+  
+  /* Медиа-запрос для экранов шириной меньше 1024px */
+  @media (max-width: 1024px) {
+    .profile {
+      width: 100%; /* Увеличиваем ширину блока с аватаром на экранах среднего размера */
+    }
+  }
+  

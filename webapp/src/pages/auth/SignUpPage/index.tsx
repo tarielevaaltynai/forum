@@ -134,17 +134,38 @@ export const SignUpPage = withPageWrapper({
                 type="password"
                 formik={formik}
               />
-              <DatePickerInput
+              { <DatePickerInput
                 label="Дата рождения"
                 name="birthDate"
                 formik={formik}
-              />
-              <SelectInput
-                options={options}
+              /> }
+              { <SelectInput
+                options={genderOptions}
                 label="Пол"
                 name="gender"
                 formik={formik}
+              /> }
+              <SelectInput
+                options={roleOptions}
+                label="Роль"
+                name="role"
+                formik={formik}
               />
+
+              {isExpert && (
+                <>
+                  <Input
+                    label="Специальность"
+                    name="specialty"
+                    formik={formik}
+                  />
+                  <UploadToS3
+                    label="Документ"
+                    name="document"
+                    formik={formik}
+                  />
+                </>
+              )}
 
               <Alert {...alertProps} />
               <Button {...buttonProps}>Зарегистрироваться</Button>
