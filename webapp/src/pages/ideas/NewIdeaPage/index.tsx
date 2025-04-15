@@ -13,8 +13,9 @@ export const NewIdeaPage = withPageWrapper({
   authorizedOnly: true,
 })(() => {
 
+
     const createIdea = trpc.createIdea.useMutation()
-    
+   
     const { formik, buttonProps, alertProps } = useForm({
         initialValues: {
           name: '',
@@ -30,7 +31,7 @@ export const NewIdeaPage = withPageWrapper({
         successMessage: 'Обсуждение создано',
         showValidationAlert: true,
       })
-    
+   
       return (
         <Segment title="Создать обсуждение">
           <form
@@ -61,7 +62,7 @@ import { FormItems } from "../../../components/FormItems";
 import { useForm } from "../../../lib/form";
 import { withPageWrapper } from "../../../lib/pageWrapper";
 import { zCreateIdeaTrpcInput } from "@forum_project/backend/src/router/ideas/createIdea/input";
-
+import { UploadsToCloudinary } from "../../../components/UploadsToCloudinary";
 export const NewIdeaPage = withPageWrapper({
   authorizedOnly: true,
   title: "New Idea",
@@ -74,6 +75,7 @@ export const NewIdeaPage = withPageWrapper({
       nick: "",
       description: "",
       text: "",
+      images: [],
     },
     validationSchema: zCreateIdeaTrpcInput,
     onSubmit: async (values) => {
@@ -92,6 +94,13 @@ export const NewIdeaPage = withPageWrapper({
           <Input name="nick" label="Nick" formik={formik} />
           <Input name="description" label="Краткое описание" formik={formik} />
           <Textarea name="text" label="Текст" formik={formik} />
+          <UploadsToCloudinary
+            label="Images"
+            name="images"
+            type="image"
+            preset="preview"
+            formik={formik}
+          />
           <Alert {...alertProps} />
           <Button {...buttonProps}>Создать обсуждение</Button>
         </FormItems>

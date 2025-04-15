@@ -56,17 +56,24 @@
 
 
 import { TrpcProvider } from "./lib/trpc";
-import { SignInPage } from './pages/auth/SignInPage';
-import { SignOutPage } from './pages/auth/SignOutPage';
-import { SignUpPage } from './pages/auth/SignUpPage';
-import { AllIdeasPage } from './pages/ideas/AllIdeasPage';
-import { EditIdeaPage } from './pages/ideas/EditIdeaPage';
-import { NewIdeaPage } from './pages/ideas/NewIdeaPage';
-import { ViewsIdeaPage } from './pages/ideas/ViewsIdeaPage';
-import { NotFoundPage } from './pages/other/NotFoundPage';
-import { EditProfilePage } from './pages/auth/EditProfilePage';
-import { HelmetProvider } from 'react-helmet-async';
-import { NotAuthRouteTracker } from './components/NotAuthRouteTracker';
+
+import { SignInPage } from './pages/auth/SignInPage'
+import { SignOutPage } from './pages/auth/SignOutPage'
+import { SignUpPage } from './pages/auth/SignUpPage'
+import { AllIdeasPage } from './pages/ideas/AllIdeasPage'
+import { EditIdeaPage } from './pages/ideas/EditIdeaPage'
+import { NewIdeaPage } from './pages/ideas/NewIdeaPage'
+import { ViewsIdeaPage } from './pages/ideas/ViewsIdeaPage'
+import { NotFoundPage } from './pages/other/NotFoundPage'
+import { EditProfilePage } from './pages/auth/EditProfilePage'
+import { HelmetProvider } from 'react-helmet-async'
+import { LikedIdeasPage } from "./pages/ideas/LikedIdeasPage";
+import { NotAuthRouteTracker } from './components/NotAuthRouteTracker'
+
+import { viewIdeaRouteParams } from "./lib/routes";
+import { AdminSpecialistsPage } from "./pages/auth/AdminSpecialistPage"; 
+import { MyIdeasPage } from "./pages/ideas/MyIdeasPage";
+
 import { AppContextProvider } from './lib/ctx';
 import * as routes from './lib/routes';
 import { SentryUser } from './lib/sentry'
@@ -102,6 +109,7 @@ export const App = () => {
                 <Route path={routes.getMyIdeasRoute.definition} element={<MyIdeasPage />} />
                 <Route path={routes.getLikedIdeasRoute.definition} element={<LikedIdeasPage />} />
                 <Route path={routes.getAdminSpecialistRoute.definition} element={<AdminSpecialistsPage />} />
+
                 <Route path={routes.getUserProfileRoute.definition} element={<UserProfilePage />} />
 
                 {/* ✅ Новый маршрут для чужого профиля */}
@@ -116,3 +124,4 @@ export const App = () => {
     </HelmetProvider>
   );
 };
+

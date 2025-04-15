@@ -1,3 +1,4 @@
+
 import type { TrpcRouterOutput } from "@forum_project/backend/src/router";
 import { zUpdatePasswordTrpcInput } from "@forum_project/backend/src/router/auth/updatePassword/input";
 import { zUpdateProfileTrpcInput } from "@forum_project/backend/src/router/auth/updateProfile/input";
@@ -18,6 +19,7 @@ import { SelectInput } from "../../../components/SelectInput";
 import { DatePickerInput } from "../../../components/DatePickerInput";
 import styles from "./index.module.scss";
 import avatar from "../../../assets/images/user.png";
+
 import { UploadToCloudinary } from "../../../components/UploadToCloudinary";
 
 const General = ({
@@ -124,6 +126,8 @@ const Avatar = ({
     },
     validationSchema: zUpdateAvatarTrpcInput,
     onSubmit: async (values) => {
+
+
       const updatedMer = await updateAvatar.mutateAsync(values);
       trpcUtils.getMe.setData(undefined, { me: updatedMer });
     },
@@ -133,14 +137,17 @@ const Avatar = ({
   return (
     <form onSubmit={formik.handleSubmit}>
       <FormItems>
-        <UploadToCloudinary
-          label=""
-          name="avatar"
-          type="avatar"
-          preset="big"
-          formik={formik}
-        />
+
+      <UploadToCloudinary
+  label=""
+  name="avatar"
+  type="avatar"
+  preset="big"
+  formik={formik}
+  defaultImage={avatar} // Передаем дефолтную картинку
+/>
         <Alert {...alertProps} />
+        <Button {...buttonProps}>Сохранить</Button>
       </FormItems>
     </form>
   );
@@ -159,6 +166,7 @@ export const EditProfilePage = withPageWrapper({
       <div className={styles.profile}>
         <Avatar me={me} />
         <div className={styles.profileName}>
+        <br />
           {me.name} <br /> {me.surname}
         </div>
       </div>

@@ -1,0 +1,22 @@
+.button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease-in-out;
+  
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  
+  .liked {
+    color: #ef4444; /* Красный цвет для активного лайка */
+  }
+  
+  .notLiked {
+    color: #9ca3af; /* Серый цвет для неактивного лайка */
+  }
+  

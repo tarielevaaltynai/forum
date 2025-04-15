@@ -32,6 +32,7 @@
   }
   
 
+
   .avatar {
     width: 30px; /* уменьшил размер аватарки */
     height: 30px;
@@ -57,22 +58,40 @@
 }
 
 .ideas {
+  .ideaText {
+    margin-top: 12px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 8px;
+    white-space: pre-line;
+    margin-bottom: 10px;
+  }
   .idea {
-    padding: 20px;
-    
+    padding: 15px;
+    padding-bottom: 8px;
     border-radius: 10px;
     & + .idea {
-      margin-top: 20px;
+      margin-top: 15px;
     }
 
+    .ideaLink {
+      @include link;
+      font-weight: bold; /* название идеи теперь жирное */
+      font-size: 25px;
+      margin-bottom: 5px; /* увеличил шрифт названия идеи */
+    }
 
-      .ideaLink {
-        @include link;
-      }
-      .more {
-        margin-top: 15px;
-      }
+    .description {
+      font-weight: normal; /* описание остается обычным */
+      font-size: 20px;
+      margin-bottom: 15px; /* увеличил шрифт описания */
+      padding-top: 10px;
+    }
 
- 
+    .more {
+      margin-top: 15px;
+    }
   }
 }

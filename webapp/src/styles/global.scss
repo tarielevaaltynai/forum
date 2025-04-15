@@ -1,6 +1,6 @@
-@import '../../node_modules/reset-css/sass/_reset.scss';
-@import './_vars.scss';
-
+@import "../../node_modules/reset-css/sass/_reset.scss";
+@import "./_vars.scss";
+@import "../../node_modules/react-image-gallery/styles/scss/image-gallery";
 html,
 body,
 #root {
@@ -8,6 +8,7 @@ body,
   min-height: 100%;
   width: 100%;
   position: relative;
+  background-color: white;
 }
 
 body {

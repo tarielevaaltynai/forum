@@ -1,7 +1,7 @@
 import { pgr } from '../utils/pumpGetRoute'
 
 
-
+export const getAdminSpecialistRoute=pgr(() => '/specialists')
 export const getSignUpRoute = pgr(() => '/sign-up')
 
 export const getSignInRoute = pgr(() => '/sign-in')
@@ -21,5 +21,7 @@ export const getViewIdeaRoute = pgr({ someNick: true }, ({ someNick }) => `/idea
 export const getEditIdeaRoute = pgr({ someNick: true }, ({ someNick }) => `/ideas/${someNick}/edit`)
 
 export const getNewIdeaRoute = pgr(() => '/ideas/new')
+export const getMyIdeasRoute=pgr(()=>'/my-ideas')
+export const getLikedIdeasRoute=pgr(()=>'/liked-ideas')
 
 export const getUserProfileRoute = pgr({ id: true }, ({ id }) => `/users/${id}`)

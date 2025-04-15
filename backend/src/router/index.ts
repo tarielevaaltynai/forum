@@ -1,5 +1,6 @@
-import { createTrpcRouter } from '../lib/trpc'
-//
+
+import { createTrpcRouter } from "../lib/trpc";
+import { getLikedIdeasTrpcRoute } from "./ideas/getLikedIdeas";
 
 // @index('./**/index.ts', f => `import { ${f.path.split('/').slice(0, -1).pop()}TrpcRoute } from '${f.path.split('/').slice(0, -1).join('/')}'`)
 import { getMeTrpcRoute } from "./auth/getMe";
@@ -25,20 +26,30 @@ import { createReplyTrpcRoute } from "./ideas/createReply";
 import { getMyIdeasTrpcRoute } from "./ideas/getMyIdeas";
 import { rejectSpecialist } from "./ideas/getUnverifiedSpecialists";
 import { verifySpecialist } from "./ideas/getUnverifiedSpecialists";
+
 import { getUserByIdTrpcRoute } from "./auth/getUserById"; // ⬅️ ДОБАВЬ
+
 // @endindex
+import { prepareS3UploadTrpcRoute } from './upload/prepareS3Upload'
 export const trpcRouter = createTrpcRouter({
   // @index('./**/index.ts', f => `${f.path.split('/').slice(0, -1).pop()}: ${f.path.split('/').slice(0, -1).pop()}TrpcRoute,`)
 
+getLikedIdeas:getLikedIdeasTrpcRoute,
 
   getMe: getMeTrpcRoute,
+  verifySpecialist:verifySpecialist,
+  rejectSpecialist:rejectSpecialist,
+  getUnverifiedSpecialists:getUnverifiedSpecialists,
   signIn: signInTrpcRoute,
   signUp: signUpTrpcRoute,
   updateProfile: updateProfileTrpcRoute,
   updateAvatar: updateAvatarTrpcRoute,
-  createComment:createCommentTrpcRoute,
-getComments:getCommentsTrpcRoute,
-getReplies:getRepliesTrpcRoute,
+
+  createComment: createCommentTrpcRoute,
+  getComments: getCommentsTrpcRoute,
+  getReplies: getRepliesTrpcRoute,
+  prepareS3Upload: prepareS3UploadTrpcRoute,
+
   blockIdea: blockIdeaTrpcRoute,
   updatePassword: updatePasswordTrpcRoute,
 
@@ -52,9 +63,13 @@ getReplies:getRepliesTrpcRoute,
   
   prepareCloudinaryUpload: prepareCloudinaryUploadTrpcRoute,
 
+
   // 🔥 Новый маршрут
   getUserProfile: getUserProfileTrpcRoute,
   blockUser: blockUserTrpcRoute,
+
+  getMyIdeas: getMyIdeasTrpcRoute,
+
   // @endindex
 })
 

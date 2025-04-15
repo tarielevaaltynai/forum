@@ -4,22 +4,25 @@ import {
   getNewIdeaRoute,
   getEditProfileRoute,
   getSignOutRoute,
+  getMyIdeasRoute,
+  getLikedIdeasRoute,
+  getAdminSpecialistRoute,
 } from "../../lib/routes";
 import { useMe } from "../../lib/ctx"; // Импорт контекста
 import css from "./index.module.scss";
-import defaultAvatar from "../../assets/images/user.png"; // Переименовал для ясности
+import avatar from "../../assets/images/user.png"; // Это можно оставить как запасной вариант
+import { getAvatarUrl } from "@forum_project/shared/src/cloudinary"; // Для получения URL аватара
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 export const LeftMenu = () => {
   const me = useMe(); // Получение данных о пользователе из контекста
-
+  const hasAllPermission = me.permissions?.includes("ALL");
   if (!me) {
     return null; // Возвращаем null, если нет данных о пользователе
   }
 
   // Определяем, какой URL использовать для аватарки
   // Если me.avatar существует и не пустой, используем его, иначе - дефолтный
-  const avatarSrc = me.avatar || defaultAvatar;
 
   return (
     <div className={css.sidebar}>
@@ -30,14 +33,13 @@ export const LeftMenu = () => {
           // Возможно, 'rounded-full mx-auto' уже достаточно
           className="rounded-full mx-auto" // Можно добавить css.avatar если нужно
           height="100"
-          // Используем вычисленный источник аватарки
-          src={avatarSrc}
+          src={getAvatarUrl(me.avatar, "small") || avatar} // Здесь мы получаем URL аватара пользователя
           width="100"
           // Добавляем обработчик ошибок на случай, если URL аватарки станет недействительным
           onError={(e) => {
             const target = e.target as HTMLImageElement; // Указываем тип для TypeScript
             target.onerror = null; // Предотвращаем бесконечный цикл ошибок
-            target.src = defaultAvatar; // Показываем дефолтную при ошибке
+            // Показываем дефолтную при ошибке
           }}
         />
         <h2>{me.nick}</h2>
@@ -57,6 +59,21 @@ export const LeftMenu = () => {
               Создать обсуждение
             </Link>
           </li>
+
+          <li className={css.item}>
+            <Link to={getMyIdeasRoute()}>
+              <i className="fas fa-comments mr-2"></i>
+              Мои обсуждения
+            </Link>
+          </li>
+
+          <li className={css.item}>
+            <Link to={getLikedIdeasRoute()}>
+              <i className="fas fa-heart mr-2"></i>
+              Понравившиеся обсуждения
+            </Link>
+          </li>
+
           <li className={css.item}>
             <Link className={css.link} to={getEditProfileRoute()}>
               <i className="fas fa-user-edit mr-2"></i>
@@ -69,6 +86,15 @@ export const LeftMenu = () => {
               Выйти({me.nick})
             </Link>
           </li>
+
+          {hasAllPermission && (
+            <li className={css.item}>
+              <Link to={getAdminSpecialistRoute()}>
+                <i className="fas fa-user-shield mr-2"></i>
+                Верификация экспертов
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
     </div>

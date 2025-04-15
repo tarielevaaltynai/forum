@@ -36,6 +36,8 @@
     color: $red;
   }
 }*/
+@import "../../styles/_vars";
+@import "../../styles/_mixins";
 .field {
   display: flex;
   flex-direction: column;
