@@ -38,10 +38,7 @@ export const signInTrpcRoute = trpcLoggedProcedure.input(zSignInTrpcInput).mutat
     throw new ExpectedError('Неверный пароль или ник')
   }
   
-  // Проверяем, не заблокирован ли пользователь
-  if (user.blocked) {
-    throw new ExpectedError('Ваш аккаунт заблокирован')
-  }
+ 
   
   const token = signJWT(user.id)
   return { token }
