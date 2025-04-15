@@ -23,6 +23,16 @@
   align-items: center;
   margin-bottom: 10px;
 
+  .authorLink {
+    color: var(--primary-color);
+    text-decoration: underline;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  
+
+
   .avatar {
     width: 30px; /* уменьшил размер аватарки */
     height: 30px;

@@ -24,3 +24,4 @@ export const getNewIdeaRoute = pgr(() => '/ideas/new')
 export const getMyIdeasRoute=pgr(()=>'/my-ideas')
 export const getLikedIdeasRoute=pgr(()=>'/liked-ideas')
 
+export const getUserProfileRoute = pgr({ id: true }, ({ id }) => `/users/${id}`)

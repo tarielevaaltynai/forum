@@ -8,27 +8,13 @@ import InfiniteScroll from "react-infinite-scroller";
 import { layoutContentElRef } from "../../../components/Layout";
 import { Loader } from "../../../components/Loader";
 import { useDebounce } from "usehooks-ts";
+import * as hooks from "usehooks-ts";
 import { withPageWrapper } from "../../../lib/pageWrapper";
-import { getAvatarUrl } from "@forum_project/shared/src/cloudinary";
-import { Icon } from "../../../components/Icon";
+console.log(hooks);
+
 import { Input } from "../../../components/Input";
 import { useForm } from "../../../lib/form";
 import { zGetIdeasTrpcInput } from "@forum_project/backend/src/router/ideas/getIdeas/input";
-
-const getLikeWord = (count) => {
-  if (count % 10 === 1 && count % 100 !== 11) {
-    return "лайк";
-  } else if (
-    count % 10 >= 2 &&
-    count % 10 <= 4 &&
-    (count % 100 < 10 || count % 100 >= 20)
-  ) {
-    return "лайка";
-  } else {
-    return "лайков";
-  }
-};
-
 export const AllIdeasPage = withPageWrapper({
   title: "Beauty and Health",
   isTitleExact: true,
@@ -45,13 +31,17 @@ export const AllIdeasPage = withPageWrapper({
     isError,
     hasNextPage,
     fetchNextPage,
-
     isFetchingNextPage,
     isRefetching,
   } = trpc.getIdeas.useInfiniteQuery(
-    { search },
     {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      search,
+    },
+
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextCursor;
+      },
     }
   );
 
@@ -59,13 +49,14 @@ export const AllIdeasPage = withPageWrapper({
     <Segment title="Форум">
       <div className={css.filter}>
         <Input label="Поиск" name="search" formik={formik} />
+        {/* <i className={`fas fa-search ${css.searchIcon}`}></i> */}
       </div>
       {isLoading || isRefetching ? (
         <Loader type="section" />
       ) : isError ? (
         <Alert color="red">{error.message}</Alert>
-      ) : !data?.pages[0]?.ideas.length ? (
-        <Alert color="brown">Ничего не найдено</Alert>
+      ) : !data.pages[0].ideas.length ? (
+        <Alert color="brown">Ничего не найденно</Alert>
       ) : (
         <div className={css.ideas}>
           <InfiniteScroll
@@ -100,7 +91,7 @@ export const AllIdeasPage = withPageWrapper({
                         src={getAvatarUrl(idea.author?.avatar, "small")}
                         alt="avatar"
                       />
-                      <div className={css.name}>
+                      {/* <div className={css.name}>
                         {idea.author?.nick ?? "Unknown"}
                         {idea.author?.name && (
                           <span> ({idea.author.name})</span>
@@ -108,7 +99,23 @@ export const AllIdeasPage = withPageWrapper({
                         {idea.author?.specialty && (
                           <span> ({idea.author.specialty})</span>
                         )}
-                      </div>
+                      </div> */
+                      <div className={css.name}>
+  {idea.author ? (
+    <Link to={`/users/${idea.author.id}`} className={css.authorLink}>
+      {idea.author.nick}
+    </Link>
+  ) : (
+    "Unknown"
+  )}
+  {idea.author?.name && (
+    <span> ({idea.author.name})</span>
+  )}
+  {idea.author?.specialty && (
+    <span> ({idea.author.specialty})</span>
+  )}
+</div>
+}
                     </div>
 
                     {/* 2. Информация об идее */}
@@ -119,33 +126,10 @@ export const AllIdeasPage = withPageWrapper({
                       >
                         {idea.name}
                       </Link>
-
-                      {/* Добавьте этот блок для отображения полного текста идеи */}
-                      {idea.text && (
-                        <div className={css.ideaText}>{idea.text}</div>
-                      )}
-                    </div>
-
-                    {/* 3. Лайки */}
-                    <div className={css.likes}>
-                      <Icon
-                        size={20}
-                        className={`${css.likeIcon} ${css.likeIconFilled} transition-transform duration-300 active:scale-90`}
-                        name="likeFilled"
-                        onClick={() => {
-                          trpc.setIdeaLike.mutateAsync({
-                            ideaId: idea.id,
-                            isLikedByMe: !idea.isLikedByMe,
-                          });
-                        }}
-                        role="button"
-                        aria-label="Лайк"
-                        tabIndex={0}
-                      />
-                      <span className={css.likeCount}>
-                        {idea.likesCount} {getLikeWord(idea.likesCount)}
-                      </span>
-                    </div>
+                    }
+                    description={idea.description}
+                  >
+                    Лайки: {idea.likesCount}
                   </Segment>
                 </div>
               ))}
