@@ -1,8 +1,8 @@
-// Импорты оставим без изменений
+// Импорты
 import { getViewIdeaRoute } from "../../../lib/routes"; 
 import { trpc } from "../../../lib/trpc";
 import { Segment } from "../../../components/Segment";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import css from "./index.module.scss";
 import { Alert } from "../../../components/Alert";
 import InfiniteScroll from "react-infinite-scroller";
@@ -19,10 +19,30 @@ const getLikeWord = (count: number) => {
   return 'лайков';
 };
 
-export const MyIdeasPage = withPageWrapper({
-  title: "Мои идеи",
-  isTitleExact: true,
+export const SomeUserPage = withPageWrapper({
+  title: "Профиль пользователя",
+  isTitleExact: false,
 })(() => {
+  // Получаем ник пользователя из URL-параметров
+  const { someNick } = useParams<{ someNick: string }>();
+  
+  // Проверяем, что ник пользователя был передан
+  if (!someNick) {
+    return (
+      <div className={css.page}>
+        <Alert color="red">Не указан ник пользователя</Alert>
+      </div>
+    );
+  }
+
+  // Запрашиваем профиль пользователя по нику
+  const { 
+    data: userProfile, 
+    isLoading: isProfileLoading, 
+    error: profileError 
+  } = trpc.getUserProfileByNick.useQuery({ nick: someNick });
+
+  // Запрашиваем идеи пользователя по нику
   const {
     data: ideasData,
     error: ideasError,
@@ -32,19 +52,27 @@ export const MyIdeasPage = withPageWrapper({
     fetchNextPage,
     isFetchingNextPage,
     isRefetching,
-  } = trpc.getMyIdeas.useInfiniteQuery(
-    { limit: 10 },
+  } = trpc.getUserIdeasByNick.useInfiniteQuery(
+    { 
+      limit: 10,
+      search: someNick // Используем ник пользователя для фильтрации идей
+    },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     }
   );
 
-  const { data: userProfile, isLoading: isProfileLoading, error: profileError } = trpc.getUserProfile.useQuery();
+  // Мутация для лайков (если текущий пользователь авторизован)
+  const likeIdea = trpc.setIdeaLike.useMutation({
+    onSuccess: () => {
+      // Можно добавить логику обновления счетчика лайков без перезагрузки всего списка
+    }
+  });
 
   return (
     <div className={css.page}>
       {/* Сегмент профиля */}
-      <Segment title="Мой профиль" className={css.profileSegment}>
+      <Segment title={`Профиль пользователя ${someNick}`} className={css.profileSegment}>
         {isProfileLoading ? (
           <Loader type="section" />
         ) : profileError ? (
@@ -75,13 +103,13 @@ export const MyIdeasPage = withPageWrapper({
       </Segment>
 
       {/* Сегмент идей */}
-      <Segment title="Мои идеи">
+      <Segment title={`Идеи пользователя ${someNick}`}>
         {isIdeasLoading || isRefetching ? (
           <Loader type="section" />
         ) : isIdeasError ? (
           <Alert color="red">{ideasError.message}</Alert>
         ) : !ideasData?.pages[0]?.ideas.length ? (
-          <Alert color="brown">Вы ещё не добавили ни одной идеи</Alert>
+          <Alert color="brown">Пользователь еще не добавил ни одной идеи</Alert>
         ) : (
           <div className={css.ideas}>
             <InfiniteScroll
@@ -106,7 +134,7 @@ export const MyIdeasPage = withPageWrapper({
               {ideasData.pages
                 .flatMap((page) => page.ideas)
                 .map((idea) => (
-                  <div className={css.idea} key={idea.nick}>
+                  <div className={css.idea} key={idea.id}>
                     <Segment size={2}>
                       <div className={css.author}>
                         <img
@@ -132,10 +160,10 @@ export const MyIdeasPage = withPageWrapper({
                       <div className={css.likes}>
                         <Icon
                           size={32}
-                          className={`${css.likeIcon} ${css.likeIconFilled} transition-transform duration-300 active:scale-90`}
+                          className={`${css.likeIcon} ${idea.isLikedByMe ? css.likeIconFilled : ''} transition-transform duration-300 active:scale-90`}
                           name="likeFilled"
                           onClick={() => {
-                            trpc.setIdeaLike.mutateAsync({ 
+                            likeIdea.mutate({ 
                               ideaId: idea.id, 
                               isLikedByMe: !idea.isLikedByMe 
                             });

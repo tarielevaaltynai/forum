@@ -25,6 +25,8 @@ import { getAllIdeasRoute,getViewIdeaRoute } from "./lib/routes";
 import { Layout } from "./components/Layout";
 
 import './styles/global.scss'
+import { MyIdeasPage2, UserProfilePage } from "./pages/ideas/MyIdeasPage2";
+import { SomeUserPage } from "./pages/ideas/SomeIdeaPage";
  export const App=()=>{
   return (
     <HelmetProvider>
@@ -47,6 +49,8 @@ import './styles/global.scss'
                 <Route path={routes.getMyIdeasRoute.definition} element={<MyIdeasPage />} />
                 <Route path={routes.getLikedIdeasRoute.definition} element={<LikedIdeasPage />} />
                 <Route path={routes.getAdminSpecialistRoute.definition} element={<AdminSpecialistsPage />} />
+                <Route path={routes.getUserProfileByNick.definition} element={<SomeUserPage />} />
+
 
                 
               <Route path="*" element={<NotFoundPage />} />

@@ -51,7 +51,7 @@ export const LikedIdeasPage = withPageWrapper({
                 <div className={css.author}>
                   <img
                     className={css.avatar}
-                    src={getAvatarUrl(idea.author?.avatar ?? "default-avatar", "small")}
+                    src={getAvatarUrl(idea.author.avatar, "small") || avatar} 
                     alt="avatar"
                   />
                   <div className={css.name}>

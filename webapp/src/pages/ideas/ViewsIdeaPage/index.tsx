@@ -7,6 +7,7 @@ import format from 'date-fns/format'
 import css from "./index.module.scss";
 import { CommentList, CreateCommentForm } from "../../../components/CommentsList";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getAllIdeasRoute, getEditIdeaRoute, getViewIdeaRoute } from "../../../lib/routes";
 import { Alert } from "../../../components/Alert";
 import { Button, LinkButton } from "../../../components/Button";
@@ -196,7 +197,9 @@ export const ViewsIdeaPage = withPageWrapper({
           />
           <div className={css.authorDetails}>
             <div className={css.authorName}>
-              {idea.author.nick}
+            <Link to={`/ideas/${idea.author.nick}/profile`} className={css.authorNick}>
+  {idea.author.nick}
+</Link>
               {idea.author.name && (
                 <span className={css.authorRealName}> ({idea.author.name})</span>
               )}

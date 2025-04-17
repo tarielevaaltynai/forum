@@ -1,5 +1,6 @@
 @import '../../../styles/_vars';
 @import '../../../styles/_mixins';
+/*
 .likeIcon {
   cursor: pointer;
   
@@ -25,7 +26,7 @@
   margin-bottom: 10px;
 
   .avatar {
-    width: 30px; /* уменьшил размер аватарки */
+    width: 30px; 
     height: 30px;
     border-radius: 50%;
     object-fit: cover;
@@ -34,7 +35,7 @@
 
   .name {
     font-weight: bold;
-    font-size: 16px; /* увеличил шрифт имени автора */
+    font-size: 16px; 
     color: black;
 
     span {
@@ -59,19 +60,139 @@
 
     .ideaLink {
       @include link;
-      font-weight: bold; /* название идеи теперь жирное */
+      font-weight: bold; 
       font-size: 25px;
-      margin-bottom: 5px; /* увеличил шрифт названия идеи */
+      margin-bottom: 5px; 
     }
     
     .description {
-      font-weight: normal; /* описание остается обычным */
+      font-weight: normal; 
       font-size: 20px;
-      margin-bottom: 15px; /* увеличил шрифт описания */
+      margin-bottom: 15px; 
     }
     
     .more {
       margin-top: 15px;
     }
   }
+}*/
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profileSegment {
+  padding: 20px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profileAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.profileNick {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.profileName {
+  font-size: 18px;
+  color: #666;
+  margin: 0;
+}
+
+.profileStats {
+  font-size: 16px;
+  color: #888;
+  margin: 0;
+}
+
+.ideas {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.idea {
+  width: 100%;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.ideaContent {
+  margin-bottom: 10px;
+}
+
+.ideaLink {
+  font-size: 18px;
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.ideaLink:hover {
+  text-decoration: underline;
+}
+
+.description {
+  font-size: 14px;
+  color: #333;
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.likeIcon {
+  cursor: pointer;
+}
+
+.likeIconFilled {
+  color: #ff4d4f;
+}
+
+.likeCount {
+  font-size: 14px;
+  color: #666;
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
 }

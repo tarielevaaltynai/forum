@@ -26,9 +26,15 @@ import { rejectSpecialist } from "./ideas/getUnverifiedSpecialists";
 import { verifySpecialist } from "./ideas/getUnverifiedSpecialists";
 // @endindex
 import { prepareS3UploadTrpcRoute } from './upload/prepareS3Upload'
+import { getCurrentUserTrpcRoute } from "./auth/getCurrentUser";
+import { getUserProfileTrpcRoute } from "./ideas/getUserProfile";
+import {  getUserProfileByNickTrpcRoute } from "./auth/getUserProfileByNick";
+import { getUserIdeasByNickTrpcRoute } from "./ideas/getUserIdeasByNick";
 export const trpcRouter = createTrpcRouter({
+  getCurrentUser:getCurrentUserTrpcRoute,
   // @index('./**/index.ts', f => `${f.path.split('/').slice(0, -1).pop()}: ${f.path.split('/').slice(0, -1).pop()}TrpcRoute,`)
 getLikedIdeas:getLikedIdeasTrpcRoute,
+
   getMe: getMeTrpcRoute,
   verifySpecialist:verifySpecialist,
   rejectSpecialist:rejectSpecialist,
@@ -46,11 +52,16 @@ getLikedIdeas:getLikedIdeasTrpcRoute,
   createReply: createReplyTrpcRoute,
   createIdea: createIdeaTrpcRoute,
   getIdea: getIdeaTrpcRoute,
+  
   getIdeas: getIdeasTrpcRoute,
   setIdeaLike: setIdeaLikeTrpcRoute,
   updateIdea: updateIdeaTrpcRoute,
   prepareCloudinaryUpload: prepareCloudinaryUploadTrpcRoute,
   getMyIdeas: getMyIdeasTrpcRoute,
+  getUserProfile:getUserProfileTrpcRoute,
+  getUserProfileByNick:getUserProfileByNickTrpcRoute,
+  getUserIdeasByNick:getUserIdeasByNickTrpcRoute
+
   // @endindex
 });
 
