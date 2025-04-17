@@ -1,19 +1,31 @@
-import type { TrpcRouterOutput } from '@forum_project/backend/src/router'
-import { getAvatarUrl, getCloudinaryUploadUrl } from '@forum_project/shared/src/cloudinary'
+import type { TrpcRouterOutput } from "@forum_project/backend/src/router";
+import {
+  getAvatarUrl,
+  getCloudinaryUploadUrl,
+} from "@forum_project/shared/src/cloudinary";
 import { Icon } from "../../../components/Icon";
 import ImageGallery from "react-image-gallery";
 import { withPageWrapper } from "../../../lib/pageWrapper";
 import { trpc } from "../../../lib/trpc";
-import format from 'date-fns/format'
+import format from "date-fns/format";
 import { LinkButton } from "../../../components/Button";
 import css from "./index.module.scss";
-import { CommentList, CreateCommentForm } from "../../../components/CommentsList";
+import {
+  CommentList,
+  CreateCommentForm,
+} from "../../../components/CommentsList";
 import { useEffect, useState } from "react";
-import { getAllIdeasRoute, getEditIdeaRoute, getViewIdeaRoute } from "../../../lib/routes";
-import { canBlockIdeas, canEditIdea } from '@forum_project/backend/src/utils/can'
+import {
+  getAllIdeasRoute,
+  getEditIdeaRoute,
+  getViewIdeaRoute,
+} from "../../../lib/routes";
+import {
+  canBlockIdeas,
+  canEditIdea,
+} from "@forum_project/backend/src/utils/can";
 
-import { Segment } from '../../../components/Segment'
-
+import { Segment } from "../../../components/Segment";
 
 const getLikeWord = (count) => {
   if (count % 10 === 1 && count % 100 !== 11) {
@@ -88,7 +100,9 @@ const CommentSection = ({ ideaId }: { ideaId: string }) => {
       <button
         onClick={() => setShowComments(!showComments)}
         className={`${css.toggleCommentsButton} ${showComments ? css.opened : ""}`}
-        aria-label={showComments ? "Скрыть комментарии" : "Показать комментарии"}
+        aria-label={
+          showComments ? "Скрыть комментарии" : "Показать комментарии"
+        }
       >
         {showComments
           ? "Скрыть комментарии"
@@ -142,7 +156,10 @@ export const ViewsIdeaPage = withPageWrapper({
             <div className={css.authorName}>
               {idea.author.nick}
               {idea.author.name && (
-                <span className={css.authorRealName}> ({idea.author.name})</span>
+                <span className={css.authorRealName}>
+                  {" "}
+                  ({idea.author.name})
+                </span>
               )}
             </div>
 
@@ -154,7 +171,7 @@ export const ViewsIdeaPage = withPageWrapper({
                   : "Нет специальности"}
               </div>
             )}
-            
+
             <div className={css.createdAt}>
               {format(idea.createdAt, "yyyy-MM-dd")}
             </div>
