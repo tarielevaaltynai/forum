@@ -2,7 +2,7 @@ import css from "./index.module.scss";
 import cn from "classnames";
 import { Link } from "react-router-dom";
 
-type ButtonColor = "red" | "green"|"blue";
+type ButtonColor = "primary" | "success" | "danger" | "secondary";
 export type ButtonProps = {
   children: React.ReactNode;
   loading?: boolean;
@@ -10,23 +10,29 @@ export type ButtonProps = {
   type?: "button" | "submit";
   disabled?: boolean;
   onClick?: () => void;
+  className?: string;
 };
+
 export const Button = ({
   children,
   loading = false,
-  color = "blue",
-  type = "submit",
+  color = "primary",
+  type = "button",
   disabled,
   onClick,
+  className,
 }: ButtonProps) => {
   return (
     <button
-      className={cn({
-        [css.button]: true,
-        [css[`color-${color}`]]: true,
-        [css.disabled]: disabled || loading,
-        [css.loading]: loading,
-      })}
+      className={cn(
+        css.button,
+        css[`color-${color}`],
+        {
+          [css.disabled]: disabled || loading,
+          [css.loading]: loading,
+        },
+        className
+      )}
       type={type}
       disabled={disabled || loading}
       onClick={onClick}
@@ -35,139 +41,31 @@ export const Button = ({
     </button>
   );
 };
+
 export const LinkButton = ({
   children,
   to,
-  color = "blue",
+  color = "primary",
+  className,
 }: {
   children: React.ReactNode;
   to: string;
   color?: ButtonColor;
+  className?: string;
 }) => {
   return (
-    <Link
-      className={cn({ [css.button]: true, [css[`color-${color}`]]: true })}
-      to={to}
-    >
+    <Link className={cn(css.button, css[`color-${color}`], className)} to={to}>
       {children}
     </Link>
   );
 };
-export const Buttons = ({ children }: { children: React.ReactNode }) => {
-  return <div className={css.buttons}>{children}</div>;
-};
-/*
-import cn from 'classnames'
-import css from './index.module.scss'
-import { Link } from 'react-router-dom'
->>>>>>> 5d5d37abc739fc07872d9333ef68026e0af37796
 
-type ButtonColor = "red" | "green" | "blue" | "white-with-blue-border";
-export type ButtonProps = {
-  children: React.ReactNode;
-  loading?: boolean;
-  color?: ButtonColor;
-};
-export const Button = ({
+export const Buttons = ({
   children,
-  loading = false,
-  color = "blue",
-}: ButtonProps) => {
-  return (
-    <button
-      className={cn({
-        [css.button]: true,
-        [css[`color-${color}`]]: true,
-        [css.disabled]: loading,
-        [css.loading]: loading,
-      })}
-      type="submit"
-      disabled={loading}
-    >
-      <span className={css.text}>{children}</span>
-    </button>
-  );
-};
-export const LinkButton = ({
-  children,
-  to,
-  color = "blue",
+  className,
 }: {
   children: React.ReactNode;
-  to: string;
-  color?: ButtonColor;
+  className?: string;
 }) => {
-  return (
-    <Link
-      className={cn({ [css.button]: true, [css[`color-${color}`]]: true })}
-      to={to}
-    >
-      {children}
-    </Link>
-  )
-
-}
-
-export const Buttons = ({ children }: { children: React.ReactNode }) => {
-  return <div className={css.buttons}>{children}</div>
-}
-
-import { Link } from 'react-router-dom'
-import cn from 'classnames'
-import css from './index.module.scss'
-
-type ButtonColor = 'red' | 'green' | 'blue' | 'white-with-blue-border'
-
-export type ButtonProps = {
-  children: React.ReactNode
-  loading?: boolean
-  color?: ButtonColor
-  type?: 'button' | 'submit'
-  disabled?: boolean
-  onClick?: () => void
-}
-
-export const Button = ({
-  children,
-  loading = false,
-  color = 'green',
-  type = 'button',
-  disabled,
-  onClick,
-}: ButtonProps) => {
-  return (
-    <button
-      className={cn(css.button, css[`color-${color}`], {
-        [css.disabled]: disabled || loading,
-        [css.loading]: loading,
-      })}
-      type={type}
-      disabled={disabled || loading}
-      onClick={onClick}
-    >
-      <span className={css.text}>{children}</span>
-    </button>
-  )
-}
-
-// ✅ Добавляем LinkButton
-export const LinkButton = ({
-  children,
-  to,
-  color = 'blue',
-}: {
-  children: React.ReactNode
-  to: string
-  color?: ButtonColor
-}) => {
-  return (
-    <Link className={cn(css.button, css[`color-${color}`])} to={to}>
-      {children}
-    </Link>
-  )
-}
-
-export const Buttons = ({ children }: { children: React.ReactNode }) => {
-  return <div className={css.buttons}>{children}</div>
-}
-*/
+  return <div className={cn(css.buttons, className)}>{children}</div>;
+};

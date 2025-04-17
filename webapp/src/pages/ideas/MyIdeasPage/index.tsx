@@ -1,4 +1,5 @@
-import { getViewIdeaRoute } from "../../../lib/routes"; 
+import { useState } from "react";
+import { getViewIdeaRoute } from "../../../lib/routes";
 import { trpc } from "../../../lib/trpc";
 import { Segment } from "../../../components/Segment";
 import { Link } from "react-router-dom";
@@ -8,19 +9,37 @@ import InfiniteScroll from "react-infinite-scroller";
 import { layoutContentElRef } from "../../../components/Layout";
 import { Loader } from "../../../components/Loader";
 import { withPageWrapper } from "../../../lib/pageWrapper";
-import { getAvatarUrl } from '@forum_project/shared/src/cloudinary';
-import { Icon } from '../../../components/Icon';
+import { getAvatarUrl } from "@forum_project/shared/src/cloudinary";
+import { Heart } from "lucide-react";
+import cn from "classnames";
 
 const getLikeWord = (count: number) => {
-  if (count % 10 === 1 && count % 100 !== 11) return 'лайк';
-  if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 10 || count % 100 >= 20)) return 'лайка';
-  return 'лайков';
+  if (count % 10 === 1 && count % 100 !== 11) return "лайк";
+  if (
+    count % 10 >= 2 &&
+    count % 10 <= 4 &&
+    (count % 100 < 10 || count % 100 >= 20)
+  )
+    return "лайка";
+  return "лайков";
 };
 
 export const MyIdeasPage = withPageWrapper({
   title: "Мои идеи",
   isTitleExact: true,
 })(() => {
+  const [expandedIdeas, setExpandedIdeas] = useState<Record<string, boolean>>(
+    {}
+  );
+  const utils = trpc.useUtils();
+
+  const toggleExpand = (ideaId: string) => {
+    setExpandedIdeas((prev) => ({
+      ...prev,
+      [ideaId]: !prev[ideaId],
+    }));
+  };
+
   const {
     data,
     error,
@@ -31,14 +50,31 @@ export const MyIdeasPage = withPageWrapper({
     isFetchingNextPage,
     isRefetching,
   } = trpc.getMyIdeas.useInfiniteQuery(
-    { limit: 10 }, // можно добавить cursor, если нужно
+    { limit: 10 },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     }
   );
 
+  const { mutateAsync: setLike } = trpc.setIdeaLike.useMutation({
+    onSuccess: () => {
+      utils.getMyIdeas.invalidate();
+    },
+  });
+
+  const handleLike = async (ideaId: string, isLikedByMe: boolean) => {
+    try {
+      await setLike({
+        ideaId,
+        isLikedByMe: !isLikedByMe,
+      });
+    } catch (err) {
+      console.error("Error setting like:", err);
+    }
+  };
+
   return (
-    <Segment title="Мои идеи">
+    <div className={css.container}>
       {isLoading || isRefetching ? (
         <Loader type="section" />
       ) : isError ? (
@@ -63,7 +99,8 @@ export const MyIdeasPage = withPageWrapper({
             getScrollParent={() => layoutContentElRef.current}
             useWindow={
               (layoutContentElRef.current &&
-                getComputedStyle(layoutContentElRef.current).overflow) !== "auto"
+                getComputedStyle(layoutContentElRef.current).overflow) !==
+              "auto"
             }
           >
             {data.pages
@@ -71,42 +108,77 @@ export const MyIdeasPage = withPageWrapper({
               .map((idea) => (
                 <div className={css.idea} key={idea.nick}>
                   <Segment size={2}>
+                    {/* Автор */}
                     <div className={css.author}>
                       <img
                         className={css.avatar}
-                        src={getAvatarUrl(idea.author?.avatar ?? 'default-avatar', 'small')}
-                        alt="avatar"
+                        src={getAvatarUrl(idea.author?.avatar, "small")}
+                        alt={`Аватар ${idea.author?.nick || "пользователя"}`}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.onerror = null;
+                          target.src = "/default-avatar.png";
+                        }}
                       />
-                      <div className={css.name}>
-                        {idea.author?.nick ?? 'Unknown'}
-                        {idea.author?.name && <span> ({idea.author.name})</span>}
+                      <div className={css.authorInfo}>
+                        <div className={css.name}>
+                          {idea.author?.nick ?? "Неизвестный автор"}
+                        </div>
+                        {idea.author?.name && (
+                          <div className={css.meta}>@{idea.author.name}</div>
+                        )}
                       </div>
                     </div>
 
+                    {/* Контент идеи */}
                     <div className={css.ideaContent}>
-                      <Link className={css.ideaLink} to={getViewIdeaRoute({ someNick: idea.nick })}>
+                      <Link
+                        className={css.ideaLink}
+                        to={getViewIdeaRoute({ someNick: idea.nick })}
+                      >
                         {idea.name}
                       </Link>
-                      <div className={css.description}>
-                        {idea.description}
-                      </div>
+
+                      {idea.description && (
+                        <div className={css.textContainer}>
+                          <div
+                            className={cn(css.ideaText, {
+                              [css.expanded]: expandedIdeas[idea.id],
+                            })}
+                          >
+                            {idea.description}
+                          </div>
+                          {idea.description.length > 200 && (
+                            <button
+                              onClick={() => toggleExpand(idea.id)}
+                              className={css.showMoreBtn}
+                            >
+                              {expandedIdeas[idea.id]
+                                ? "Свернуть"
+                                : "Показать ещё"}
+                            </button>
+                          )}
+                        </div>
+                      )}
                     </div>
 
+                    {/* Лайки */}
                     <div className={css.likes}>
-                      <Icon
-                        size={32}
-                        className={`${css.likeIcon} ${css.likeIconFilled} transition-transform duration-300 active:scale-90`}
-                        name="likeFilled"
-                        onClick={() => {
-                          trpc.setIdeaLike.mutateAsync({ 
-                            ideaId: idea.id, 
-                            isLikedByMe: !idea.isLikedByMe 
-                          });
-                        }}
-                        role="button"
-                        aria-label="Лайк"
-                        tabIndex={0}
-                      />
+                      <button
+                        className={cn(css.likeButton, {
+                          [css.liked]: idea.isLikedByMe,
+                        })}
+                        onClick={() => handleLike(idea.id, idea.isLikedByMe)}
+                        aria-label={
+                          idea.isLikedByMe ? "Убрать лайк" : "Поставить лайк"
+                        }
+                      >
+                        <Heart
+                          size={20}
+                          className={css.heartIcon}
+                          fill={idea.isLikedByMe ? "currentColor" : "none"}
+                        />
+                      </button>
                       <span className={css.likeCount}>
                         {idea.likesCount} {getLikeWord(idea.likesCount)}
                       </span>
@@ -117,6 +189,6 @@ export const MyIdeasPage = withPageWrapper({
           </InfiniteScroll>
         </div>
       )}
-    </Segment>
+    </div>
   );
 });
