@@ -4,66 +4,167 @@
 .sidebar {
   position: fixed;
   left: 0;
-  top: 56px; /* Точно под навигацией */
-  width: 250px;
+  top: 56px;
+  width: 280px;
   height: calc(100vh - 56px);
-  background-color: #ffffff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
+  padding: 25px 15px;
   overflow-y: auto;
-  z-index: 1000; /* Меньше чем у навигации, но больше чем у остального контента */
+  z-index: 1000;
+  transition: all 0.3s ease;
+  border-right: none;
 
-  /* Стили для кастомного скроллбара */
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: #ffff #f0f0f0; /* Firefox */
+  @media (max-width: 768px) {
+    width: 70px;
+    padding: 15px 5px;
+
+    &:hover {
+      width: 280px;
+
+      .linkText {
+        display: inline;
+      }
+
+      .username {
+        display: block;
+      }
+
+      .avatar {
+        width: 100px;
+        height: 100px;
+      }
+    }
+  }
 }
 
 .profile {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: none; // Убираем границу под аватаром
 
-  img {
-    border-radius: 50%;
-    margin-bottom: 10px;
-  }
-
-  h2 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
+  @media (max-width: 768px) {
+    padding-bottom: 10px;
+    margin-bottom: 20px;
   }
 }
 
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  @media (max-width: 768px) {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.username {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-top: 15px;
+  word-break: break-word;
+
+  @media (max-width: 768px) {
+    display: none;
+    font-size: 0.9rem;
+    margin-top: 8px;
+  }
+}
+
+.nav {
+  margin-top: 10px;
+}
+
 .menu {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
   margin: 0;
 }
 
 .item {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  margin-bottom: 8px;
   border-radius: 8px;
-  margin-bottom: 5px;
+  overflow: hidden;
+  transition: all 0.2s ease;
 
   &:hover {
-    background-color: #dcedfe;
+    background-color: rgba(0, 123, 255, 0.1);
+    transform: translateX(3px);
   }
 
-  i {
-    font-size: 20px;
-    margin-right: 10px;
-    color: #0284c7;
+  &.adminItem {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: none;
   }
 }
 
 .link {
-  text-decoration: none;
-  color: #333;
   display: flex;
   align-items: center;
-  width: 100%;
+  padding: 12px 15px;
+  color: #4a5568;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+
+  @media (max-width: 768px) {
+    padding: 12px 10px;
+    justify-content: center;
+  }
+
+  &:hover {
+    color: #1a73e8;
+  }
+
+  i {
+    width: 24px;
+    text-align: center;
+    margin-right: 12px;
+    font-size: 1.1rem;
+    color: #5f6368;
+    transition: color 0.2s ease;
+
+    @media (max-width: 768px) {
+      margin-right: 0;
+      font-size: 1.3rem;
+    }
+  }
+
+  &:hover i {
+    color: #1a73e8;
+  }
+}
+
+.linkText {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+/* Стили для скроллбара */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }

@@ -1,4 +1,8 @@
-import { getViewIdeaRoute } from "../../../lib/routes";
+
+import { useState } from "react";
+
+import { getViewIdeaRoute, getUserProfileRoute } from "../../../lib/routes";
+
 import { trpc } from "../../../lib/trpc";
 import { Segment } from "../../../components/Segment";
 import { Link } from "react-router-dom";
@@ -10,10 +14,11 @@ import { Loader } from "../../../components/Loader";
 import { useDebounce } from "usehooks-ts";
 import { withPageWrapper } from "../../../lib/pageWrapper";
 import { getAvatarUrl } from "@forum_project/shared/src/cloudinary";
-import { Icon } from "../../../components/Icon";
+import { Heart } from "lucide-react";
 import { Input } from "../../../components/Input";
 import { useForm } from "../../../lib/form";
 import { zGetIdeasTrpcInput } from "@forum_project/backend/src/router/ideas/getIdeas/input";
+import cn from "classnames";
 
 const getLikeWord = (count) => {
   if (count % 10 === 1 && count % 100 !== 11) {
@@ -37,7 +42,11 @@ export const AllIdeasPage = withPageWrapper({
     initialValues: { search: "" },
     validationSchema: zGetIdeasTrpcInput.pick({ search: true }),
   });
+
+
   const search = useDebounce(formik.values.search, 500);
+
+
   const {
     data,
     error,
@@ -45,8 +54,6 @@ export const AllIdeasPage = withPageWrapper({
     isError,
     hasNextPage,
     fetchNextPage,
-
-    
     isFetchingNextPage,
     isRefetching,
   } = trpc.getIdeas.useInfiniteQuery(
@@ -56,11 +63,34 @@ export const AllIdeasPage = withPageWrapper({
     }
   );
 
+  const { mutateAsync: setLike } = trpc.setIdeaLike.useMutation({
+    onSuccess: () => {
+      utils.getIdeas.invalidate();
+    },
+  });
+
+  const handleLike = async (ideaId: string, isLikedByMe: boolean) => {
+    try {
+      await setLike({
+        ideaId,
+        isLikedByMe: !isLikedByMe,
+      });
+    } catch (err) {
+      console.error("Error setting like:", err);
+    }
+  };
+
   return (
-    <Segment title="Форум">
+    <div className={css.container}>
       <div className={css.filter}>
-        <Input label="Поиск" name="search" formik={formik} />
+        <Input
+          label="Поиск"
+          name="search"
+          formik={formik}
+          placeholder="Найти идеи..."
+        />
       </div>
+
       {isLoading || isRefetching ? (
         <Loader type="section" />
       ) : isError ? (
@@ -92,27 +122,33 @@ export const AllIdeasPage = withPageWrapper({
             {data.pages
               .flatMap((page) => page.ideas)
               .map((idea) => (
-                <div className={css.idea} key={idea.nick}>
+                <div className={css.idea} key={idea.id}>
                   <Segment size={2}>
-                    {/* 1. Автор */}
+
+                    {/* Автор */}
                     <div className={css.author}>
                       <img
                         className={css.avatar}
+
                         src={getAvatarUrl(idea.author.avatar, "small") || avatar} 
                         alt="avatar"
+
                       />
-                      <div className={css.name}>
-                        {idea.author?.nick ?? "Unknown"}
-                        {idea.author?.name && (
-                          <span> ({idea.author.name})</span>
-                        )}
-                        {idea.author?.specialty && (
-                          <span> ({idea.author.specialty})</span>
-                        )}
+                      <div className={css.authorInfo}>
+                        <div className={css.name}>
+                          {idea.author?.nick ?? "Неизвестный автор"}
+                        </div>
+                        <div className={css.meta}>
+                          {idea.author?.name && (
+                            <span>@{idea.author.name}</span>
+                          )}
+                          {idea.author?.specialty && (
+                            <span> • {idea.author.specialty}</span>
+                          )}
+                        </div>
                       </div>
                     </div>
-
-                    {/* 2. Информация об идее */}
+                    {/* Контент идеи */}
                     <div className={css.ideaContent}>
                       <Link
                         className={css.ideaLink}
@@ -120,25 +156,46 @@ export const AllIdeasPage = withPageWrapper({
                       >
                         {idea.name}
                       </Link>
-                      <div className={css.description}>{idea.description}</div>
-                    </div>
 
-                    {/* 3. Лайки */}
+                      {idea.text && (
+                        <div className={css.textContainer}>
+                          <div
+                            className={cn(css.ideaText, {
+                              [css.expanded]: expandedIdeas[idea.id],
+                            })}
+                          >
+                            {idea.text}
+                          </div>
+                          {idea.text.length > 200 && (
+                            <button
+                              onClick={() => toggleExpand(idea.id)}
+                              className={css.showMoreBtn}
+                            >
+                              {expandedIdeas[idea.id]
+                                ? "Свернуть"
+                                : "Показать ещё"}
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    {/* Лайки */}
                     <div className={css.likes}>
-                      <Icon
-                        size={20}
-                        className={`${css.likeIcon} ${css.likeIconFilled} transition-transform duration-300 active:scale-90`}
-                        name="likeFilled"
-                        onClick={() => {
-                          trpc.setIdeaLike.mutateAsync({
-                            ideaId: idea.id,
-                            isLikedByMe: !idea.isLikedByMe,
-                          });
-                        }}
-                        role="button"
-                        aria-label="Лайк"
-                        tabIndex={0}
-                      />
+                      <button
+                        className={cn(css.likeButton, {
+                          [css.liked]: idea.isLikedByMe,
+                        })}
+                        onClick={() => handleLike(idea.id, idea.isLikedByMe)}
+                        aria-label={
+                          idea.isLikedByMe ? "Убрать лайк" : "Поставить лайк"
+                        }
+                      >
+                        <Heart
+                          size={20}
+                          className={css.heartIcon}
+                          fill={idea.isLikedByMe ? "currentColor" : "none"}
+                        />
+                      </button>
                       <span className={css.likeCount}>
                         {idea.likesCount} {getLikeWord(idea.likesCount)}
                       </span>
@@ -149,6 +206,6 @@ export const AllIdeasPage = withPageWrapper({
           </InfiniteScroll>
         </div>
       )}
-    </Segment>
+    </div>
   );
 });

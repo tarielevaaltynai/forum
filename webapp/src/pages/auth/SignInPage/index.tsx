@@ -9,46 +9,6 @@ import { trpc } from "../../../lib/trpc";
 import Cookies from "js-cookie";
 import { withPageWrapper } from "../../../lib/pageWrapper";
 import "./index.module.scss";
-/*
-export const SignInPage = () => {
-  
-  const navigate = useNavigate()
-  const trpcUtils = trpc.useContext()
-  const [submittingError, setSubmittingError] = useState<string | null>(null)
-  const signIn = trpc.signIn.useMutation()
-  const formik = useFormik({
-    initialValues: {
-      nick: '',
-      password: '',
-    },
-    validate: withZodSchema(zSignInTrpcInput),
-    onSubmit: async (values) => {
-      try {
-        setSubmittingError(null)
-        const { token } = await signIn.mutateAsync(values)
-        Cookies.set('token', token, { expires: 99999 })
-        void trpcUtils.invalidate()
-        navigate(getAllIdeasRoute())
-      } catch (err: any) {
-        setSubmittingError(err.message)
-      }
-    },
-  })
-
-  return (
-    <Segment title="Sign In">
-      <form onSubmit={formik.handleSubmit}>
-        <FormItems>
-          <Input label="Nick" name="nick" formik={formik} />
-          <Input label="Password" name="password" type="password" formik={formik} />
-          {!formik.isValid && !!formik.submitCount && <Alert color="red">Some fields are invalid</Alert>}
-          {submittingError && <Alert color="red">{submittingError}</Alert>}
-          <Button loading={formik.isSubmitting}>Sign In</Button>
-        </FormItems>
-      </form>
-    </Segment>
-  )
-}*/
 
 export const SignInPage = withPageWrapper({
   redirectAuthorized: true,
@@ -72,11 +32,24 @@ export const SignInPage = withPageWrapper({
   });
 
   return (
-    <main className="sign-in-page" style={{ display: "flex", height: "100vh" }}>
-      <section className="login-form" style={{ flex: 1, padding: "2rem" }}>
+    <main
+      className="sign-in-page"
+      style={{ display: "flex", width: "100%", height: "110vh" }}
+    >
+      <section
+        className="login-form"
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "5rem",
+        }}
+      >
         <Segment title="Добро пожаловать!">
           <h2 className="text-3xl font-bold mb-4">Добро пожаловать!</h2>
-          <p className="mb-6">
+          <p style={{ marginBottom: "1rem" }}>
             Ваша красота и здоровье — ваш голос! Присоединяйтесь к обсуждению и
             делитесь своими знаниями!
           </p>
@@ -99,7 +72,12 @@ export const SignInPage = withPageWrapper({
         <img
           src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9kIwqQI4Wm__s70LeqFj4guuBuQuIl9IYWj-TRFFSyoSIkuvNUx6iB6rMhi-L_gfYGCT_tNUGhj_M4WfujL-wvt7dv9NjESoJmRis_6b8wbeuULO1fh-_sL6ADzkSpWtPBY5ISaZwORk/s1440/6f7fd0cb-2293-4fa5-942e-991c1eb3bedb.jpg"
           alt="Beauty & Health"
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            borderRadius: "10px 10px 10px 10px",
+          }}
         />
       </section>
     </main>

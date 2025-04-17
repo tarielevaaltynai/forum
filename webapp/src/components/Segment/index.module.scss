@@ -24,18 +24,19 @@
 
 .segment {
   background-color: #ffffff;
-  padding: 4px;
-  border-radius: 4px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 2px;
+  border: 1px solid #d1d5db;
+  border-top: none;
 
   h1.title {
     @include h1;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
 
   h2.title {
     @include h2;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
 
   .description {
@@ -45,11 +46,14 @@
   }
 
   .content {
-    margin-bottom: 16px;
+    margin-bottom: 1px;
+    padding-left: 30px;
+    padding-right: 30px;
   }
 
   & + .segment {
-    margin-top: 40px;
+    border-top: none;
+    margin-top: 0; // если надо
   }
   .footer {
     display: flex;
@@ -57,7 +61,7 @@
     color: #6b7280;
 
     i {
-      margin-right: 8px;
+      margin-right: 2px;
     }
   }
 }

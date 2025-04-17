@@ -1,5 +1,7 @@
+
 import { createTrpcRouter } from "../lib/trpc";
 import { getLikedIdeasTrpcRoute } from "./ideas/getLikedIdeas";
+
 // @index('./**/index.ts', f => `import { ${f.path.split('/').slice(0, -1).pop()}TrpcRoute } from '${f.path.split('/').slice(0, -1).join('/')}'`)
 import { getMeTrpcRoute } from "./auth/getMe";
 import { signInTrpcRoute } from "./auth/signIn";
@@ -24,6 +26,9 @@ import { createReplyTrpcRoute } from "./ideas/createReply";
 import { getMyIdeasTrpcRoute } from "./ideas/getMyIdeas";
 import { rejectSpecialist } from "./ideas/getUnverifiedSpecialists";
 import { verifySpecialist } from "./ideas/getUnverifiedSpecialists";
+
+import { getUserByIdTrpcRoute } from "./auth/getUserById"; // ⬅️ ДОБАВЬ
+
 // @endindex
 import { prepareS3UploadTrpcRoute } from './upload/prepareS3Upload'
 import { getCurrentUserTrpcRoute } from "./auth/getCurrentUser";
@@ -33,6 +38,7 @@ import { getUserIdeasByNickTrpcRoute } from "./ideas/getUserIdeasByNick";
 export const trpcRouter = createTrpcRouter({
   getCurrentUser:getCurrentUserTrpcRoute,
   // @index('./**/index.ts', f => `${f.path.split('/').slice(0, -1).pop()}: ${f.path.split('/').slice(0, -1).pop()}TrpcRoute,`)
+
 getLikedIdeas:getLikedIdeasTrpcRoute,
 
   getMe: getMeTrpcRoute,
@@ -43,28 +49,41 @@ getLikedIdeas:getLikedIdeasTrpcRoute,
   signUp: signUpTrpcRoute,
   updateProfile: updateProfileTrpcRoute,
   updateAvatar: updateAvatarTrpcRoute,
+
   createComment: createCommentTrpcRoute,
   getComments: getCommentsTrpcRoute,
   getReplies: getRepliesTrpcRoute,
   prepareS3Upload: prepareS3UploadTrpcRoute,
+
   blockIdea: blockIdeaTrpcRoute,
   updatePassword: updatePasswordTrpcRoute,
-  createReply: createReplyTrpcRoute,
+
   createIdea: createIdeaTrpcRoute,
   getIdea: getIdeaTrpcRoute,
   
   getIdeas: getIdeasTrpcRoute,
   setIdeaLike: setIdeaLikeTrpcRoute,
   updateIdea: updateIdeaTrpcRoute,
+
+  getUserById: getUserByIdTrpcRoute,
+  
   prepareCloudinaryUpload: prepareCloudinaryUploadTrpcRoute,
+
+
+  
+
   getMyIdeas: getMyIdeasTrpcRoute,
+
   getUserProfile:getUserProfileTrpcRoute,
   getUserProfileByNick:getUserProfileByNickTrpcRoute,
   getUserIdeasByNick:getUserIdeasByNickTrpcRoute
 
-  // @endindex
-});
 
-export type TrpcRouter = typeof trpcRouter;
-export type TrpcRouterInput = inferRouterInputs<TrpcRouter>;
-export type TrpcRouterOutput = inferRouterOutputs<TrpcRouter>;
+  // @endindex
+})
+
+export type TrpcRouter = typeof trpcRouter
+export type TrpcRouterInput = inferRouterInputs<TrpcRouter>
+export type TrpcRouterOutput = inferRouterOutputs<TrpcRouter>
+
+

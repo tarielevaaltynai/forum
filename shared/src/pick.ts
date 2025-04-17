@@ -6,3 +6,5 @@ export const pick = <TObject extends Object, TKeys extends keyof TObject>(
 ): Pick<TObject, TKeys> => {
   return lodashPick(obj, keys)
 }
+
+//tobject попадает тип нашего объекта  а tkey ключи этих объектов
