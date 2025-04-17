@@ -27,7 +27,7 @@ export const toClientMe = (user: User | null) => {
 };
 
 // Тип для клиентского представления пользователя
-export type ClientMe = ReturnType<typeof toClientMe>;
+export type ClientMe = ReturnType<typeof toClientMe>;  // создали свои пик и омит
 
 // Хелпер для проверки аватара
 export const hasAvatar = (

@@ -39,7 +39,7 @@ const zEnv = z.object({
   BREVO_API_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal,
   FROM_EMAIL_NAME: zEnvNonemptyTrimmed,
   FROM_EMAIL_ADDRESS: zEnvNonemptyTrimmed,
-  DEBUG: z
+  DEBUG: z    //validation
     .string()
     .optional()
     .refine(

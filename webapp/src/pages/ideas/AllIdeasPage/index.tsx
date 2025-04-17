@@ -92,34 +92,24 @@ export const AllIdeasPage = withPageWrapper({
             {data.pages
               .flatMap((page) => page.ideas)
               .map((idea) => (
-                <div className={css.idea} key={idea.nick}>
+                <div className={css.idea} key={idea.id}>
                   <Segment size={2}>
                     {/* 1. Автор */}
-                    <div className={css.author}>
-                      <img
-                        className={css.avatar}
-                        src={getAvatarUrl(idea.author?.avatar, "small")}
-                        alt="avatar"
-                      />
-                      <div className={css.name}>
-                        {idea.author?.id ? (
-                          <Link
-                            to={getUserProfileRoute({ id: idea.author.id })}
-                            className={css.authorLink}
-                          >
-                            {idea.author.nick}
-                          </Link>
-                        ) : (
-                          idea.author?.nick ?? "Unknown"
-                        )}
-                        {idea.author?.name && (
-                          <span> ({idea.author.name})</span>
-                        )}
-                        {idea.author?.specialty && (
-                          <span> ({idea.author.specialty})</span>
-                        )}
-                      </div>
-                    </div>
+                  <div className={css.name}>
+  {idea.author ? (
+    <Link to={`/users/${idea.author.id}`} className={css.authorLink}>
+      {idea.author.nick}
+    </Link>
+  ) : (
+    "Unknown"
+  )}
+  {idea.author?.name && (
+    <span> ({idea.author.name})</span>
+  )}
+  {idea.author?.specialty && (
+    <span> ({idea.author.specialty})</span>
+  )}
+</div>
 
                     {/* 2. Информация об идее */}
                     <div className={css.ideaContent}>
@@ -130,7 +120,6 @@ export const AllIdeasPage = withPageWrapper({
                         {idea.name}
                       </Link>
 
-                      {/* Полный текст идеи */}
                       {idea.text && (
                         <div className={css.ideaText}>{idea.text}</div>
                       )}
