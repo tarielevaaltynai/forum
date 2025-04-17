@@ -201,6 +201,24 @@
   font-size: inherit;
 }
 
+
+.authorLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: inherit;
+  font-weight: 500;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+
+
+
+
 .createdAt {
   font-size: var(--font-size-small);
   margin-bottom: 6px;

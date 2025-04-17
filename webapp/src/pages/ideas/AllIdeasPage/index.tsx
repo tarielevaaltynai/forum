@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import { getViewIdeaRoute } from "../../../lib/routes";
 // import { trpc } from "../../../lib/trpc";
 // import { Segment } from "../../../components/Segment";
@@ -156,6 +157,9 @@
 
 import { useState } from "react";
 import { getViewIdeaRoute } from "../../../lib/routes";
+=======
+import { getViewIdeaRoute, getUserProfileRoute } from "../../../lib/routes";
+>>>>>>> 4c668c81b143e055d51b3691707471cb17755409
 import { trpc } from "../../../lib/trpc";
 import { Segment } from "../../../components/Segment";
 import { Link } from "react-router-dom";
@@ -196,6 +200,7 @@ export const AllIdeasPage = withPageWrapper({
     validationSchema: zGetIdeasTrpcInput.pick({ search: true }),
   });
 
+<<<<<<< HEAD
   const [expandedIdeas, setExpandedIdeas] = useState<Record<string, boolean>>(
     {}
   );
@@ -209,6 +214,9 @@ export const AllIdeasPage = withPageWrapper({
 
   const search = useDebounce(formik.values.search, 500);
   const utils = trpc.useUtils();
+=======
+  const search = useDebounce(formik.values.search, 500);
+>>>>>>> 4c668c81b143e055d51b3691707471cb17755409
 
   const {
     data,
@@ -285,8 +293,9 @@ export const AllIdeasPage = withPageWrapper({
             {data.pages
               .flatMap((page) => page.ideas)
               .map((idea) => (
-                <div className={css.idea} key={idea.nick}>
+                <div className={css.idea} key={idea.id}>
                   <Segment size={2}>
+<<<<<<< HEAD
                     {/* Автор */}
                     <div className={css.author}>
                       <img

@@ -1,21 +1,3 @@
-// import { type User } from "@prisma/client";
-// import _ from "lodash";
-// import { pick } from "@forum_project/shared/src/pick";
-// export const toClientMe = (user: User | null) => {
-//   return (
-//     user &&
-//     pick(user, [
-//       "id",
-//       "nick",
-//       "name",
-//       "surname",
-//       "gender",
-//       "birthDate",
-//       "permissions",
-//       "avatar",
-//     ])
-//   );
-// };
 
 import { type User } from "@prisma/client";
 import _ from "lodash";
@@ -45,7 +27,7 @@ export const toClientMe = (user: User | null) => {
 };
 
 // Тип для клиентского представления пользователя
-export type ClientMe = ReturnType<typeof toClientMe>;
+export type ClientMe = ReturnType<typeof toClientMe>;  // создали свои пик и омит
 
 // Хелпер для проверки аватара
 export const hasAvatar = (

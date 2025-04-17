@@ -1,7 +1,67 @@
+/*
+export const SignUpPage = () => {
+  const navigate = useNavigate()
+  const trpcUtils = trpc.useContext()
+  const [submittingError, setSubmittingError] = useState<string | null>(null)
+  const signUp = trpc.signUp.useMutation()
+  const formik = useFormik({
+    initialValues: {
+      nick: '',
+      password: '',
+      passwordAgain: '',
+    },
+    validate: withZodSchema(
+      zSignUpTrpcInput
+        .extend({
+          passwordAgain: z.string().min(1),
+        })
+        .superRefine((val, ctx) => {
+          if (val.password !== val.passwordAgain) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Passwords must be the same',
+              path: ['passwordAgain'],
+            })
+          }
+        })
+    ),
+    onSubmit: async (values) => {
+      try {
+        setSubmittingError(null)
+        const { token } = await signUp.mutateAsync(values)
+        Cookies.set('token', token, { expires: 99999 })
+        void trpcUtils.invalidate()
+        navigate(getAllIdeasRoute())
+      } catch (err: any) {
+        setSubmittingError(err.message)
+      }
+    },
+  })
+
+  return (
+    <Segment title="Sign Up">
+      <form onSubmit={formik.handleSubmit}>
+        <FormItems>
+          <Input label="Nick" name="nick" formik={formik} />
+          <Input label="Password" name="password" type="password" formik={formik} />
+          <Input label="Password again" name="passwordAgain" type="password" formik={formik} />
+          {!formik.isValid && !!formik.submitCount && <Alert color="red">Some fields are invalid</Alert>}
+          {submittingError && <Alert color="red">{submittingError}</Alert>}
+          <Button loading={formik.isSubmitting}>Sign Up</Button>
+        </FormItems>
+      </form>
+    </Segment>
+  )
+}
+  */
 import { zSignUpTrpcInput } from "@forum_project/backend/src/router/auth/signUp/input";
 import { z } from "zod";
 import Cookies from "js-cookie";
 import { useForm } from "../../../lib/form";
+import {
+  zPasswordsMustBeTheSame,
+  zStringRequired,
+} from "@forum_project/shared/src/zod";
 import { Alert } from "../../../components/Alert";
 import { Button } from "../../../components/Button";
 import { FormItems } from "../../../components/FormItems";
@@ -9,42 +69,19 @@ import { Input } from "../../../components/Input";
 import { Segment } from "../../../components/Segment";
 import { trpc } from "../../../lib/trpc";
 import { withPageWrapper } from "../../../lib/pageWrapper";
-import "./index.module.scss";
+import css from "./index.module.scss";
 import { DatePickerInput } from "../../../components/DatePickerInput";
 import { SelectInput } from "../../../components/SelectInput";
-import { useMemo } from "react";
-import { UploadToS3 } from "../../../components/UploadToS3";
-
-// Функция для валидации совпадения пароля и подтверждения пароля
-const zPasswordsMustBeTheSame = (
-  passwordField: string,
-  confirmPasswordField: string
-) => {
-  return (data: any) => {
-    if (data[passwordField] !== data[confirmPasswordField]) {
-      return {
-        [confirmPasswordField]: "Пароли не совпадают",
-      };
-    }
-  };
-};
-
 export const SignUpPage = withPageWrapper({
   redirectAuthorized: true,
   title: "Sign Up",
 })(() => {
   const trpcUtils = trpc.useContext();
   const signUp = trpc.signUp.useMutation();
-
-  const genderOptions = [
+  const options = [
     { value: "Мужской", label: "Мужской" },
     { value: "Женский", label: "Женский" },
     { value: "Другой", label: "Другой" },
-  ];
-
-  const roleOptions = [
-    { value: "USER", label: "Обычный пользователь" },
-    { value: "EXPERT", label: "Специалист" },
   ];
 
   const { formik, buttonProps, alertProps } = useForm({
@@ -52,21 +89,17 @@ export const SignUpPage = withPageWrapper({
       nick: "",
       password: "",
       passwordAgain: "",
-      email: "",
       birthDate: "",
       surname: "",
       name: "",
       gender: "",
-      role: "USER", // по умолчанию
-      specialty: "",
-      document: "",
     },
-    validationSchema: z
-      .object({
-        ...zSignUpTrpcInput.shape, // Вставляем существующие поля из zSignUpTrpcInput
-        passwordAgain: z.string().min(1, "Повторите пароль"), // Добавляем новое поле для повторного пароля
+    validationSchema: zSignUpTrpcInput
+      .extend({
+        passwordAgain: zStringRequired,
       })
       .superRefine(zPasswordsMustBeTheSame("password", "passwordAgain")),
+
     onSubmit: async (values) => {
       const { token } = await signUp.mutateAsync(values);
       Cookies.set("token", token, { expires: 99999 });
@@ -75,27 +108,12 @@ export const SignUpPage = withPageWrapper({
     resetOnSuccess: false,
   });
 
-  const isExpert = useMemo(
-    () => formik.values.role === "EXPERT",
-    [formik.values.role]
-  );
-
   return (
-    <main className="sign-up-page" style={{ display: "flex", height: "110vh" }}>
-      <section
-        className="signup-form"
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "5rem",
-        }}
-      >
+    <main className="sign-up-page" style={{ display: "flex", height: "100vh" }}>
+      <section className="signup-form" style={{ flex: 1, padding: "2rem" }}>
         <Segment title="Добро пожаловать!">
           <h2 className="text-3xl font-bold mb-4">Присоединяйтесь к нам!</h2>
-          <p style={{ marginBottom: "1rem" }}>
+          <p className="mb-6">
             Создайте аккаунт и начните делиться своими знаниями и идеями!
           </p>
           <form onSubmit={formik.handleSubmit}>
@@ -127,6 +145,7 @@ export const SignUpPage = withPageWrapper({
                 name="gender"
                 formik={formik}
               />
+
               <SelectInput
                 options={roleOptions}
                 label="Роль"
@@ -159,12 +178,7 @@ export const SignUpPage = withPageWrapper({
         <img
           src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9kIwqQI4Wm__s70LeqFj4guuBuQuIl9IYWj-TRFFSyoSIkuvNUx6iB6rMhi-L_gfYGCT_tNUGhj_M4WfujL-wvt7dv9NjESoJmRis_6b8wbeuULO1fh-_sL6ADzkSpWtPBY5ISaZwORk/s1440/6f7fd0cb-2293-4fa5-942e-991c1eb3bedb.jpg"
           alt="Beauty & Health"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            borderRadius: "10px 10px 10px 10px",
-          }}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </section>
     </main>
