@@ -31,7 +31,12 @@ import { getUserByIdTrpcRoute } from "./auth/getUserById"; // ⬅️ ДОБАВ�
 
 // @endindex
 import { prepareS3UploadTrpcRoute } from './upload/prepareS3Upload'
+import { getCurrentUserTrpcRoute } from "./auth/getCurrentUser";
+import { getUserProfileTrpcRoute } from "./ideas/getUserProfile";
+import {  getUserProfileByNickTrpcRoute } from "./auth/getUserProfileByNick";
+import { getUserIdeasByNickTrpcRoute } from "./ideas/getUserIdeasByNick";
 export const trpcRouter = createTrpcRouter({
+  getCurrentUser:getCurrentUserTrpcRoute,
   // @index('./**/index.ts', f => `${f.path.split('/').slice(0, -1).pop()}: ${f.path.split('/').slice(0, -1).pop()}TrpcRoute,`)
 
 getLikedIdeas:getLikedIdeasTrpcRoute,
@@ -55,6 +60,7 @@ getLikedIdeas:getLikedIdeasTrpcRoute,
 
   createIdea: createIdeaTrpcRoute,
   getIdea: getIdeaTrpcRoute,
+  
   getIdeas: getIdeasTrpcRoute,
   setIdeaLike: setIdeaLikeTrpcRoute,
   updateIdea: updateIdeaTrpcRoute,
@@ -67,6 +73,11 @@ getLikedIdeas:getLikedIdeasTrpcRoute,
   
 
   getMyIdeas: getMyIdeasTrpcRoute,
+
+  getUserProfile:getUserProfileTrpcRoute,
+  getUserProfileByNick:getUserProfileByNickTrpcRoute,
+  getUserIdeasByNick:getUserIdeasByNickTrpcRoute
+
 
   // @endindex
 })

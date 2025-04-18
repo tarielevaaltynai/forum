@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import type { TrpcRouterOutput } from "@forum_project/backend/src/router";
 import {
   getAvatarUrl,
@@ -10,44 +10,29 @@ import { withPageWrapper } from "../../../lib/pageWrapper";
 import { trpc } from "../../../lib/trpc";
 import format from "date-fns/format";
 import { LinkButton } from "../../../components/Button";
-=======
-import type { TrpcRouterOutput } from '@forum_project/backend/src/router'
-import { getAvatarUrl, getCloudinaryUploadUrl } from '@forum_project/shared/src/cloudinary'
-import ImageGallery from "react-image-gallery";
-import { withPageWrapper } from "../../../lib/pageWrapper";
-import { trpc } from "../../../lib/trpc";
-import format from 'date-fns/format'
->>>>>>> 4c668c81b143e055d51b3691707471cb17755409
+
 import css from "./index.module.scss";
 import {
   CommentList,
   CreateCommentForm,
 } from "../../../components/CommentsList";
 import { useEffect, useState } from "react";
-<<<<<<< HEAD
-import {
-  getAllIdeasRoute,
-  getEditIdeaRoute,
-  getViewIdeaRoute,
-} from "../../../lib/routes";
-=======
+
+import { Link } from "react-router-dom";
+
+
 import { getAllIdeasRoute, getEditIdeaRoute, getViewIdeaRoute } from "../../../lib/routes";
 import { Alert } from "../../../components/Alert";
 import { Button, LinkButton } from "../../../components/Button";
 import { FormItems } from "../../../components/FormItems";
 import { Segment } from '../../../components/Segment'
->>>>>>> 4c668c81b143e055d51b3691707471cb17755409
 import {
   canBlockIdeas,
   canEditIdea,
 } from "@forum_project/backend/src/utils/can";
-<<<<<<< HEAD
 
-import { Segment } from "../../../components/Segment";
-=======
 import { useForm } from "../../../lib/form";
 import { Icon } from "../../../components/Icon";
->>>>>>> 4c668c81b143e055d51b3691707471cb17755409
 
 const getLikeWord = (count) => {
   if (count % 10 === 1 && count % 100 !== 11) {
@@ -228,7 +213,9 @@ export const ViewsIdeaPage = withPageWrapper({
           />
           <div className={css.authorDetails}>
             <div className={css.authorName}>
-              {idea.author.nick}
+            <Link to={`/ideas/${idea.author.nick}/profile`} className={css.authorNick}>
+  {idea.author.nick}
+</Link>
               {idea.author.name && (
                 <span className={css.authorRealName}>
                   {" "}

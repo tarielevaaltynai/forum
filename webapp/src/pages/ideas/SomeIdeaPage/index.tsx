@@ -1,48 +1,48 @@
-// Импорты оставим без изменений
+// Импорты
 import { getViewIdeaRoute } from "../../../lib/routes"; 
-
 import { trpc } from "../../../lib/trpc";
 import { Segment } from "../../../components/Segment";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import css from "./index.module.scss";
 import { Alert } from "../../../components/Alert";
 import InfiniteScroll from "react-infinite-scroller";
 import { layoutContentElRef } from "../../../components/Layout";
 import { Loader } from "../../../components/Loader";
 import { withPageWrapper } from "../../../lib/pageWrapper";
-
 import { getAvatarUrl } from '@forum_project/shared/src/cloudinary';
 import { Icon } from '../../../components/Icon';
 import { format } from 'date-fns';
 
-
 const getLikeWord = (count: number) => {
-  if (count % 10 === 1 && count % 100 !== 11) return "лайк";
-  if (
-    count % 10 >= 2 &&
-    count % 10 <= 4 &&
-    (count % 100 < 10 || count % 100 >= 20)
-  )
-    return "лайка";
-  return "лайков";
+  if (count % 10 === 1 && count % 100 !== 11) return 'лайк';
+  if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 10 || count % 100 >= 20)) return 'лайка';
+  return 'лайков';
 };
 
-export const MyIdeasPage = withPageWrapper({
-  title: "Мои идеи",
-  isTitleExact: true,
+export const SomeUserPage = withPageWrapper({
+  title: "Профиль пользователя",
+  isTitleExact: false,
 })(() => {
-  const [expandedIdeas, setExpandedIdeas] = useState<Record<string, boolean>>(
-    {}
-  );
-  const utils = trpc.useUtils();
+  // Получаем ник пользователя из URL-параметров
+  const { someNick } = useParams<{ someNick: string }>();
+  
+  // Проверяем, что ник пользователя был передан
+  if (!someNick) {
+    return (
+      <div className={css.page}>
+        <Alert color="red">Не указан ник пользователя</Alert>
+      </div>
+    );
+  }
 
-  const toggleExpand = (ideaId: string) => {
-    setExpandedIdeas((prev) => ({
-      ...prev,
-      [ideaId]: !prev[ideaId],
-    }));
-  };
+  // Запрашиваем профиль пользователя по нику
+  const { 
+    data: userProfile, 
+    isLoading: isProfileLoading, 
+    error: profileError 
+  } = trpc.getUserProfileByNick.useQuery({ nick: someNick });
 
+  // Запрашиваем идеи пользователя по нику
   const {
     data: ideasData,
     error: ideasError,
@@ -52,19 +52,27 @@ export const MyIdeasPage = withPageWrapper({
     fetchNextPage,
     isFetchingNextPage,
     isRefetching,
-  } = trpc.getMyIdeas.useInfiniteQuery(
-    { limit: 10 },
+  } = trpc.getUserIdeasByNick.useInfiniteQuery(
+    { 
+      limit: 10,
+      search: someNick // Используем ник пользователя для фильтрации идей
+    },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     }
   );
 
-  const { data: userProfile, isLoading: isProfileLoading, error: profileError } = trpc.getUserProfile.useQuery();
+  // Мутация для лайков (если текущий пользователь авторизован)
+  const likeIdea = trpc.setIdeaLike.useMutation({
+    onSuccess: () => {
+      // Можно добавить логику обновления счетчика лайков без перезагрузки всего списка
+    }
+  });
 
   return (
     <div className={css.page}>
       {/* Сегмент профиля */}
-      <Segment title="Мой профиль" className={css.profileSegment}>
+      <Segment title={`Профиль пользователя ${someNick}`} className={css.profileSegment}>
         {isProfileLoading ? (
           <Loader type="section" />
         ) : profileError ? (
@@ -95,13 +103,13 @@ export const MyIdeasPage = withPageWrapper({
       </Segment>
 
       {/* Сегмент идей */}
-      <Segment title="Мои идеи">
+      <Segment title={`Идеи пользователя ${someNick}`}>
         {isIdeasLoading || isRefetching ? (
           <Loader type="section" />
         ) : isIdeasError ? (
           <Alert color="red">{ideasError.message}</Alert>
         ) : !ideasData?.pages[0]?.ideas.length ? (
-          <Alert color="brown">Вы ещё не добавили ни одной идеи</Alert>
+          <Alert color="brown">Пользователь еще не добавил ни одной идеи</Alert>
         ) : (
           <div className={css.ideas}>
             <InfiniteScroll
@@ -126,7 +134,7 @@ export const MyIdeasPage = withPageWrapper({
               {ideasData.pages
                 .flatMap((page) => page.ideas)
                 .map((idea) => (
-                  <div className={css.idea} key={idea.nick}>
+                  <div className={css.idea} key={idea.id}>
                     <Segment size={2}>
                       <div className={css.author}>
                         <img
@@ -138,69 +146,43 @@ export const MyIdeasPage = withPageWrapper({
                           {idea.author?.nick ?? 'Unknown'}
                           {idea.author?.name && <span> ({idea.author.name})</span>}
                         </div>
-
                       </div>
 
-                    {/* Контент идеи */}
-                    <div className={css.ideaContent}>
-                      <Link
-                        className={css.ideaLink}
-                        to={getViewIdeaRoute({ someNick: idea.nick })}
-                      >
-                        {idea.name}
-                      </Link>
-
-                      {idea.description && (
-                        <div className={css.textContainer}>
-                          <div
-                            className={cn(css.ideaText, {
-                              [css.expanded]: expandedIdeas[idea.id],
-                            })}
-                          >
-                            {idea.description}
-                          </div>
-                          {idea.description.length > 200 && (
-                            <button
-                              onClick={() => toggleExpand(idea.id)}
-                              className={css.showMoreBtn}
-                            >
-                              {expandedIdeas[idea.id]
-                                ? "Свернуть"
-                                : "Показать ещё"}
-                            </button>
-                          )}
+                      <div className={css.ideaContent}>
+                        <Link className={css.ideaLink} to={getViewIdeaRoute({ someNick: idea.nick })}>
+                          {idea.name}
+                        </Link>
+                        <div className={css.description}>
+                          {idea.description}
                         </div>
-                      )}
-                    </div>
+                      </div>
 
-                    {/* Лайки */}
-                    <div className={css.likes}>
-                      <button
-                        className={cn(css.likeButton, {
-                          [css.liked]: idea.isLikedByMe,
-                        })}
-                        onClick={() => handleLike(idea.id, idea.isLikedByMe)}
-                        aria-label={
-                          idea.isLikedByMe ? "Убрать лайк" : "Поставить лайк"
-                        }
-                      >
-                        <Heart
-                          size={20}
-                          className={css.heartIcon}
-                          fill={idea.isLikedByMe ? "currentColor" : "none"}
+                      <div className={css.likes}>
+                        <Icon
+                          size={32}
+                          className={`${css.likeIcon} ${idea.isLikedByMe ? css.likeIconFilled : ''} transition-transform duration-300 active:scale-90`}
+                          name="likeFilled"
+                          onClick={() => {
+                            likeIdea.mutate({ 
+                              ideaId: idea.id, 
+                              isLikedByMe: !idea.isLikedByMe 
+                            });
+                          }}
+                          role="button"
+                          aria-label="Лайк"
+                          tabIndex={0}
                         />
-                      </button>
-                      <span className={css.likeCount}>
-                        {idea.likesCount} {getLikeWord(idea.likesCount)}
-                      </span>
-                    </div>
-                  </Segment>
-                </div>
-              ))}
-          </InfiniteScroll>
-        </div>
-      )}
-
+                        <span className={css.likeCount}>
+                          {idea.likesCount} {getLikeWord(idea.likesCount)}
+                        </span>
+                      </div>
+                    </Segment>
+                  </div>
+                ))}
+            </InfiniteScroll>
+          </div>
+        )}
+      </Segment>
     </div>
   );
 });

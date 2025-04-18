@@ -21,7 +21,10 @@ import UserProfilePage from './pages/users/id';
 import { Layout } from "./components/Layout";
 import './styles/global.scss'
 
-export const App = () => {
+import { MyIdeasPage2, UserProfilePage } from "./pages/ideas/MyIdeasPage2";
+import { SomeUserPage } from "./pages/ideas/SomeIdeaPage";
+ export const App=()=>{
+
   return (
     <HelmetProvider>
       <TrpcProvider>
@@ -42,13 +45,19 @@ export const App = () => {
                 <Route path={routes.getMyIdeasRoute.definition} element={<MyIdeasPage />} />
                 <Route path={routes.getLikedIdeasRoute.definition} element={<LikedIdeasPage />} />
                 <Route path={routes.getAdminSpecialistRoute.definition} element={<AdminSpecialistsPage />} />
-                <Route path={routes.getUserProfileRoute.definition} element={<UserProfilePage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </AppContextProvider>
-      </TrpcProvider>
-    </HelmetProvider>
+
+                <Route path={routes.getUserProfileByNick.definition} element={<SomeUserPage />} />
+
+
+                
+              <Route path="*" element={<NotFoundPage />} />
+              
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AppContextProvider>
+    </TrpcProvider>
+     </HelmetProvider>
+
   )
 }
