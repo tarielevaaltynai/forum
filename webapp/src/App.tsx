@@ -17,11 +17,9 @@ import { AppContextProvider } from './lib/ctx';
 import * as routes from './lib/routes';
 import { SentryUser } from './lib/sentry'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import UserProfilePage from './pages/users/id';
 import { Layout } from "./components/Layout";
 import './styles/global.scss'
 
-import { MyIdeasPage2, UserProfilePage } from "./pages/ideas/MyIdeasPage2";
 import { SomeUserPage } from "./pages/ideas/SomeIdeaPage";
  export const App=()=>{
 
