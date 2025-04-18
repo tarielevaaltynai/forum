@@ -1,5 +1,5 @@
 // Импорты оставим без изменений
-import { getViewIdeaRoute } from "../../../lib/routes"; 
+import { getViewIdeaRoute } from "../../../lib/routes";
 
 import { trpc } from "../../../lib/trpc";
 import { Segment } from "../../../components/Segment";
@@ -11,10 +11,12 @@ import { layoutContentElRef } from "../../../components/Layout";
 import { Loader } from "../../../components/Loader";
 import { withPageWrapper } from "../../../lib/pageWrapper";
 
-import { getAvatarUrl } from '@forum_project/shared/src/cloudinary';
-import { Icon } from '../../../components/Icon';
-import { format } from 'date-fns';
-
+import { getAvatarUrl } from "@forum_project/shared/src/cloudinary";
+import { Icon } from "../../../components/Icon";
+import { format } from "date-fns";
+import { useState } from "react";
+import cn from "classnames";
+import { Heart } from "lucide-react";
 
 const getLikeWord = (count: number) => {
   if (count % 10 === 1 && count % 100 !== 11) return "лайк";
@@ -43,6 +45,19 @@ export const MyIdeasPage = withPageWrapper({
     }));
   };
 
+  const handleLike = async (ideaId: string, isLiked: boolean) => {
+    try {
+      if (isLiked) {
+        await trpc.unlikeIdea.mutate({ ideaId });
+      } else {
+        await trpc.likeIdea.mutate({ ideaId });
+      }
+      await utils.getMyIdeas.invalidate();
+    } catch (err) {
+      console.error("Ошибка при лайке:", err);
+    }
+  };
+
   const {
     data: ideasData,
     error: ideasError,
@@ -59,7 +74,11 @@ export const MyIdeasPage = withPageWrapper({
     }
   );
 
-  const { data: userProfile, isLoading: isProfileLoading, error: profileError } = trpc.getUserProfile.useQuery();
+  const {
+    data: userProfile,
+    isLoading: isProfileLoading,
+    error: profileError,
+  } = trpc.getUserProfile.useQuery();
 
   return (
     <div className={css.page}>
@@ -68,7 +87,9 @@ export const MyIdeasPage = withPageWrapper({
         {isProfileLoading ? (
           <Loader type="section" />
         ) : profileError ? (
-          <Alert color="red">Ошибка загрузки профиля: {profileError.message}</Alert>
+          <Alert color="red">
+            Ошибка загрузки профиля: {profileError.message}
+          </Alert>
         ) : userProfile ? (
           <div className={css.profile}>
             <img
@@ -82,11 +103,19 @@ export const MyIdeasPage = withPageWrapper({
               {userProfile.surname && <p>Фамилия: {userProfile.surname}</p>}
               {userProfile.gender && <p>Пол: {userProfile.gender}</p>}
               {userProfile.birthDate && (
-                <p>Дата рождения: {format(new Date(userProfile.birthDate), 'dd.MM.yyyy')}</p>
+                <p>
+                  Дата рождения:{" "}
+                  {format(new Date(userProfile.birthDate), "dd.MM.yyyy")}
+                </p>
               )}
               <p>Идей: {userProfile.ideasCount}</p>
-              <p>На сайте с {format(new Date(userProfile.createdAt), 'dd.MM.yyyy')}</p>
-              {userProfile.specialty && <p>Специальность: {userProfile.specialty}</p>}
+              <p>
+                На сайте с{" "}
+                {format(new Date(userProfile.createdAt), "dd.MM.yyyy")}
+              </p>
+              {userProfile.specialty && (
+                <p>Специальность: {userProfile.specialty}</p>
+              )}
             </div>
           </div>
         ) : (
@@ -120,7 +149,8 @@ export const MyIdeasPage = withPageWrapper({
               getScrollParent={() => layoutContentElRef.current}
               useWindow={
                 (layoutContentElRef.current &&
-                  getComputedStyle(layoutContentElRef.current).overflow) !== "auto"
+                  getComputedStyle(layoutContentElRef.current).overflow) !==
+                "auto"
               }
             >
               {ideasData.pages
@@ -135,72 +165,73 @@ export const MyIdeasPage = withPageWrapper({
                           alt="Аватар автора"
                         />
                         <div className={css.name}>
-                          {idea.author?.nick ?? 'Unknown'}
-                          {idea.author?.name && <span> ({idea.author.name})</span>}
-                        </div>
-
-                      </div>
-
-                    {/* Контент идеи */}
-                    <div className={css.ideaContent}>
-                      <Link
-                        className={css.ideaLink}
-                        to={getViewIdeaRoute({ someNick: idea.nick })}
-                      >
-                        {idea.name}
-                      </Link>
-
-                      {idea.description && (
-                        <div className={css.textContainer}>
-                          <div
-                            className={cn(css.ideaText, {
-                              [css.expanded]: expandedIdeas[idea.id],
-                            })}
-                          >
-                            {idea.description}
-                          </div>
-                          {idea.description.length > 200 && (
-                            <button
-                              onClick={() => toggleExpand(idea.id)}
-                              className={css.showMoreBtn}
-                            >
-                              {expandedIdeas[idea.id]
-                                ? "Свернуть"
-                                : "Показать ещё"}
-                            </button>
+                          {idea.author?.nick ?? "Unknown"}
+                          {idea.author?.name && (
+                            <span> ({idea.author.name})</span>
                           )}
                         </div>
-                      )}
-                    </div>
+                      </div>
 
-                    {/* Лайки */}
-                    <div className={css.likes}>
-                      <button
-                        className={cn(css.likeButton, {
-                          [css.liked]: idea.isLikedByMe,
-                        })}
-                        onClick={() => handleLike(idea.id, idea.isLikedByMe)}
-                        aria-label={
-                          idea.isLikedByMe ? "Убрать лайк" : "Поставить лайк"
-                        }
-                      >
-                        <Heart
-                          size={20}
-                          className={css.heartIcon}
-                          fill={idea.isLikedByMe ? "currentColor" : "none"}
-                        />
-                      </button>
-                      <span className={css.likeCount}>
-                        {idea.likesCount} {getLikeWord(idea.likesCount)}
-                      </span>
-                    </div>
-                  </Segment>
-                </div>
-              ))}
-          </InfiniteScroll>
-        </div>
-      )}
+                      {/* Контент идеи */}
+                      <div className={css.ideaContent}>
+                        <Link
+                          className={css.ideaLink}
+                          to={getViewIdeaRoute({ someNick: idea.nick })}
+                        >
+                          {idea.name}
+                        </Link>
 
+                        {idea.description && (
+                          <div className={css.textContainer}>
+                            <div
+                              className={cn(css.ideaText, {
+                                [css.expanded]: expandedIdeas[idea.id],
+                              })}
+                            >
+                              {idea.description}
+                            </div>
+                            {idea.description.length > 200 && (
+                              <button
+                                onClick={() => toggleExpand(idea.id)}
+                                className={css.showMoreBtn}
+                              >
+                                {expandedIdeas[idea.id]
+                                  ? "Свернуть"
+                                  : "Показать ещё"}
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Лайки */}
+                      <div className={css.likes}>
+                        <button
+                          className={cn(css.likeButton, {
+                            [css.liked]: idea.isLikedByMe,
+                          })}
+                          onClick={() => handleLike(idea.id, idea.isLikedByMe)}
+                          aria-label={
+                            idea.isLikedByMe ? "Убрать лайк" : "Поставить лайк"
+                          }
+                        >
+                          <Heart
+                            size={20}
+                            className={css.heartIcon}
+                            fill={idea.isLikedByMe ? "currentColor" : "none"}
+                          />
+                        </button>
+                        <span className={css.likeCount}>
+                          {idea.likesCount} {getLikeWord(idea.likesCount)}
+                        </span>
+                      </div>
+                    </Segment>
+                  </div>
+                ))}
+            </InfiniteScroll>
+          </div>
+        )}
+      </Segment>
     </div>
   );
 });

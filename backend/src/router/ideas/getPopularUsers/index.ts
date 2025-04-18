@@ -1,6 +1,4 @@
-// src/server/trpc/users/popularUsers.ts
 import { z } from 'zod';
-import { prisma } from '../../../prisma';
 import { trpcLoggedProcedure } from '../../../lib/trpc';
 import { TrpcContext } from '../../../lib/trpc';
 
@@ -10,96 +8,75 @@ export const zGetPopularUsersInput = z.object({
   search: z.string().optional(),
 });
 
-interface PopularUser {
-  id: string;
-  nick: string;
-  name: string | null;
-  avatar: string | null;
-  followersCount: number;
-  ideasCount: number;
-  avgLikes: number;
-  specialty?: string | null;
-  isVerified?: boolean;
-}
-
 export const getPopularUsersTrpcRoute = trpcLoggedProcedure
   .input(zGetPopularUsersInput)
-  .query(async ({ ctx, input }: { ctx: TrpcContext; input: { cursor?: string; limit: number; search?: string } }) => {
-    if (!ctx.prisma) {
-      throw new Error('PrismaClient is not available in context');
-    }
-
+  .query(async ({ ctx, input }) => {
     const { search, cursor, limit } = input;
-    
-    const rawUsers = await ctx.prisma.user.findMany({
+
+    const users = await ctx.prisma.user.findMany({
+      where: search
+        ? {
+            OR: [
+              { nick: { contains: search, mode: 'insensitive' as const } },
+              { name: { contains: search, mode: 'insensitive' as const } },
+            ],
+          }
+        : undefined,
       select: {
         id: true,
         nick: true,
         name: true,
         avatar: true,
-        _count: {
-          select: {
-            followers: true,
-            ideas: {
-              where: { blockedAt: null }
-            }
-          }
-        },
         ideas: {
           select: {
             _count: {
-              select: { ideasLikes: true }
-            }
-          }
+              select: { ideasLikes: true },
+            },
+          },
+        },
+        _count: {
+          select: {
+            ideas: true,
+          },
         },
         specialist: {
           select: {
             specialty: true,
-            isVerified: true
-          }
-        }
+            isVerified: true,
+          },
+        },
+        createdAt: true,
       },
-      where: {
-        AND: [
-          { blockedAt: null },
-          search ? {
-            OR: [
-              { nick: { contains: search, mode: 'insensitive' } },
-              { name: { contains: search, mode: 'insensitive' } }
-            ]
-          } : {}
-        ]
+      orderBy: {
+        createdAt: 'desc',
       },
-      orderBy: [
-        { followers: { _count: 'desc' } },
-        { ideas: { _count: 'desc' } }
-      ],
       cursor: cursor ? { id: cursor } : undefined,
       take: limit + 1,
     });
 
-    const processedUsers = rawUsers.map(user => {
-      const totalLikes = user.ideas.reduce((sum, idea) => sum + idea._count.ideasLikes, 0);
+    const formatted = users.map((user) => {
+      const totalLikes = user.ideas.reduce(
+        (sum, idea) => sum + idea._count.ideasLikes,
+        0
+      );
       const ideasCount = user._count.ideas;
-      
+
       return {
         id: user.id,
         nick: user.nick,
         name: user.name,
         avatar: user.avatar,
-        followersCount: user._count.followers,
         ideasCount,
         avgLikes: ideasCount > 0 ? Math.round(totalLikes / ideasCount) : 0,
-        specialty: user.specialist?.specialty,
-        isVerified: user.specialist?.isVerified
+        specialty: user.specialist?.specialty ?? null,
+        isVerified: user.specialist?.isVerified ?? false,
       };
     });
 
-    const nextUser = processedUsers[limit];
-    const nextCursor = nextUser?.id;
+    const nextCursor = formatted.length > limit ? formatted[limit].id : null;
 
     return {
-      users: processedUsers.slice(0, limit),
-      nextCursor
+      users: formatted.slice(0, limit),
+      nextCursor,
     };
   });

@@ -4,12 +4,10 @@ import {
   getAvatarUrl,
   getCloudinaryUploadUrl,
 } from "@forum_project/shared/src/cloudinary";
-import { Icon } from "../../../components/Icon";
 import ImageGallery from "react-image-gallery";
 import { withPageWrapper } from "../../../lib/pageWrapper";
 import { trpc } from "../../../lib/trpc";
 import format from "date-fns/format";
-import { LinkButton } from "../../../components/Button";
 
 import css from "./index.module.scss";
 import {
