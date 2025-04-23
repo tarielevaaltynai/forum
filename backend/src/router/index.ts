@@ -35,6 +35,7 @@ import { getCurrentUserTrpcRoute } from "./auth/getCurrentUser";
 import { getUserProfileTrpcRoute } from "./ideas/getUserProfile";
 import {  getUserProfileByNickTrpcRoute } from "./auth/getUserProfileByNick";
 import { getUserIdeasByNickTrpcRoute } from "./ideas/getUserIdeasByNick";
+import { getPopularUsersTrpcRoute } from "./ideas/getPopularUsers";
 export const trpcRouter = createTrpcRouter({
   getCurrentUser:getCurrentUserTrpcRoute,
   // @index('./**/index.ts', f => `${f.path.split('/').slice(0, -1).pop()}: ${f.path.split('/').slice(0, -1).pop()}TrpcRoute,`)
@@ -76,7 +77,8 @@ getLikedIdeas:getLikedIdeasTrpcRoute,
 
   getUserProfile:getUserProfileTrpcRoute,
   getUserProfileByNick:getUserProfileByNickTrpcRoute,
-  getUserIdeasByNick:getUserIdeasByNickTrpcRoute
+  getUserIdeasByNick:getUserIdeasByNickTrpcRoute,
+  getPopularUsers:getPopularUsersTrpcRoute
 
 
   // @endindex

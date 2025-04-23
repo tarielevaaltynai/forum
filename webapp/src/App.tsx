@@ -21,7 +21,6 @@ import { Layout } from "./components/Layout";
 import "./styles/global.scss";
 import { ThemeProvider } from "./components/Theme";
 
-import { MyIdeasPage2, UserProfilePage } from "./pages/ideas/MyIdeasPage2";
 import { SomeUserPage } from "./pages/ideas/SomeIdeaPage";
 export const App = () => {
   return (
