@@ -1,124 +1,138 @@
 .container {
-    display: flex;
-    min-height: 100vh;
-    padding: 2rem;
-    gap: 2rem;
-    flex-wrap: wrap; /* Позволяет элементам переноситься */
+  display: flex;
+  min-height: 100vh;
+  padding: 2rem;
+  gap: 2rem;
+  flex-wrap: wrap;
+  background-color: var(--bg-primary);
+}
+
+.profile {
+  width: 30%;
+  border-radius: 1rem;
+  background-color: var(--profile-bg);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  order: 1;
+  margin-bottom: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--profile-text);
+  border: 1px solid var(--border-primary);
+  transition: all 0.3s ease;
+}
+
+.segments {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+  order: 2;
+}
+
+.segment {
+  width: 100%;
+  background-color: var(--bg-secondary);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  border: 1px solid transparent;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 1rem;
+  text-align: left;
+  border: 1px solid var(--border-primary);
+  transition: all 0.5s ease;
+}
+
+.table th {
+  background-color: var(--table-header-bg);
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.table td {
+  color: var(--text-secondary);
+  vertical-align: middle;
+}
+
+.likeIcon {
+  cursor: pointer;
+  color: var(--like-color);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
   }
-  
-  .profile {
-    width: 30%;
-    border-radius: 1rem;
-    background-color: #9dd0e3;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    order: 1;
-    margin-bottom: 0;
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-align: center;
+}
+
+.greenButton {
+  background-color: var(--success-color);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--success-hover);
   }
-  
-  .segments {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    flex: 1;
-    order: 2;
+}
+
+.redButton {
+  background-color: var(--error-color);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--error-hover);
   }
-  
-  .segment {
-    width: 100%;
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .table th, .table td {
-    padding: 1rem;
-    text-align: left;
-    border: 1px solid #ddd;
-  }
-  
-  .table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-  }
-  
-  @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
-      gap: 1rem;
-    }
-  
-    .profile {
-      order: -1;
-      width: 100%;
-    }
-  
-    .segments {
-      width: 100%;
-    }
-  }
-  
-  @media (max-width: 1024px) {
-    .profile {
-      width: 100%;
-    }
-  }
-  .likeIcon {
-    cursor: pointer;
-    
-  }
-  .segment {
-    width: 100%;
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  th, td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-  }
-  
-  th {
-    background-color: #f4f4f4;
-  }
-  
-  td {
-    vertical-align: middle;
-  }
-  .greenButton {
-    background-color: green;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
-  .redButton {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
-  .buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
-  }
-  
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+
   button {
-    flex: 1; /* Все кнопки растягиваются на одинаковую ширину */
+    flex: 1;
+    cursor: pointer;
+    font-weight: 500;
   }
-  
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .profile {
+    order: -1;
+    width: 100%;
+    padding: 1.5rem;
+  }
+
+  .segments {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .profile {
+    width: 100%;
+  }
+}

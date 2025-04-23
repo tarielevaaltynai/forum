@@ -13,18 +13,16 @@ const baseSignUpSchema = z.object({
   surname: z.string().min(1),
   name: z.string().min(1),
   gender: z.string().min(1),
-  birthDate: z.coerce
-    .date()
-    .refine((date) => {
-      const minAge = 6;
-      const today = new Date();
-      const birthDateLimit = new Date(
-        today.getFullYear() - minAge,
-        today.getMonth(),
-        today.getDate()
-      );
-      return date <= birthDateLimit;
-    }, "Вам должно быть не менее 6 лет."),
+  birthDate: z.coerce.date().refine((date) => {
+    const minAge = 6;
+    const today = new Date();
+    const birthDateLimit = new Date(
+      today.getFullYear() - minAge,
+      today.getMonth(),
+      today.getDate()
+    );
+    return date <= birthDateLimit;
+  }, "Вам должно быть не менее 6 лет."),
   role: z.enum(["USER", "EXPERT"]),
   specialty: z.string().optional(), // Не обязательное поле для любого пользователя
   document: z.string().optional(), // Не обязательное поле для любого пользователя
@@ -70,4 +68,5 @@ export const zSignUpTrpcInput = baseSignUpSchema.superRefine((data, ctx) => {
       });
     }
   }
+  console.log("SIGNUP BACKEND ВЫЗВАН");
 });

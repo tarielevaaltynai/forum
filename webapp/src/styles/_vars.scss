@@ -37,13 +37,12 @@ $borderColor: #dddddd; // Цвет границ
 $fontSizeSmall: 12px;
 $fontSizeBase: 14px;
 
-
 // Транзиции
 $transitionDuration: 0.3s;
 $transitionTiming: ease;
 
 // Шрифты
-$defaultFontFamily: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+$defaultFontFamily: "Roboto", "Helvetica", "Arial", sans-serif;
 $defaultBackgroundColor: #fafafa;
 $defaultTextColor: $black;
 $defaultLineHeight: 1.5;
@@ -69,18 +68,82 @@ $spacingXl: 32px;
 $maxContentWidth: 1200px;
 $sidebarWidth: 250px;
 
-$defaultFontFamily: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+$defaultFontFamily: "Roboto", "Helvetica", "Arial", sans-serif;
 $defaultFontSize: 14px;
 $defaultBackgroundColor: #fafafa;
 $defaultTextColor: $black;
 $defaultLineHeight: 1.2;
 $borderRadiusSmall: 3px;
 
-
 // Подключение шрифтов через @font-face
 @font-face {
-  font-family: 'Roboto';
-  src: url('../assets/roboto/Roboto-VariableFont_wdth\,wght.ttf') format('woff');
+  font-family: "Roboto";
+  src: url("../assets/roboto/Roboto-VariableFont_wdth\,wght.ttf") format("woff");
   font-weight: normal;
   font-style: normal;
+}
+
+// Переменные для светлой темы (по умолчанию)
+$bg-color: #ffffff;
+$text-color: #333333;
+$border-color: #e0e0e0;
+// Добавьте другие переменные по необходимости
+
+// Переменные для темной темы
+.dark {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --border-color: #444444;
+  // Добавьте другие переменные по необходимости
+}
+.dark-theme {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+:root {
+  // Светлая тема
+  --bg-card: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #374151;
+  --text-tertiary: #6b7280;
+  --border-primary: #e5e7eb;
+  --border-avatar: #e5e7eb;
+  --shadow-card:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --accent-primary: #2563eb;
+  --accent-secondary: #1d4ed8;
+  --accent-blue: #1da1f2;
+  --like-color: #e0245e;
+  --button-edit-bg: #a03b72;
+  --button-edit-text: #ffffff;
+  --button-edit-hover: #1a91da;
+  --button-danger-bg: #e0245e;
+  --button-danger-text: #ffffff;
+  --button-danger-hover: #c01f51;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    // Темная тема
+    --bg-card: #1e1e1e;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #f3f4f6;
+    --text-secondary: #d1d5db;
+    --text-tertiary: #9ca3af;
+    --border-primary: #374151;
+    --border-avatar: #4b5563;
+    --shadow-card:
+      0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    --accent-primary: #3b82f6;
+    --accent-secondary: #2563eb;
+    --accent-blue: #1da1f2;
+    --like-color: #ec4899;
+    --button-edit-bg: #9d174d;
+    --button-edit-text: #ffffff;
+    --button-edit-hover: #3b82f6;
+    --button-danger-bg: #ec4899;
+    --button-danger-text: #ffffff;
+    --button-danger-hover: #db2777;
+  }
 }

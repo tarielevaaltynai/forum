@@ -1,5 +1,5 @@
-
 import type { TrpcRouterOutput } from "@forum_project/backend/src/router";
+
 import {
   getAvatarUrl,
   getCloudinaryUploadUrl,
@@ -18,12 +18,16 @@ import { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
-
-import { getAllIdeasRoute, getEditIdeaRoute, getViewIdeaRoute } from "../../../lib/routes";
+import {
+  getAllIdeasRoute,
+  getEditIdeaRoute,
+  getViewIdeaRoute,
+} from "../../../lib/routes";
 import { Alert } from "../../../components/Alert";
+import { BlockConfirm } from "../../../components/BlockConfirm";
 import { Button, LinkButton } from "../../../components/Button";
 import { FormItems } from "../../../components/FormItems";
-import { Segment } from '../../../components/Segment'
+import { Segment } from "../../../components/Segment";
 import {
   canBlockIdeas,
   canEditIdea,
@@ -144,7 +148,6 @@ const BlockIdea = ({
   );
 };
 
-
 const CommentSection = ({ ideaId }: { ideaId: string }) => {
   const [showComments, setShowComments] = useState(false);
   const { data: commentsData, isLoading } = trpc.getComments.useQuery(
@@ -211,9 +214,12 @@ export const ViewsIdeaPage = withPageWrapper({
           />
           <div className={css.authorDetails}>
             <div className={css.authorName}>
-            <Link to={`/ideas/${idea.author.nick}/profile`} className={css.authorNick}>
-  {idea.author.nick}
-</Link>
+              <Link
+                to={`/ideas/${idea.author.nick}/profile`}
+                className={css.authorNick}
+              >
+                {idea.author.nick}
+              </Link>
               {idea.author.name && (
                 <span className={css.authorRealName}>
                   {" "}
