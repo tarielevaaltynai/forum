@@ -3,6 +3,7 @@ import cn from "classnames";
 import { Link } from "react-router-dom";
 
 type ButtonColor = "red" | "green" | "blue";
+
 export type ButtonProps = {
   children: React.ReactNode;
   loading?: boolean;
@@ -46,13 +47,19 @@ export const LinkButton = ({
 }) => {
   return (
     <Link
-      className={cn({ [css.button]: true, [css[`color-${color}`]]: true })}
+
+      className={cn({
+        [css.button]: true,
+        [css[`color-${color}`]]: true,
+      })}
+
       to={to}
     >
       {children}
     </Link>
   );
 };
+
 export const Buttons = ({ children }: { children: React.ReactNode }) => {
   return <div className={css.buttons}>{children}</div>;
 };

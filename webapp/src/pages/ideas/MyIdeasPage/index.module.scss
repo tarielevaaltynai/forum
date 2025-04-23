@@ -210,3 +210,132 @@
     animation: heartBounce 0.6s;
   }
 }
+
+
+
+.profileContainer {
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.profileHeader {
+  display: flex;
+  gap: 24px;
+  position: relative;
+  align-items: flex-start;
+}
+
+.profileAvatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f3f4f6;
+}
+
+.profileInfo {
+  flex: 1;
+  margin-top: 6px;
+}
+
+.nameWrapper {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.profileName {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.profileUsername {
+  font-size: 16px;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.specialty {
+  display: inline-block;
+  margin: 8px 0;
+  padding: 6px 12px;
+  background: #67e25e;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #032c07;
+  font-weight: 500;
+}
+
+.joinDate {
+  display: block;
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+.editButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 8px 20px;
+  border: 1px solid #d1d5db;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  
+  &:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+  }
+}
+.profileDetails {
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #4b5563;
+  
+  span {
+    margin-top: 2px;
+  }
+}
+
+// Обновленные стили для даты присоединения
+.joinDate {
+  display: block;
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 12px;
+}
+.profileDetails {
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detailItem {
+  font-size: 14px;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

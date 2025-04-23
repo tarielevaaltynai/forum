@@ -7,7 +7,6 @@ export const getUserProfileTrpcRoute = trpcLoggedProcedure
     throw new Error('PrismaClient or user is not available in context');
   }
 
-  // Используем ID из контекста авторизации
   const user = await ctx.prisma.user.findUnique({
     where: { id: ctx.me.id },
     select: {
@@ -23,6 +22,7 @@ export const getUserProfileTrpcRoute = trpcLoggedProcedure
         select: {
           specialty: true,
           isVerified: true,
+          document: true
         },
       },
     },
@@ -32,15 +32,17 @@ export const getUserProfileTrpcRoute = trpcLoggedProcedure
     throw new Error('User not found');
   }
 
-  return {
-    nick: user.nick,
-    name: user.name,
-    avatar: user.avatar,
-    createdAt: user.createdAt,
-    surname: user.surname,
-    gender: user.gender,
-    birthDate: user.birthDate,
-    ideasCount: user._count.ideas,
-    specialty: user.specialist?.isVerified ? user.specialist.specialty : null,
-  };
+// В getUserProfileTrpcRoute изменим возвращаемые данные:
+return {
+  nick: user.nick,
+  name: user.name,
+  avatar: user.avatar,
+  createdAt: user.createdAt,
+  surname: user.surname,
+  gender: user.gender,
+  birthDate: user.birthDate,
+  ideasCount: user._count.ideas, // Добавляем счетчик идей
+  specialist: user.specialist,
+  // Добавляем недостающие поля
+};
 });
