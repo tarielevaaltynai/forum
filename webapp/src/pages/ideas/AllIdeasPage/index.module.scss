@@ -5,6 +5,8 @@
   padding: 20px;
   max-width: 800px;
   margin: 0 auto;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .filter {
@@ -21,10 +23,12 @@
     transition:
       transform 0.2s ease,
       box-shadow 0.2s ease;
+    border-radius: 8px;
+    padding: 2px;
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 12px var(--shadow-primary);
     }
 
     @media (max-width: 768px) {
@@ -44,7 +48,7 @@
     border-radius: 50%;
     object-fit: cover;
     margin-right: 12px;
-    border: 2px solid #f0f0f0;
+    border: 2px solid var(--border-avatar);
 
     @media (max-width: 480px) {
       width: 40px;
@@ -60,12 +64,12 @@
   .name {
     font-weight: 600;
     font-size: 16px;
-    color: #333;
+    color: var(--text-primary);
   }
 
   .meta {
     font-size: 13px;
-    color: #666;
+    color: var(--text-tertiary);
     margin-top: 2px;
 
     span + span {
@@ -81,13 +85,13 @@
     display: block;
     font-size: 20px;
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--text-accent);
     margin-bottom: 10px;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.5s ease;
 
     &:hover {
-      color: #3498db;
+      color: var(--accent-primary);
     }
 
     @media (max-width: 768px) {
@@ -98,7 +102,7 @@
   .ideaText {
     font-size: 15px;
     line-height: 1.5;
-    color: #555;
+    color: var(--text-secondary);
     white-space: pre-line;
     word-break: break-word;
 
@@ -124,11 +128,11 @@
   padding: 4px 8px;
   border-radius: 20px;
   transition: all 0.2s ease;
-  color: #64748b;
+  color: var(--text-tertiary);
 
   &:hover:not(:disabled) {
-    background: #f1f5f9;
-    color: #dc2626;
+    background: var(--bg-hover);
+    color: var(--like-hover);
 
     .heartIcon {
       transform: scale(1.1);
@@ -145,7 +149,7 @@
   }
 
   &.liked {
-    color: #dc2626;
+    color: var(--like-active);
   }
 
   &.animating {
@@ -162,6 +166,7 @@
 .likeCount {
   font-size: 14px;
   font-weight: 500;
+  color: var(--text-secondary);
 }
 
 @keyframes heartBounce {
@@ -189,7 +194,7 @@
 .ideaText {
   position: relative;
   line-height: 1.5;
-  max-height: 10em; /* Примерно 3 строки текста */
+  max-height: 10em;
   overflow: hidden;
   transition: max-height 0.3s ease;
 
@@ -201,7 +206,7 @@
 .showMoreButton {
   background: none;
   border: none;
-  color: #3b82f6;
+  color: var(--accent-primary);
   cursor: pointer;
   padding: 0 4px;
   margin-left: 4px;
@@ -216,21 +221,10 @@
   margin-top: 8px;
 }
 
-.ideaText {
-  max-height: 120px;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-  line-height: 1.5;
-
-  &.expanded {
-    max-height: none;
-  }
-}
-
 .showMoreBtn {
   background: none;
   border: none;
-  color: #3b82f6;
+  color: var(--accent-primary);
   cursor: pointer;
   padding: 4px 0;
   font-size: 14px;
@@ -250,18 +244,17 @@
 }
 
 .verifiedIcon {
-  color: #3b82f6;
+  color: var(--accent-primary);
   margin-left: 4px;
 }
 
-/* Или для emoji-версии */
 .verifiedBadge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 16px;
   height: 16px;
-  background: #3b82f6;
+  background: var(--accent-primary);
   color: white;
   border-radius: 50%;
   font-size: 12px;

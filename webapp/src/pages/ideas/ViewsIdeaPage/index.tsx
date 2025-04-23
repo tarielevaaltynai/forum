@@ -4,17 +4,20 @@ import {
   getAvatarUrl,
   getCloudinaryUploadUrl,
 } from "@forum_project/shared/src/cloudinary";
-import { Icon } from "../../../components/Icon";
 import ImageGallery from "react-image-gallery";
 import { withPageWrapper } from "../../../lib/pageWrapper";
 import { trpc } from "../../../lib/trpc";
-import { format } from "date-fns/format";
+import format from "date-fns/format";
+
 import css from "./index.module.scss";
 import {
   CommentList,
   CreateCommentForm,
 } from "../../../components/CommentsList";
 import { useEffect, useState } from "react";
+
+import { Link } from "react-router-dom";
+
 import {
   getAllIdeasRoute,
   getEditIdeaRoute,
@@ -29,7 +32,9 @@ import {
   canBlockIdeas,
   canEditIdea,
 } from "@forum_project/backend/src/utils/can";
+
 import { useForm } from "../../../lib/form";
+import { Icon } from "../../../components/Icon";
 
 const getLikeWord = (count) => {
   if (count % 10 === 1 && count % 100 !== 11) {
@@ -209,7 +214,12 @@ export const ViewsIdeaPage = withPageWrapper({
           />
           <div className={css.authorDetails}>
             <div className={css.authorName}>
-              {idea.author.nick}
+              <Link
+                to={`/ideas/${idea.author.nick}/profile`}
+                className={css.authorNick}
+              >
+                {idea.author.nick}
+              </Link>
               {idea.author.name && (
                 <span className={css.authorRealName}>
                   {" "}

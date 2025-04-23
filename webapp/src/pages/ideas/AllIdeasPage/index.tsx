@@ -155,7 +155,7 @@
 // });
 
 import { useState } from "react";
-import { getViewIdeaRoute } from "../../../lib/routes";
+import { getViewIdeaRoute, getUserProfileRoute } from "../../../lib/routes";
 import { trpc } from "../../../lib/trpc";
 import { Segment } from "../../../components/Segment";
 import { Link } from "react-router-dom";
@@ -286,13 +286,10 @@ export const AllIdeasPage = withPageWrapper({
                     <div className={css.author}>
                       <img
                         className={css.avatar}
-                        src={getAvatarUrl(idea.author?.avatar, "small")}
-                        alt={`Аватар ${idea.author?.nick || "пользователя"}`}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.onerror = null;
-                          target.src = "/default-avatar.png";
-                        }}
+                        src={
+                          getAvatarUrl(idea.author.avatar, "small") || avatar
+                        }
+                        alt="avatar"
                       />
                       <div className={css.authorInfo}>
                         <div className={css.name}>

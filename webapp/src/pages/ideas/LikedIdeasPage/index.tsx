@@ -47,6 +47,7 @@ export const LikedIdeasPage = withPageWrapper({
         <Alert color="brown">У вас нет понравившихся идей</Alert>
       ) : (
         <div className={css.ideas}>
+
           <InfiniteScroll
             pageStart={0}
             loadMore={() => {}}
@@ -81,6 +82,7 @@ export const LikedIdeasPage = withPageWrapper({
                         <div className={css.meta}>@{idea.author.name}</div>
                       )}
                     </div>
+
                   </div>
 
                   <div className={css.ideaContent}>

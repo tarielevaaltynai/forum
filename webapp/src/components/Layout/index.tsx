@@ -113,22 +113,23 @@ import { createRef } from "react";
 import { Link, Outlet } from "react-router-dom";
 import {
   getAllIdeasRoute,
-  getNewIdeaRoute,
   getSignInRoute,
-  getSignOutRoute,
   getSignUpRoute,
 } from "../../lib/routes";
 import { LeftMenu } from "../LeftMenu";
 import { Button } from "../Button";
 import css from "./index.module.scss";
 import { useMe } from "../../lib/ctx";
+import { ThemeToggle, useTheme } from "../Theme";
+
 export const layoutContentElRef = createRef<HTMLDivElement>();
 
 export const Layout = () => {
   const me = useMe();
+  const { isDark } = useTheme();
 
   return (
-    <div className={css.layout}>
+    <div className={`${css.layout} ${isDark ? "dark" : ""}`}>
       <header className={css.header}>
         <div className={css.headerContent}>
           <Link to={getAllIdeasRoute()} className={css.logo}>
@@ -136,6 +137,11 @@ export const Layout = () => {
           </Link>
 
           <nav className={css.nav}>
+            {/* Кнопка темы теперь всегда отдельно */}
+            <div className={css.themeToggleWrapper}>
+              <ThemeToggle />
+            </div>
+
             {!me && (
               <ul className={css.authMenu}>
                 <li>
@@ -157,7 +163,6 @@ export const Layout = () => {
           </nav>
         </div>
       </header>
-
       <main className={css.main}>
         {me && <LeftMenu />}
         <div
