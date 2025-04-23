@@ -1,3 +1,4 @@
+
 import { zSignUpTrpcInput } from "@forum_project/backend/src/router/auth/signUp/input";
 import { z } from "zod";
 import Cookies from "js-cookie";
@@ -13,10 +14,12 @@ import css from "./index.module.scss";
 import { DatePickerInput } from "../../../components/DatePickerInput";
 import { SelectInput } from "../../../components/SelectInput";
 import { useMemo } from "react";
+
 import { UploadToS3 } from '../../../components/UploadToS3'
 
 // Функция для валидации совпадения пароля и подтверждения пароля
 const zPasswordsMustBeTheSame = (passwordField: string, confirmPasswordField: string) => {
+
   return (data: any) => {
     if (data[passwordField] !== data[confirmPasswordField]) {
       return {
@@ -62,6 +65,7 @@ export const SignUpPage = withPageWrapper({
       ...zSignUpTrpcInput.shape, // Вставляем существующие поля из zSignUpTrpcInput
       passwordAgain: z.string().min(1, "Повторите пароль"), // Добавляем новое поле для повторного пароля
     }).superRefine(zPasswordsMustBeTheSame("password", "passwordAgain")),
+
     onSubmit: async (values) => {
       const { token } = await signUp.mutateAsync(values);
       Cookies.set("token", token, { expires: 99999 });
@@ -71,6 +75,7 @@ export const SignUpPage = withPageWrapper({
   });
 
   const isExpert = useMemo(() => formik.values.role === "EXPERT", [formik.values.role]);
+
 
   return (
     <main className="sign-up-page" style={{ display: "flex", height: "100vh" }}>
@@ -89,6 +94,7 @@ export const SignUpPage = withPageWrapper({
               <DatePickerInput label="Дата рождения" name="birthDate" formik={formik} />
               <SelectInput options={genderOptions} label="Пол" name="gender" formik={formik} />
               <SelectInput options={roleOptions} label="Роль" name="role" formik={formik} />
+
 
               {isExpert && (
                 <>

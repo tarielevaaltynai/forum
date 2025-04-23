@@ -63,6 +63,7 @@ import { useForm } from "../../../lib/form";
 import { withPageWrapper } from "../../../lib/pageWrapper";
 import { zCreateIdeaTrpcInput } from "@forum_project/backend/src/router/ideas/createIdea/input";
 import { UploadsToCloudinary } from "../../../components/UploadsToCloudinary";
+import css from "./index.module.scss";
 export const NewIdeaPage = withPageWrapper({
   authorizedOnly: true,
   title: "New Idea",

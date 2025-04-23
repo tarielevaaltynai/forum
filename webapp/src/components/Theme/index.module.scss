@@ -1,0 +1,77 @@
+.themeToggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  outline: none;
+  transition: all 0.3s ease;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--accent-color);
+  }
+}
+
+.toggleTrack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  padding: 0 3px;
+  transition: background-color 0.3s ease;
+
+  &.light {
+    background-color: #e2e8f0;
+  }
+
+  &.dark {
+    background-color: #4a5568;
+  }
+}
+
+.toggleThumb {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease;
+
+  .light & {
+    transform: translateX(0);
+  }
+
+  .dark & {
+    transform: translateX(24px);
+  }
+}
+
+.sunIcon,
+.moonIcon {
+  font-size: 14px;
+  transition: opacity 0.3s ease;
+
+  .light & {
+    opacity: 1;
+  }
+
+  .dark & {
+    opacity: 1;
+  }
+}
+
+.sunIcon {
+  color: #f6ad55;
+}
+
+.moonIcon {
+  color: #f6e05e;
+}

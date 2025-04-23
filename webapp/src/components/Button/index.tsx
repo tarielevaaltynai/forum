@@ -12,7 +12,6 @@ export type ButtonProps = {
   disabled?: boolean;
   onClick?: () => void;
 };
-
 export const Button = ({
   children,
   loading = false,
@@ -37,7 +36,6 @@ export const Button = ({
     </button>
   );
 };
-
 export const LinkButton = ({
   children,
   to,
@@ -49,10 +47,12 @@ export const LinkButton = ({
 }) => {
   return (
     <Link
+
       className={cn({
         [css.button]: true,
         [css[`color-${color}`]]: true,
       })}
+
       to={to}
     >
       {children}

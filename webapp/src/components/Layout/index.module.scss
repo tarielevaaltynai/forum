@@ -5,7 +5,9 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f8fafc;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
 }
 
 .header {
@@ -14,10 +16,21 @@
   left: 0;
   right: 0;
   height: 60px;
-  background: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  background-color: var(--header-bg);
+  box-shadow: var(--header-shadow);
   z-index: 1000;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--header-border-color);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  @media (max-width: 768px) {
+    padding-left: 70px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 0;
+  }
 
   &Content {
     display: flex;
@@ -30,45 +43,6 @@
   }
 }
 
-.logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-decoration: none;
-  color: #316fad;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-
-  span:first-child {
-    color: #316fad;
-  }
-
-  span:last-child {
-    color: #4a9d6e;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 1.3rem;
-  }
-}
-
-.nav {
-  display: flex;
-  align-items: center;
-}
-
-.authMenu {
-  display: flex;
-  list-style: none;
-  gap: 12px;
-  margin: 0;
-  padding: 0;
-
-  @media (max-width: 480px) {
-    gap: 8px;
-  }
-}
-
 .main {
   display: flex;
   flex: 1;
@@ -77,12 +51,13 @@
 
 .content {
   flex: 1;
-  padding: 25px;
-  margin-left: 250px;
-  width: calc(100% - 250px);
+  padding: 25px; // Отступ равный ширине сайдбара
+  width: 100%;
   box-sizing: border-box;
-  background-color: white;
+  background-color: var(--content-bg);
   min-height: calc(100vh - 60px);
+  transition: all 0.3s ease;
+  margin-left: 240px;
 
   @media (max-width: 768px) {
     margin-left: 70px;
@@ -102,10 +77,54 @@
   padding: 25px;
   width: 100%;
   box-sizing: border-box;
-  background-color: white;
+  background-color: var(--content-bg);
   min-height: calc(100vh - 60px);
+  transition: all 0.3s ease;
 
   @media (max-width: 768px) {
     padding: 15px;
+  }
+}
+.logo {
+  font-size: 1.5rem;
+  width: 250px;
+  height: 60px;
+  z-index: 1100;
+  text-decoration: none;
+  color: #316fad; // Основной цвет как в оригинале
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  transition: all 0.3s ease;
+
+  span:first-child {
+    color: #316fad; // Синяя часть лого
+    transition: color 0.3s ease;
+  }
+
+  span:last-child {
+    color: #4a9d6e; // Зеленая часть лого
+    transition: color 0.3s ease;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.3rem;
+  }
+}
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  .themeToggleWrapper {
+    margin-right: 15px; // Отделяем от меню авторизации
+  }
+
+  .authMenu {
+    display: flex;
+    list-style: none;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
   }
 }
