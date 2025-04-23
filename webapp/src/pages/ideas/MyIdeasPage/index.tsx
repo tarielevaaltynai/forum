@@ -82,49 +82,63 @@ export const MyIdeasPage = withPageWrapper({
 
   return (
     <div className={css.page}>
-      {/* Сегмент профиля */}
-      <Segment title="Мой профиль" className={css.profileSegment}>
-        {isProfileLoading ? (
-          <Loader type="section" />
-        ) : profileError ? (
-          <Alert color="red">
-            Ошибка загрузки профиля: {profileError.message}
-          </Alert>
-        ) : userProfile ? (
-          <div className={css.profile}>
-            <img
-              className={css.profileAvatar}
-              src={getAvatarUrl(userProfile.avatar, "small")}
-              alt="Аватар пользователя"
-            />
-            <div className={css.profileInfo}>
-              <h2 className={css.profileNick}>{userProfile.nick}</h2>
-              {userProfile.name && <p>Имя: {userProfile.name}</p>}
-              {userProfile.surname && <p>Фамилия: {userProfile.surname}</p>}
-              {userProfile.gender && <p>Пол: {userProfile.gender}</p>}
-              {userProfile.birthDate && (
-                <p>
-                  Дата рождения:{" "}
-                  {format(new Date(userProfile.birthDate), "dd.MM.yyyy")}
-                </p>
-              )}
-              <p>Идей: {userProfile.ideasCount}</p>
-              <p>
-                На сайте с{" "}
-                {format(new Date(userProfile.createdAt), "dd.MM.yyyy")}
-              </p>
-              {userProfile.specialty && (
-                <p>Специальность: {userProfile.specialty}</p>
-              )}
+<Segment title="" className={css.profileSegment}>
+  {isProfileLoading ? (
+    <Loader type="section" />
+  ) : profileError ? (
+    <Alert color="red">Ошибка загрузки профиля: {profileError.message}</Alert>
+  ) : userProfile ? (
+    <div className={css.profileContainer}>
+      <div className={css.profileHeader}>
+        <img
+          className={css.profileAvatar}
+          src={getAvatarUrl(userProfile.avatar, "small")}
+          alt="Аватар"
+        />
+        <div className={css.profileInfo}>
+          <div className={css.nameWrapper}>
+            <h2 className={css.profileName}>
+              {userProfile.name} {userProfile.surname}
+            </h2>
+            <span className={css.profileUsername}>@{userProfile.nick}</span>
+          </div>
+          
+          <div className={css.profileDetails}>
+            {userProfile.birthDate && (
+              <div className={css.detailItem}>
+                <span>
+                  Год рождения: {format(new Date(userProfile.birthDate), 'yyyy')}
+                </span>
+              </div>
+            )}
+            
+            <div className={css.detailItem}>
+              <span>Идей: {userProfile.ideasCount}</span>
             </div>
           </div>
-        ) : (
-          <Alert color="brown">Профиль не найден</Alert>
-        )}
-      </Segment>
+
+          {userProfile.specialist?.isVerified && (
+            <span className={css.specialty}>
+              Специальность: {userProfile.specialist.specialty}
+            </span>
+          )}
+          
+          <span className={css.joinDate}>
+            На сайте с {format(new Date(userProfile.createdAt), "MMMM yyyy")}
+          </span>
+        </div>
+        <Link to="/edit-profile" className={css.editButton}>
+          Редактировать
+        </Link>
+      </div>
+    </div>
+  ) : (
+    <Alert color="brown">Профиль не найден</Alert>
+  )}
+</Segment>
 
       {/* Сегмент идей */}
-      <Segment title="Мои идеи">
+      <Segment title="">
         {isIdeasLoading || isRefetching ? (
           <Loader type="section" />
         ) : isIdeasError ? (

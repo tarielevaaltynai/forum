@@ -293,11 +293,11 @@ export const AllIdeasPage = withPageWrapper({
                       />
                       <div className={css.authorInfo}>
                         <div className={css.name}>
-                          {idea.author?.nick ?? "Неизвестный автор"}
+                          @{idea.author?.nick ?? "Неизвестный автор"}
                         </div>
                         <div className={css.meta}>
                           {idea.author?.name && (
-                            <span>@{idea.author.name}</span>
+                            <span>{idea.author.name}</span>
                           )}
                           {idea.author?.specialty && (
                             <span> • {idea.author.specialty}</span>
