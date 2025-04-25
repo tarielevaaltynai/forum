@@ -130,6 +130,64 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure
     }
   });
 
+// async function getDefaultIdeasList(ctx: TrpcContext, input: InputParams) {
+//   if (!ctx.prisma) {
+//     throw new Error("PrismaClient is not available in the context");
+//   }
+
+//   const rawIdeas = await ctx.prisma.idea.findMany({
+//     select: {
+//       id: true,
+//       nick: true,
+//       name: true,
+//       description: true,
+//       text: true,
+//       createdAt: true,
+//       serialNumber: true,
+//       _count: { select: { ideasLikes: true } },
+//       author: {
+//         select: {
+//           nick: true,
+//           name: true,
+//           avatar: true,
+//           specialist: {
+//             select: {
+//               specialty: true,
+//               isVerified: true,
+//             },
+//           },
+//         },
+//       },
+//     },
+//     where: {
+//       blockedAt: null,
+//     },
+//     orderBy: [{ createdAt: "desc" }, { serialNumber: "desc" }],
+//     cursor: input.cursor ? { serialNumber: input.cursor } : undefined,
+//     take: input.limit + 1,
+//   });
+
+//   const nextIdea = rawIdeas.at(input.limit);
+//   const nextCursor = nextIdea?.serialNumber;
+//   const ideasExceptNext = rawIdeas.slice(0, input.limit).map((idea) => ({
+//     ..._.omit(idea, ["_count"]),
+//     likesCount: idea._count.ideasLikes,
+//     author: {
+//       nick: idea.author.nick,
+//       name: idea.author.name,
+//       avatar: idea.author.avatar,
+//       specialty: idea.author.specialist?.specialty,
+//       isVerified: idea.author.specialist?.isVerified,
+//     },
+//   }));
+
+//   return {
+//     ideas: ideasExceptNext,
+//     nextCursor,
+//   };
+// }
+
+
 async function getDefaultIdeasList(ctx: TrpcContext, input: InputParams) {
   if (!ctx.prisma) {
     throw new Error("PrismaClient is not available in the context");
@@ -144,6 +202,7 @@ async function getDefaultIdeasList(ctx: TrpcContext, input: InputParams) {
       text: true,
       createdAt: true,
       serialNumber: true,
+      images: true, // Add this line to include images
       _count: { select: { ideasLikes: true } },
       author: {
         select: {

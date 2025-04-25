@@ -8,90 +8,80 @@ import {
   getLikedIdeasRoute,
   getAdminSpecialistRoute,
 } from "../../lib/routes";
-import { useMe } from "../../lib/ctx"; // Импорт контекста
+import { useMe } from "../../lib/ctx";
 import css from "./index.module.scss";
-import avatar from "../../assets/images/user.png"; // Это можно оставить как запасной вариант
-import { getAvatarUrl } from "@forum_project/shared/src/cloudinary"; // Для получения URL аватара
+import avatar from "../../assets/images/user.png";
+import { getAvatarUrl } from "@forum_project/shared/src/cloudinary";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 export const LeftMenu = () => {
-  const me = useMe(); // Получение данных о пользователе из контекста
-  const hasAllPermission = me.permissions?.includes("ALL");
-  if (!me) {
-    return null; // Возвращаем null, если нет данных о пользователе
-  }
+  const me = useMe();
+  const hasAllPermission = me?.permissions?.includes("ALL");
 
-  // Определяем, какой URL использовать для аватарки
-  // Если me.avatar существует и не пустой, используем его, иначе - дефолтный
+  if (!me) {
+    return null;
+  }
 
   return (
     <div className={css.sidebar}>
       <div className={css.profile}>
         <img
           alt="Profile picture"
-          // Убедитесь, что классы стилей подходят для реальных аватарок
-          // Возможно, 'rounded-full mx-auto' уже достаточно
-          className="rounded-full mx-auto" // Можно добавить css.avatar если нужно
-          height="100"
-          src={getAvatarUrl(me.avatar, "small") || avatar} // Здесь мы получаем URL аватара пользователя
-          width="100"
-          // Добавляем обработчик ошибок на случай, если URL аватарки станет недействительным
+          className={css.avatar}
+          src={getAvatarUrl(me.avatar, "small") || avatar}
           onError={(e) => {
-            const target = e.target as HTMLImageElement; // Указываем тип для TypeScript
-            target.onerror = null; // Предотвращаем бесконечный цикл ошибок
-            // Показываем дефолтную при ошибке
+            const target = e.target as HTMLImageElement;
+            target.onerror = null;
+            target.src = avatar;
           }}
         />
-        <h2>{me.nick}</h2>
+        <h2 className={css.username}>{me.nick}</h2>
       </div>
 
-      <nav>
+      <nav className={css.nav}>
         <ul className={css.menu}>
           <li className={css.item}>
             <Link className={css.link} to={getAllIdeasRoute()}>
-              <i className="fas fa-home mr-2"></i>
-              Главная страница
+              <i className="fas fa-home"></i>
+              <span className={css.linkText}>Главная страница</span>
             </Link>
           </li>
           <li className={css.item}>
             <Link className={css.link} to={getNewIdeaRoute()}>
-              <i className="fas fa-plus-circle mr-2"></i>
-              Создать обсуждение
+              <i className="fas fa-plus-circle"></i>
+              <span className={css.linkText}>Создать обсуждение</span>
             </Link>
           </li>
-
           <li className={css.item}>
-            <Link to={getMyIdeasRoute()}>
-              <i className="fas fa-comments mr-2"></i>
-              Мои обсуждения
+            <Link className={css.link} to={getMyIdeasRoute()}>
+              <i className="fas fa-comments"></i>
+              <span className={css.linkText}>Мои обсуждения</span>
             </Link>
           </li>
-
           <li className={css.item}>
-            <Link to={getLikedIdeasRoute()}>
-              <i className="fas fa-heart mr-2"></i>
-              Понравившиеся обсуждения
+            <Link className={css.link} to={getLikedIdeasRoute()}>
+              <i className="fas fa-heart"></i>
+              <span className={css.linkText}>Понравившиеся</span>
             </Link>
           </li>
-
           <li className={css.item}>
             <Link className={css.link} to={getEditProfileRoute()}>
-              <i className="fas fa-user-edit mr-2"></i>
-              Профиль
+              <i className="fas fa-user-edit"></i>
+              <span className={css.linkText}>Профиль</span>
             </Link>
           </li>
           <li className={css.item}>
-            <Link to={getSignOutRoute()}>
-              <i className="fas fa-sign-out-alt mr-2"></i>
-              Выйти({me.nick})
+            <Link className={css.link} to={getSignOutRoute()}>
+              <i className="fas fa-sign-out-alt"></i>
+              <span className={css.linkText}>Выйти</span>
             </Link>
           </li>
 
           {hasAllPermission && (
-            <li className={css.item}>
-              <Link to={getAdminSpecialistRoute()}>
-                <i className="fas fa-user-shield mr-2"></i>
-                Верификация экспертов
+            <li className={`${css.item} ${css.adminItem}`}>
+              <Link className={css.link} to={getAdminSpecialistRoute()}>
+                <i className="fas fa-user-shield"></i>
+                <span className={css.linkText}>Верификация экспертов</span>
               </Link>
             </li>
           )}
