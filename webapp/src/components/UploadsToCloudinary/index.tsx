@@ -104,7 +104,7 @@ import {
             disabled={loading || disabled}
             color="green"
           >
-            {value?.length ? 'Upload more' : 'Upload'}
+            {value?.length ? 'Загрузить еще' : 'Загрузить'}
           </Button>
         </div>
         {invalid && <div className={css.error}>{error}</div>}

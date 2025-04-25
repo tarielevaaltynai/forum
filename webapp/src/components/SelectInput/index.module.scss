@@ -11,8 +11,9 @@
   top: 8px;
   left: 12px;
   font-size: 12px;
-  color: gray;
+  color: var(--text-secondary);
   pointer-events: none;
+  transition: color 0.3s ease;
 }
 
 .input {
@@ -20,17 +21,30 @@
   padding-top: 20px;
   padding-bottom: 8px;
   padding-left: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid #e2e8f0; /* Фиксированный светлый цвет границы */
   border-radius: 8px;
   outline: none;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+
+  &:focus {
+    border-color: var(
+      --accent-primary
+    ); /* Цвет границы при фокусе может меняться */
+  }
+
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
 }
 
 .invalid {
-  border-color: red;
+  border-color: var(--error-primary) !important;
 }
 
 .error {
-  color: red;
+  color: var(--error-primary);
   font-size: 12px;
   margin-top: 4px;
 }

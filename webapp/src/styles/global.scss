@@ -1,6 +1,7 @@
 @import "../../node_modules/reset-css/sass/_reset.scss";
 @import "./_vars.scss";
 @import "../../node_modules/react-image-gallery/styles/scss/image-gallery";
+
 html,
 body,
 #root {
@@ -8,13 +9,13 @@ body,
   min-height: 100%;
   width: 100%;
   position: relative;
-  background-color: white;
+  background-color: var(--bg-primary);
 }
 
 body {
   font-family: $defaultFontFamily;
   font-size: $defaultFontSize;
-  background: $defaultBackgroundColor;
+  background-color: var(--bg-primary);
   color: $defaultTextColor;
   line-height: $defaultLineHeight;
 }
@@ -27,4 +28,89 @@ body {
 
 a {
   text-decoration: none;
+}
+
+// В global.scss
+
+// Базовые переменные света
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7fafc;
+  --border-color: #e2e8f0;
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --accent-color: #3182ce;
+  --success-color: #48bb78;
+  --warning-color: #ed8936;
+  --error-color: #e53e3e;
+}
+
+// Переменные темноты
+html.dark {
+  --bg-primary: #1a202c;
+  --bg-secondary: #2d3748;
+  --border-color: #4a5568;
+  --text-primary: #e2e8f0;
+  --text-secondary: #cbd5e0;
+  --text-muted: #a0aec0;
+  --accent-color: #63b3ed;
+  --success-color: #68d391;
+  --warning-color: #f6ad55;
+  --error-color: #fc8181;
+}
+
+// Глобальные стили, применяемые ко всему приложению
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+// Глобальные стили для часто используемых элементов
+button,
+input,
+textarea,
+select {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+a {
+  color: var(--accent-color);
+}
+
+// Стили для общих элементов, которые встречаются во всем приложении
+.card,
+.panel,
+.segment {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+// Глобальные стили для кнопки переключения темы
+:global(.themeToggleButton) {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+html.dark :global(.themeToggleButton:hover) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(.themeToggleButton:hover) {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }

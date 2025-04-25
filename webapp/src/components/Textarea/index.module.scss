@@ -1,17 +1,9 @@
-@import "../Input/index.module";
-@import "../Input/index.module";
-
-// .field {
-//   .input {
-//     min-height: 150px;
-//     width: 100%;
-//     max-width: none;
-//     resize: vertical;
-//   }
-// }
+@import "../../styles/_vars.scss";
+@import "../../styles/_mixins.scss";
 
 .field {
   position: relative; /* Для корректного позиционирования метки внутри поля */
+  width: 100%; /* Это чтобы не выходило за пределы контейнера */
 
   .input {
     min-height: 150px;
@@ -21,6 +13,26 @@
     padding-top: 25px; /* Отступ сверху для метки */
     box-sizing: border-box; /* Чтобы padding не выходил за пределы */
     border: 1px solid #ccc;
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease,
+      color 0.2s ease;
+
+    &.invalid {
+      border-color: red; /* Подсветка ошибок */
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--focus-border);
+      background-color: var(--focus-bg);
+    }
+
+    @media (max-width: 768px) {
+      padding-top: 15px;
+    }
   }
 
   .label {
@@ -31,20 +43,42 @@
     color: gray;
     pointer-events: none; /* Метка не мешает пользователю работать с textarea */
     transition: all 0.2s ease;
-  }
+    transition-duration: 0.2s;
 
-  .labelActive {
-    font-size: 12px; /* Уменьшаем размер шрифта */
-    top: 5px; /* Поднимаем метку вверх, чтобы она не мешала вводу */
-    color: #333; /* Цвет активной метки */
-  }
-
-  .invalid {
-    border-color: red; /* Подсветка ошибок */
+    &.labelActive {
+      font-size: 12px; /* Уменьшаем размер шрифта */
+      top: 5px; /* Поднимаем метку вверх, чтобы она не мешала вводу */
+      color: var(--text-primary); /* Цвет активной метки */
+    }
   }
 
   .error {
     color: red;
     font-size: 12px;
+  }
+}
+
+.dark-theme {
+  .field {
+    .input {
+      background-color: var(--bg-input-dark);
+      color: var(--text-primary-dark);
+    }
+
+    .label {
+      color: var(--text-secondary-dark);
+    }
+
+    .input.invalid {
+      border-color: #ff6347; /* Или другой цвет для ошибки в тёмной теме */
+    }
+
+    .labelActive {
+      color: #ffffff; /* Активная метка в тёмной теме */
+    }
+
+    .error {
+      color: #ff6347;
+    }
   }
 }

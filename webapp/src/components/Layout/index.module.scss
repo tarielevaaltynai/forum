@@ -4,74 +4,127 @@
 .layout {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
 
-  .navigation {
-    position: fixed; /* Фиксируем верхнюю навигацию */
-    top: 0;
-    left: 0;
-    right: 0;
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: var(--header-bg);
+  box-shadow: var(--header-shadow);
+  z-index: 1000;
+  border-bottom: 1px solid var(--header-border-color);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  @media (max-width: 768px) {
+    padding-left: 70px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 0;
+  }
+
+  &Content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #ffffff;
-    color: #333;
-    padding: 15px 20px;
-    border-bottom: 1px solid #ccc;
-    z-index: 1001; /* Высокий z-index, чтобы навигация была поверх всего */
-    height: 56px; /* Установите фиксированную высоту для навигации */
-    box-sizing: border-box;
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  margin-top: 60px;
+}
+
+.content {
+  flex: 1;
+  padding: 25px; // Отступ равный ширине сайдбара
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--content-bg);
+  min-height: calc(100vh - 60px);
+  transition: all 0.3s ease;
+  margin-left: 240px;
+
+  @media (max-width: 768px) {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+    padding: 15px;
   }
 
-  .logo {
-    font-size: 20px;
-    color: #316fad;
-    padding-top: 2px;
+  @media (max-width: 480px) {
+    margin-left: 0;
     width: 100%;
-    max-width: 330px;
-    height: auto;
-    font-weight: bold;
+    padding: 10px;
+  }
+}
+
+.fullWidthContent {
+  flex: 1;
+  padding: 25px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--content-bg);
+  min-height: calc(100vh - 60px);
+  transition: all 0.3s ease;
+
+  @media (max-width: 768px) {
+    padding: 15px;
+  }
+}
+.logo {
+  font-size: 1.5rem;
+  width: 250px;
+  height: 60px;
+  z-index: 1100;
+  text-decoration: none;
+  color: #316fad; // Основной цвет как в оригинале
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  transition: all 0.3s ease;
+
+  span:first-child {
+    color: #316fad; // Синяя часть лого
+    transition: color 0.3s ease;
   }
 
-  .menu {
+  span:last-child {
+    color: #4a9d6e; // Зеленая часть лого
+    transition: color 0.3s ease;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.3rem;
+  }
+}
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  .themeToggleWrapper {
+    margin-right: 15px; // Отделяем от меню авторизации
+  }
+
+  .authMenu {
+    display: flex;
     list-style: none;
-    display: flex;
-    gap: 10px;
-
-    .item {
-      .link {
-        text-decoration: none;
-        font-size: 18px;
-        color: #007bff;
-        transition: color 0.3s ease;
-
-        &:hover {
-          color: #0056b3;
-        }
-      }
-    }
-  }
-
-  .mainContent {
-    display: flex;
-    flex: 1;
-    margin-top: 56px; /* Добавляем отступ сверху равный высоте навигации */
-  }
-
-  /* Стили для LeftMenu компонента в файле соответствующего компонента */
-
-  .content {
-    flex: 1;
-    padding: 15px;
-    margin-left: 250px; /* Отступ слева равный ширине меню */
-    width: calc(100% - 250px);
-    box-sizing: border-box;
-  }
-
-  .fullWidthContent {
-    flex: 1;
-    padding: 15px;
-    width: 100%;
-    box-sizing: border-box;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
   }
 }

@@ -1,4 +1,3 @@
-import css from './index.module.scss'
 /*
 export const Segment = ({
   title,
@@ -19,7 +18,7 @@ export const Segment = ({
     </div>
   )
 }*/
-
+import css from "./index.module.scss";
 export const Segment = ({
   title,
   size = 1,
@@ -40,7 +39,6 @@ export const Segment = ({
       )}
       {description && <p className={css.description}>{description}</p>}
       {children && <div className={css.content}>{children}</div>}
-      
     </div>
   );
 };

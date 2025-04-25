@@ -4,35 +4,99 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.7
+  ); // Более темный оверлей для лучшего контраста
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(2px); // Добавляем легкое размытие
+  transition: opacity 0.3s ease;
 }
 
 .content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
+  background-color: var(--bg-secondary);
+  padding: 24px;
+  border-radius: 12px;
   max-width: 400px;
   width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-primary);
+  transition: all 0.3s ease;
+
+  // Стили для темной темы
+  .dark-theme & {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
 }
 
 .title {
   margin-top: 0;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  color: var(--text-primary);
 }
 
 .message {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  color: var(--text-secondary);
+  line-height: 1.5;
 }
 
 .buttons {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 12px;
+
+  button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    // Основная кнопка (например, "Подтвердить")
+    &.primary {
+      background-color: var(--accent-primary);
+      color: white;
+      border: none;
+
+      &:hover {
+        background-color: var(--accent-secondary);
+      }
+    }
+
+    // Вторичная кнопка (например, "Отмена")
+    &.secondary {
+      background-color: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-primary);
+
+      &:hover {
+        background-color: var(--bg-hover);
+      }
+    }
+  }
+}
+
+// Анимация появления
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.overlay[data-state="open"],
+.content[data-state="open"] {
+  animation: modalFadeIn 0.3s ease-out;
 }

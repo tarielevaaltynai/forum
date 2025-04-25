@@ -2,18 +2,24 @@
 @import "../../styles/_mixins.scss";
 
 .sidebar {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   position: fixed;
   left: 0;
   top: 56px;
   width: 280px;
   height: calc(100vh - 56px);
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
   box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
   padding: 25px 15px;
   overflow-y: auto;
   z-index: 1000;
   transition: all 0.3s ease;
   border-right: none;
+  scrollbar-width: thin; // Для Firefox
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+
+  // Убираем хардкод linear-gradient
+  // Используем переменную, можно сделать отдельный фон, если хочешь разные стили для тем
 
   @media (max-width: 768px) {
     width: 70px;
@@ -42,7 +48,7 @@
   text-align: center;
   margin-bottom: 30px;
   padding-bottom: 20px;
-  border-bottom: none; // Убираем границу под аватаром
+  border-bottom: none;
 
   @media (max-width: 768px) {
     padding-bottom: 10px;
@@ -55,7 +61,7 @@
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #fff;
+  border: 3px solid var(--bg-primary); // вместо #fff
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 
@@ -68,7 +74,7 @@
 .username {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #2d3748;
+  color: var(--text-primary); // заменили #2d3748
   margin-top: 15px;
   word-break: break-word;
 
@@ -96,7 +102,7 @@
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: rgba(0, 123, 255, 0.1);
+    background-color: var(--hover-bg); // вместо rgba
     transform: translateX(3px);
   }
 
@@ -111,7 +117,7 @@
   display: flex;
   align-items: center;
   padding: 12px 15px;
-  color: #4a5568;
+  color: var(--text-secondary); // заменили #4a5568
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 500;
@@ -123,7 +129,7 @@
   }
 
   &:hover {
-    color: #1a73e8;
+    color: var(--link-hover); // заменили #1a73e8
   }
 
   i {
@@ -131,7 +137,7 @@
     text-align: center;
     margin-right: 12px;
     font-size: 1.1rem;
-    color: #5f6368;
+    color: var(--icon-color); // заменили #5f6368
     transition: color 0.2s ease;
 
     @media (max-width: 768px) {
@@ -141,7 +147,7 @@
   }
 
   &:hover i {
-    color: #1a73e8;
+    color: var(--link-hover);
   }
 }
 
@@ -151,20 +157,19 @@
   }
 }
 
-/* Стили для скроллбара */
 .sidebar::-webkit-scrollbar {
   width: 6px;
 }
 
 .sidebar::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--scrollbar-track);
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 
 .sidebar::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  background: var(--scrollbar-thumb-hover);
 }
