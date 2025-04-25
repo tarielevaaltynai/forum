@@ -3,7 +3,7 @@
 
 .container {
   padding: 20px;
-  max-width: 1000px; // Increased width for better content display
+  max-width: 1200px; // Increased from 1000px to provide more space for images
   margin: 0 auto;
 }
 
@@ -138,35 +138,67 @@
   }
 }
 
-// New styles for image gallery in the ideas list
+// Modified styles for image gallery in the ideas list
 .ideaImages {
-  margin: 15px 0;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  
-  :global(.image-gallery) {
-    max-height: 230px;
+  width: 100%;
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .imageWrapper {
+    width: 100%;
+    aspect-ratio: 4 / 5; // Главное изменение — задаём высокую вертикальную форму
+    position: relative;
+    border-radius: 16px;
     overflow: hidden;
     background-color: #f8fafc;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+
+    img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.03);
+      }
+    }
   }
-  
-  :global(.image-gallery-slide img) {
-    max-height: 230px;
-    width: 100%;
-    object-fit: contain;
-  }
-  
-  :global(.image-gallery-left-nav, .image-gallery-right-nav) {
-    padding: 0 10px;
-    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
-  }
-  
-  :global(.image-gallery-icon) {
-    color: white;
-    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+
+  &.multiImage {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .imageItem {
+      flex: 1 1 calc(50% - 4px);
+      aspect-ratio: 4 / 5;
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      background-color: #f8fafc;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+        border-radius: 14px;
+
+        &:hover {
+          transform: scale(1.02);
+        }
+      }
+    }
   }
 }
+
 
 .likes {
   display: flex;
@@ -348,4 +380,17 @@
     border-radius: 50%;
     z-index: 1;
   }
+}
+
+/* Additional overrides to ensure images are large */
+.ideaImages img,
+.image-gallery-slide img {
+  max-height: 800px !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+.image-gallery,
+.image-gallery-content {
+  max-height: none !important;
 }
