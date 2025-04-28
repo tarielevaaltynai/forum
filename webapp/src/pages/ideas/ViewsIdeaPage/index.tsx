@@ -214,12 +214,10 @@ export const ViewsIdeaPage = withPageWrapper({
           />
           <div className={css.authorDetails}>
             <div className={css.authorName}>
-              <Link
-                to={`/ideas/${idea.author.nick}/profile`}
-                className={css.authorNick}
-              >
-                {idea.author.nick}
-              </Link>
+            <Link to={`/ideas/${idea.author.nick}/profile`} className={css.authorNick}>
+            @{idea.author.nick}
+</Link>
+
               {idea.author.name && (
                 <span className={css.authorRealName}>
                   {" "}

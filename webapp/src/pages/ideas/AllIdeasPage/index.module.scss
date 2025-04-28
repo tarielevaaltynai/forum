@@ -3,36 +3,45 @@
 
 .container {
   padding: 20px;
-  max-width: 800px;
+  max-width: 1200px; // Increased from 1000px to provide more space for images
   margin: 0 auto;
   background-color: var(--bg-primary);
   color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .filter {
-  margin-bottom: 25px;
+  margin-bottom: 30px; // Increased spacing
+  background-color: var(--bg-secondary);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px var(--shadow-light);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 
   @media (max-width: 768px) {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
 }
 
 .ideas {
   .idea {
-    margin-bottom: 20px;
+    margin-bottom: 28px;
+    border-radius: 12px;
+    overflow: hidden;
     transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
-    border-radius: 8px;
-    padding: 2px;
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      background-color 0.3s ease;
+    border: 1px solid var(--border-light);
+    background-color: var(--bg-card);
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px var(--shadow-primary);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px var(--shadow-primary);
     }
 
     @media (max-width: 768px) {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
   }
 }
@@ -41,18 +50,21 @@
   display: flex;
   align-items: center;
   margin-bottom: 15px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-light);
 
   .avatar {
-    width: 50px;
-    height: 50px;
+    width: 54px;
+    height: 54px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 12px;
+    margin-right: 14px;
     border: 2px solid var(--border-avatar);
+    box-shadow: 0 2px 5px var(--shadow-light);
 
     @media (max-width: 480px) {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
     }
   }
 
@@ -62,49 +74,69 @@
   }
 
   .name {
+    display: flex;
+    align-items: center;
     font-weight: 600;
     font-size: 16px;
     color: var(--text-primary);
+    letter-spacing: 0.2px;
   }
 
   .meta {
     font-size: 13px;
     color: var(--text-tertiary);
-    margin-top: 2px;
+    margin-top: 3px;
 
     span + span {
       margin-left: 5px;
+      position: relative;
+      
+      &:before {
+        content: "•";
+        margin-right: 5px;
+        color: var(--text-muted);
+      }
     }
   }
 }
 
 .ideaContent {
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 
   .ideaLink {
     display: block;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 600;
-    color: var(--text-accent);
-    margin-bottom: 10px;
+    color: var(--text-primary);
+    margin-bottom: 12px;
     text-decoration: none;
-    transition: color 0.5s ease;
+    transition: color 0.25s ease;
+    line-height: 1.2;
 
     &:hover {
       color: var(--accent-primary);
     }
 
     @media (max-width: 768px) {
-      font-size: 18px;
+      font-size: 19px;
     }
   }
 
   .ideaText {
     font-size: 15px;
-    line-height: 1.5;
+    line-height: 1.6;
     color: var(--text-secondary);
     white-space: pre-line;
     word-break: break-word;
+    position: relative;
+    max-height: 120px;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    margin-bottom: 10px;
+
+    &.expanded {
+      max-height: none;
+    }
 
     @media (max-width: 768px) {
       font-size: 14px;
@@ -112,30 +144,97 @@
   }
 }
 
+// Modified styles for image gallery in the ideas list
+.ideaImages {
+  width: 100%;
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .imageWrapper {
+    width: 100%;
+    aspect-ratio: 4 / 5; // Главное изменение — задаём высокую вертикальную форму
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: var(--bg-secondary);
+    box-shadow: 0 6px 20px var(--shadow-primary);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+    img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.03);
+      }
+    }
+  }
+
+  &.multiImage {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .imageItem {
+      flex: 1 1 calc(50% - 4px);
+      aspect-ratio: 4 / 5;
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      background-color: var(--bg-secondary);
+      box-shadow: 0 4px 14px var(--shadow-light);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+        border-radius: 14px;
+
+        &:hover {
+          transform: scale(1.02);
+        }
+      }
+    }
+  }
+}
+
 .likes {
   display: flex;
   align-items: center;
-  margin-top: 12px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-light);
 }
 
 .likeButton {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: none;
-  border: none;
+  gap: 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 6px 12px;
   border-radius: 20px;
   transition: all 0.2s ease;
   color: var(--text-tertiary);
+  font-weight: 500;
 
   &:hover:not(:disabled) {
     background: var(--bg-hover);
     color: var(--like-hover);
+    border-color: var(--border-hover);
 
     .heartIcon {
-      transform: scale(1.1);
+      transform: scale(1.15);
     }
   }
 
@@ -150,6 +249,8 @@
 
   &.liked {
     color: var(--like-active);
+    background-color: var(--like-bg);
+    border-color: var(--like-border);
   }
 
   &.animating {
@@ -163,9 +264,17 @@
   transition: transform 0.2s ease;
 }
 
+.likeIcon {
+  color: var(--like-active);
+  &.likeIconFilled {
+    fill: var(--like-active);
+  }
+}
+
 .likeCount {
   font-size: 14px;
   font-weight: 500;
+  margin-left: 6px;
   color: var(--text-secondary);
 }
 
@@ -188,19 +297,7 @@
 .more {
   display: flex;
   justify-content: center;
-  padding: 20px 0;
-}
-
-.ideaText {
-  position: relative;
-  line-height: 1.5;
-  max-height: 10em;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-
-  &.expanded {
-    max-height: none;
-  }
+  padding: 25px 0;
 }
 
 .showMoreButton {
@@ -208,55 +305,178 @@
   border: none;
   color: var(--accent-primary);
   cursor: pointer;
-  padding: 0 4px;
+  padding: 0 6px;
   margin-left: 4px;
   font-weight: 500;
+  font-size: 14px;
 
   &:hover {
     text-decoration: underline;
   }
-}
-
-.textContainer {
-  margin-top: 8px;
 }
 
 .showMoreBtn {
-  background: none;
-  border: none;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
   color: var(--accent-primary);
   cursor: pointer;
-  padding: 4px 0;
+  padding: 6px 12px;
   font-size: 14px;
   display: inline-block;
-  margin-top: 4px;
+  margin-top: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 
   &:hover {
-    text-decoration: underline;
+    background: var(--bg-hover);
+    text-decoration: none;
   }
-}
-
-.name {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-weight: 600;
 }
 
 .verifiedIcon {
   color: var(--accent-primary);
-  margin-left: 4px;
+  margin-left: 6px;
 }
 
 .verifiedBadge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   background: var(--accent-primary);
   color: white;
   border-radius: 50%;
   font-size: 12px;
-  margin-left: 4px;
+  margin-left: 6px;
+  box-shadow: 0 2px 4px var(--accent-shadow);
+}
+
+// New accent elements
+.name {
+  position: relative;
+  
+  .authorLink {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: var(--accent-primary);
+    }
+  }
+  
+  span {
+    color: var(--text-tertiary);
+    font-weight: normal;
+    font-size: 14px;
+  }
+}
+
+// Add a subtle indicator for new posts
+.idea {
+  position: relative;
+  
+  &:nth-child(-n+3)::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent-primary);
+    border-radius: 50%;
+    z-index: 1;
+  }
+}
+
+/* Additional overrides to ensure images are large */
+.ideaImages img,
+.image-gallery-slide img {
+  max-height: 800px !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+.image-gallery,
+.image-gallery-content {
+  max-height: none !important;
+}
+
+/* Define CSS variables for theme support if not already in _vars.scss */
+:root {
+  // Light theme colors (default)
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-hover: #f1f5f9;
+  
+  --text-primary: #1e293b;
+  --text-secondary: #4b5563;
+  --text-tertiary: #64748b;
+  --text-muted: #a0aec0;
+  --text-accent: #2d3748;
+  
+  --accent-primary: #3b82f6;
+  --accent-shadow: rgba(59, 130, 246, 0.3);
+  
+  --border-light: #f0f2f5;
+  --border-hover: #cbd5e1;
+  --border-avatar: #e2e8f0;
+  
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  --shadow-primary: rgba(0, 0, 0, 0.07);
+  
+  --like-hover: #ef4444;
+  --like-active: #ef4444;
+  --like-bg: #fee2e2;
+  --like-border: #fecaca;
+}
+
+/* Dark theme colors */
+[data-theme="dark"] {
+  --bg-primary: #121212;
+  --bg-secondary: #1e1e1e;
+  --bg-card: #1e1e1e;
+  --bg-hover: #2d2d2d;
+  
+  --text-primary: #e2e8f0;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --text-muted: #64748b;
+  --text-accent: #f1f5f9;
+  
+  --accent-primary: #60a5fa;
+  --accent-shadow: rgba(96, 165, 250, 0.3);
+  
+  --border-light: #2d2d2d;
+  --border-hover: #4b5563;
+  --border-avatar: #475569;
+  
+  --shadow-light: rgba(0, 0, 0, 0.2);
+  --shadow-primary: rgba(0, 0, 0, 0.3);
+  
+  --like-hover: #f87171;
+  --like-active: #f87171;
+  --like-bg: rgba(248, 113, 113, 0.1);
+  --like-border: rgba(248, 113, 113, 0.3);
+}
+
+/* Optional transitions for smoother theme changes */
+.container,
+.filter,
+.ideas .idea,
+.ideaContent .ideaLink,
+.ideaContent .ideaText,
+.author .name,
+.author .meta,
+.likeButton,
+.showMoreBtn,
+.ideaImages .imageWrapper,
+.ideaImages.multiImage .imageItem {
+  transition: 
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
