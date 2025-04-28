@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // import { getViewIdeaRoute } from "../../../lib/routes";
 // import { trpc } from "../../../lib/trpc";
 // import { Segment } from "../../../components/Segment";
@@ -155,9 +154,7 @@
 //   );
 // });
 
-import { useState } from "react";
-=======
->>>>>>> 36d2ad0d8da0bc2480fdbe27e0c8a81b47e72fcd
+// import { useState } from "react";
 import { getViewIdeaRoute, getUserProfileRoute } from "../../../lib/routes";
 import { trpc } from "../../../lib/trpc";
 import { Segment } from "../../../components/Segment";
@@ -169,7 +166,10 @@ import { layoutContentElRef } from "../../../components/Layout";
 import { Loader } from "../../../components/Loader";
 import { useDebounce } from "usehooks-ts";
 import { withPageWrapper } from "../../../lib/pageWrapper";
-import { getAvatarUrl, getCloudinaryUploadUrl } from "@forum_project/shared/src/cloudinary";
+import {
+  getAvatarUrl,
+  getCloudinaryUploadUrl,
+} from "@forum_project/shared/src/cloudinary";
 import { Icon } from "../../../components/Icon";
 import { Input } from "../../../components/Input";
 import { useForm } from "../../../lib/form";
@@ -258,15 +258,16 @@ export const AllIdeasPage = withPageWrapper({
                     {/* 1. Автор */}
                     <div className={css.name}>
                       {idea.author ? (
-                        <Link to={`/users/${idea.author.id}`} className={css.authorLink}>
+                        <Link
+                          to={`/users/${idea.author.id}`}
+                          className={css.authorLink}
+                        >
                           {idea.author.nick}
                         </Link>
                       ) : (
                         "Unknown"
                       )}
-                      {idea.author?.name && (
-                        <span> ({idea.author.name})</span>
-                      )}
+                      {idea.author?.name && <span> ({idea.author.name})</span>}
                       {idea.author?.specialty && (
                         <span> ({idea.author.specialty})</span>
                       )}
@@ -284,17 +285,28 @@ export const AllIdeasPage = withPageWrapper({
                       {idea.text && (
                         <div className={css.ideaText}>{idea.text}</div>
                       )}
-                      
-                      {/* Add image gallery */}
+
+                      {/* Modified image gallery */}
                       {idea.images && idea.images.length > 0 && (
                         <div className={css.ideaImages}>
                           <ImageGallery
                             showPlayButton={false}
-                            showFullscreenButton={false}
+                            showFullscreenButton={true}
+                            showThumbnails={false}
+                            showNav={true}
                             items={idea.images.map((image) => ({
-                              original: getCloudinaryUploadUrl(image, "image", "medium"),
-                              thumbnail: getCloudinaryUploadUrl(image, "image", "preview"),
+                              original: getCloudinaryUploadUrl(
+                                image,
+                                "image",
+                                "large" // Use 'large' instead of 'medium'
+                              ),
+                              thumbnail: getCloudinaryUploadUrl(
+                                image,
+                                "image",
+                                "preview"
+                              ),
                             }))}
+                            additionalClass={css.fullWidthGallery}
                           />
                         </div>
                       )}
