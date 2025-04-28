@@ -128,11 +128,7 @@
 //                     <div className={css.likes}>
 //                       <Icon
 //                         size={20}
-<<<<<<< HEAD
 //                         className={`${css.likeIcon} ${css.likeIconFilled} transition-transform duration-300 active:scale-90`}
-=======
-//                         className={${css.likeIcon} ${css.likeIconFilled} transition-transform duration-300 active:scale-90}
->>>>>>> 4f93872270f23e15714cf3db9e4ba4dcc28bde22
 //                         name="likeFilled"
 //                         onClick={() => {
 //                           trpc.setIdeaLike.mutateAsync({
