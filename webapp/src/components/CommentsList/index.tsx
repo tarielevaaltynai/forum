@@ -91,7 +91,7 @@ export function CommentItem({ comment, ideaId }: { comment: CommentType; ideaId:
     }
     setIsProcessing(true);
     await createReply.mutateAsync({ ideaId, parentId: comment.id, content });
-  };
+  }
 
   return (
     <div className={css.comment}>

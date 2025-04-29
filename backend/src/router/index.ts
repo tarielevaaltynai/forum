@@ -26,7 +26,6 @@ import { createReplyTrpcRoute } from "./ideas/createReply";
 import { getMyIdeasTrpcRoute } from "./ideas/getMyIdeas";
 import { rejectSpecialist } from "./ideas/getUnverifiedSpecialists";
 import { verifySpecialist } from "./ideas/getUnverifiedSpecialists";
-
 import { getUserByIdTrpcRoute } from "./auth/getUserById"; // ⬅️ ДОБАВЬ
 
 // @endindex
@@ -36,12 +35,13 @@ import { getUserProfileTrpcRoute } from "./ideas/getUserProfile";
 import {  getUserProfileByNickTrpcRoute } from "./auth/getUserProfileByNick";
 import { getUserIdeasByNickTrpcRoute } from "./ideas/getUserIdeasByNick";
 import { getPopularUsersTrpcRoute } from "./ideas/getPopularUsers";
+import { create } from "lodash";
 export const trpcRouter = createTrpcRouter({
   getCurrentUser:getCurrentUserTrpcRoute,
   // @index('./**/index.ts', f => `${f.path.split('/').slice(0, -1).pop()}: ${f.path.split('/').slice(0, -1).pop()}TrpcRoute,`)
 
 getLikedIdeas:getLikedIdeasTrpcRoute,
-
+createReply:createReplyTrpcRoute,
   getMe: getMeTrpcRoute,
   verifySpecialist:verifySpecialist,
   rejectSpecialist:rejectSpecialist,
