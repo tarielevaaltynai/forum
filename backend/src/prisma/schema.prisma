@@ -9,16 +9,16 @@ datasource db {
 }
 
 model Idea {
-  id           String    @id @default(uuid())
-  nick         String    @unique
+  id           String      @id @default(uuid())
+  nick         String      @unique
   name         String
-  serialNumber Int       @unique @default(autoincrement())
+  serialNumber Int         @unique @default(autoincrement())
   description  String
   images       String[]
   text         String
-  createdAt    DateTime  @default(now())
+  createdAt    DateTime    @default(now())
   authorId     String
-  author       User      @relation(fields: [authorId], references: [id])
+  author       User        @relation(fields: [authorId], references: [id])
   ideasLikes   IdeaLike[]
   blockedAt    DateTime?
   comments     Comment[]
@@ -27,73 +27,97 @@ model Idea {
 }
 
 model User {
-  id          String      @id @default(uuid())
-  nick        String      @unique
-  name        String
-  avatar      String?
-  surname     String
-  gender      String
-  birthDate   DateTime
-  password    String
-  createdAt   DateTime    @default(now())
-  ideas       Idea[]
-  email       String      @unique
-  ideasLikes  IdeaLike[]
-  permissions UserPermission[]
-  comments    Comment[]
-  role        UserRole    @default(USER)
+  id           String          @id @default(uuid())
+  nick         String          @unique
+  name         String
+  surname      String
+  avatar       String?
+  gender       String
+  birthDate    DateTime
+  email        String          @unique
+  password     String
+  createdAt    DateTime        @default(now())
+  role         UserRole        @default(USER)
+  blocked      Boolean         @default(false)
+  blockedAt    DateTime?
 
-  
-  // Relation to Specialist (if user is a specialist)
-  specialist  Specialist?
+  ideas        Idea[]
+  ideasLikes   IdeaLike[]
+  permissions  UserPermission[]
+  comments     Comment[]
+  specialist   Specialist?
 
-
-  blocked     Boolean     @default(false)  // Новое поле для блокировки
-  blockedAt  DateTime?
+  // Чат
+  chatMessages ChatMessage[]
+  chatSessions ChatSession[]
 
   @@index([role])
 }
 
-model Specialist {
-  id        String   @id @default(uuid())
-  userId    String   @unique // Foreign key to User
-  specialty String   // Specialty of the specialist
-  isVerified Boolean @default(false) 
-  document String?
+model ChatMessage {
+  id        String      @id @default(uuid())
+  sessionId String
+  session   ChatSession @relation(fields: [sessionId], references: [id])
+  userId    String?
+  user      User?       @relation(fields: [userId], references: [id])
+  role      String      // "user" или "assistant"
+  content   String
+  createdAt DateTime    @default(now())
+}
 
-  user      User     @relation(fields: [userId], references: [id])
+
+model ChatSession {
+  id        String       @id @default(uuid())
+  userId    String?
+  user      User?        @relation(fields: [userId], references: [id])
+  messages  ChatMessage[]
+  createdAt DateTime     @default(now())
+}
+
+
+
+model Specialist {
+  id         String   @id @default(uuid())
+  userId     String   @unique
+  specialty  String
+  isVerified Boolean  @default(false)
+  document   String?
+
+  user       User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
+
 model IdeaLike {
   id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  idea      Idea     @relation(fields: [ideaId], references: [id])
   ideaId    String
-  user      User     @relation(fields: [userId], references: [id])
   userId    String
+  createdAt DateTime @default(now())
+
+  idea      Idea     @relation(fields: [ideaId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@unique([ideaId, userId])
   @@index([userId])
 }
 
 model Comment {
-  id          String    @id @default(uuid())
-  content     String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  isEdited    Boolean   @default(false)
-  isBlocked   Boolean   @default(false)
-  blockedAt   DateTime?
+  id         String    @id @default(uuid())
+  content    String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  isEdited   Boolean   @default(false)
+  isBlocked  Boolean   @default(false)
+  blockedAt  DateTime?
 
-  // Relations
-  author      User      @relation(fields: [authorId], references: [id])
-  authorId    String
-  idea        Idea      @relation(fields: [ideaId], references: [id])
-  ideaId      String
-  parent      Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
-  parentId    String?
-  replies     Comment[] @relation("CommentReplies")
+  authorId   String
+  ideaId     String
+  parentId   String?
+
+  author     User      @relation(fields: [authorId], references: [id])
+  idea       Idea      @relation(fields: [ideaId], references: [id])
+  parent     Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies    Comment[] @relation("CommentReplies")
 
   @@index([authorId])
   @@index([ideaId])
@@ -101,15 +125,12 @@ model Comment {
   @@index([isBlocked])
 }
 
-
-
 enum UserPermission {
   BLOCK_IDEAS
   BLOCK_USERS
   ALL
 }
 
-// Enum for user roles
 enum UserRole {
   USER
   EXPERT
