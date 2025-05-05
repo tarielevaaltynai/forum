@@ -1,4 +1,7 @@
 import { TrpcProvider } from "./lib/trpc";
+import { getAssistantRoute } from "./lib/routes";
+// ...
+import { AssistantPage } from "./pages/other/AssistantPage";
 import { SignInPage } from "./pages/auth/SignInPage";
 import { SignOutPage } from "./pages/auth/SignOutPage";
 import { SignUpPage } from "./pages/auth/SignUpPage";
@@ -20,7 +23,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import "./styles/global.scss";
 import { ThemeProvider } from "./components/Theme";
-
 import { SomeUserPage } from "./pages/ideas/SomeIdeaPage";
 export const App = () => {
   return (
@@ -82,7 +84,10 @@ export const App = () => {
                     path={routes.getUserProfileByNick.definition}
                     element={<SomeUserPage />}
                   />
-
+ <Route
+            path={getAssistantRoute.definition}
+            element={<AssistantPage />}
+          />
                   <Route path="*" element={<NotFoundPage />} />
                 </Route>
               </Routes>
