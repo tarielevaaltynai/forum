@@ -1,6 +1,5 @@
 // Импорты оставим без изменений
 import { getViewIdeaRoute } from "../../../lib/routes";
-
 import { trpc } from "../../../lib/trpc";
 import { Segment } from "../../../components/Segment";
 import { Link } from "react-router-dom";
@@ -10,7 +9,6 @@ import InfiniteScroll from "react-infinite-scroller";
 import { layoutContentElRef } from "../../../components/Layout";
 import { Loader } from "../../../components/Loader";
 import { withPageWrapper } from "../../../lib/pageWrapper";
-
 import { getAvatarUrl } from "@forum_project/shared/src/cloudinary";
 import { Icon } from "../../../components/Icon";
 import { format } from "date-fns";
@@ -33,9 +31,7 @@ export const MyIdeasPage = withPageWrapper({
   title: "Мои идеи",
   isTitleExact: true,
 })(() => {
-  const [expandedIdeas, setExpandedIdeas] = useState<Record<string, boolean>>(
-    {}
-  );
+  const [expandedIdeas, setExpandedIdeas] = useState<Record<string, boolean>>({});
   const utils = trpc.useUtils();
 
   const toggleExpand = (ideaId: string) => {
@@ -69,9 +65,7 @@ export const MyIdeasPage = withPageWrapper({
     isRefetching,
   } = trpc.getMyIdeas.useInfiniteQuery(
     { limit: 10 },
-    {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-    }
+    { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
 
   const {
@@ -82,62 +76,63 @@ export const MyIdeasPage = withPageWrapper({
 
   return (
     <div className={css.page}>
-<Segment title="" className={css.profileSegment}>
-  {isProfileLoading ? (
-    <Loader type="section" />
-  ) : profileError ? (
-    <Alert color="red">Ошибка загрузки профиля: {profileError.message}</Alert>
-  ) : userProfile ? (
-    <div className={css.profileContainer}>
-      <div className={css.profileHeader}>
-        <img
-          className={css.profileAvatar}
-          src={getAvatarUrl(userProfile.avatar, "small")}
-          alt="Аватар"
-        />
-        <div className={css.profileInfo}>
-          <div className={css.nameWrapper}>
-            <h2 className={css.profileName}>
-              {userProfile.name} {userProfile.surname}
-            </h2>
-            <span className={css.profileUsername}>@{userProfile.nick}</span>
-          </div>
-          
-          <div className={css.profileDetails}>
-            {userProfile.birthDate && (
-              <div className={css.detailItem}>
-                <span>
-                  Год рождения: {format(new Date(userProfile.birthDate), 'yyyy')}
+      <h1 className={css.pageTitle}>Мои идеи</h1>
+
+      <Segment title="" className={css.profileSegment}>
+        {isProfileLoading ? (
+          <Loader type="section" />
+        ) : profileError ? (
+          <Alert color="red">Ошибка загрузки профиля: {profileError.message}</Alert>
+        ) : userProfile ? (
+          <div className={css.profileContainer}>
+            <div className={css.profileHeader}>
+              <img
+                className={css.profileAvatar}
+                src={getAvatarUrl(userProfile.avatar, "small")}
+                alt="Аватар"
+              />
+              <div className={css.profileInfo}>
+                <div className={css.nameWrapper}>
+                  <h2 className={css.profileName}>
+                    {userProfile.name} {userProfile.surname}
+                  </h2>
+                  <span className={css.profileUsername}>@{userProfile.nick}</span>
+                </div>
+
+                <div className={css.profileDetails}>
+                  {userProfile.birthDate && (
+                    <div className={css.detailItem}>
+                      <span>
+                        Год рождения: {format(new Date(userProfile.birthDate), "yyyy")}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className={css.detailItem}>
+                    <span>Идей: {userProfile.ideasCount}</span>
+                  </div>
+                </div>
+
+                {userProfile.specialist?.isVerified && (
+                  <span className={css.specialty}>
+                    Специальность: {userProfile.specialist.specialty}
+                  </span>
+                )}
+
+                <span className={css.joinDate}>
+                  На сайте с {format(new Date(userProfile.createdAt), "MMMM yyyy")}
                 </span>
               </div>
-            )}
-            
-            <div className={css.detailItem}>
-              <span>Идей: {userProfile.ideasCount}</span>
+              <Link to="/edit-profile" className={css.editButton}>
+                Редактировать
+              </Link>
             </div>
           </div>
+        ) : (
+          <Alert color="brown">Профиль не найден</Alert>
+        )}
+      </Segment>
 
-          {userProfile.specialist?.isVerified && (
-            <span className={css.specialty}>
-              Специальность: {userProfile.specialist.specialty}
-            </span>
-          )}
-          
-          <span className={css.joinDate}>
-            На сайте с {format(new Date(userProfile.createdAt), "MMMM yyyy")}
-          </span>
-        </div>
-        <Link to="/edit-profile" className={css.editButton}>
-          Редактировать
-        </Link>
-      </div>
-    </div>
-  ) : (
-    <Alert color="brown">Профиль не найден</Alert>
-  )}
-</Segment>
-
-      {/* Сегмент идей */}
       <Segment title="">
         {isIdeasLoading || isRefetching ? (
           <Loader type="section" />
@@ -186,7 +181,6 @@ export const MyIdeasPage = withPageWrapper({
                         </div>
                       </div>
 
-                      {/* Контент идеи */}
                       <div className={css.ideaContent}>
                         <Link
                           className={css.ideaLink}
@@ -218,7 +212,6 @@ export const MyIdeasPage = withPageWrapper({
                         )}
                       </div>
 
-                      {/* Лайки */}
                       <div className={css.likes}>
                         <button
                           className={cn(css.likeButton, {
