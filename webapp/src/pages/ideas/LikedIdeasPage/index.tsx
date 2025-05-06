@@ -1,3 +1,5 @@
+
+
 import { trpc } from "../../../lib/trpc";
 import { Segment } from "../../../components/Segment";
 import { Link } from "react-router-dom";
@@ -39,6 +41,8 @@ export const LikedIdeasPage = withPageWrapper({
 
   return (
     <div className={css.container}>
+      <h1 className={css.pageTitle}>Понравившиеся идеи</h1> {/* ДОБАВЛЕНО */}
+
       {isLoading ? (
         <Loader type="section" />
       ) : isError ? (
@@ -47,7 +51,6 @@ export const LikedIdeasPage = withPageWrapper({
         <Alert color="brown">У вас нет понравившихся идей</Alert>
       ) : (
         <div className={css.ideas}>
-
           <InfiniteScroll
             pageStart={0}
             loadMore={() => {}}
@@ -64,7 +67,7 @@ export const LikedIdeasPage = withPageWrapper({
                     <img
                       className={css.avatar}
                       src={
-                        getAvatarUrl(idea.author.avatar, "small") || avatar
+                        getAvatarUrl(idea.author.avatar, "small") || "/default-avatar.png"
                       }
                       alt={`Аватар ${idea.author?.nick || "пользователя"}`}
                       onError={(e) => {
@@ -81,7 +84,6 @@ export const LikedIdeasPage = withPageWrapper({
                         <div className={css.meta}>@{idea.author.name}</div>
                       )}
                     </div>
-
                   </div>
 
                   <div className={css.ideaContent}>
@@ -101,9 +103,7 @@ export const LikedIdeasPage = withPageWrapper({
                       name="likeFilled"
                       onClick={() => likeToggle(idea.id, idea.isLikedByMe)}
                       role="button"
-                      aria-label={
-                        idea.isLikedByMe ? "Убрать лайк" : "Поставить лайк"
-                      }
+                      aria-label={idea.isLikedByMe ? "Убрать лайк" : "Поставить лайк"}
                       tabIndex={0}
                     />
                     <span className={css.likeCount}>
