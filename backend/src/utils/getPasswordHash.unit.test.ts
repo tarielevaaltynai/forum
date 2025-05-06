@@ -1,4 +1,4 @@
-// __tests__/getPasswordHash.test.ts
+// __s__/getPasswordHash.test.ts
 
 import { getPasswordHash } from '../utils/getPasswordHash'
 import crypto from 'crypto'

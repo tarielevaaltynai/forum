@@ -21,6 +21,7 @@ export const getAllIdeasRoute = pgr(() => '/')
 export const getViewIdeaRoute = pgr({ someNick: true }, ({ someNick }) => `/ideas/${someNick}`)
 
 export const getEditIdeaRoute = pgr({ someNick: true }, ({ someNick }) => `/ideas/${someNick}/edit`)
+export const getAssistantRoute = pgr(() => '/assistant');
 
 export const getUserProfileByNick=pgr({ someNick: true }, ({ someNick }) => `/ideas/${someNick}/profile`)
 

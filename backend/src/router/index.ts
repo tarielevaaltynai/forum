@@ -1,12 +1,10 @@
 
 import { createTrpcRouter } from "../lib/trpc";
 import { getLikedIdeasTrpcRoute } from "./ideas/getLikedIdeas";
-
 // @index('./**/index.ts', f => `import { ${f.path.split('/').slice(0, -1).pop()}TrpcRoute } from '${f.path.split('/').slice(0, -1).join('/')}'`)
 import { getMeTrpcRoute } from "./auth/getMe";
 import { signInTrpcRoute } from "./auth/signIn";
 import { signUpTrpcRoute } from "./auth/signUp";
-
 import {getUnverifiedSpecialists} from "./ideas/getUnverifiedSpecialists"
 import { createIdeaTrpcRoute } from "./ideas/createIdea";
 import { getIdeaTrpcRoute } from "./ideas/getIdea";
@@ -23,6 +21,8 @@ import { createCommentTrpcRoute } from "./ideas/createComment";
 import { getCommentsTrpcRoute } from "./ideas/getComments";
 import { getRepliesTrpcRoute } from "./ideas/getReplies";
 import { createReplyTrpcRoute } from "./ideas/createReply";
+import { askQuestionTrpcRoute } from "./assistant/askQuestion";
+import { getSessionHistoryTrpcRoute } from "./assistant/getSessionHistory";
 import { getMyIdeasTrpcRoute } from "./ideas/getMyIdeas";
 import { rejectSpecialist } from "./ideas/getUnverifiedSpecialists";
 import { verifySpecialist } from "./ideas/getUnverifiedSpecialists";
@@ -43,6 +43,8 @@ export const trpcRouter = createTrpcRouter({
 getLikedIdeas:getLikedIdeasTrpcRoute,
 createReply:createReplyTrpcRoute,
   getMe: getMeTrpcRoute,
+  askQuestion: askQuestionTrpcRoute,
+  getSessionHistory: getSessionHistoryTrpcRoute,
   verifySpecialist:verifySpecialist,
   rejectSpecialist:rejectSpecialist,
   getUnverifiedSpecialists:getUnverifiedSpecialists,
@@ -50,7 +52,6 @@ createReply:createReplyTrpcRoute,
   signUp: signUpTrpcRoute,
   updateProfile: updateProfileTrpcRoute,
   updateAvatar: updateAvatarTrpcRoute,
-
   createComment: createCommentTrpcRoute,
   getComments: getCommentsTrpcRoute,
   getReplies: getRepliesTrpcRoute,
@@ -83,7 +84,6 @@ createReply:createReplyTrpcRoute,
 
   // @endindex
 })
-
 export type TrpcRouter = typeof trpcRouter
 export type TrpcRouterInput = inferRouterInputs<TrpcRouter>
 export type TrpcRouterOutput = inferRouterOutputs<TrpcRouter>
