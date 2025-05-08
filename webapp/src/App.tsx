@@ -1,5 +1,5 @@
 import { TrpcProvider } from "./lib/trpc";
-import { getAssistantRoute } from "./lib/routes";
+import { getAssistantRoute, getUserAssistantRoute } from './lib/routes';
 // ...
 import { AssistantPage } from "./pages/other/AssistantPage";
 import { SignInPage } from "./pages/auth/SignInPage";
@@ -88,6 +88,11 @@ export const App = () => {
             path={getAssistantRoute.definition}
             element={<AssistantPage />}
           />
+           {/* Ассистент для авторизованного пользователя по нику */}
+        <Route
+          path={getUserAssistantRoute.definition}
+          element={<AssistantPage />}
+        />
                   <Route path="*" element={<NotFoundPage />} />
                 </Route>
               </Routes>

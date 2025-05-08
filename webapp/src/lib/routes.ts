@@ -22,7 +22,10 @@ export const getViewIdeaRoute = pgr({ someNick: true }, ({ someNick }) => `/idea
 
 export const getEditIdeaRoute = pgr({ someNick: true }, ({ someNick }) => `/ideas/${someNick}/edit`)
 export const getAssistantRoute = pgr(() => '/assistant');
-
+export const getUserAssistantRoute = pgr(
+    { someNick: true },
+    ({ someNick }) => `/${someNick}/assistant`
+  );
 export const getUserProfileByNick=pgr({ someNick: true }, ({ someNick }) => `/ideas/${someNick}/profile`)
 
 export const getNewIdeaRoute = pgr(() => '/ideas/new')
