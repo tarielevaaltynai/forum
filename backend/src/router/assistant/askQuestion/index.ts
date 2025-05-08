@@ -37,7 +37,6 @@ export const askQuestionTrpcRoute = trpcLoggedProcedure
       answer = `Я виртуальный помощник, вы спросили: «${query}». К сожалению, точный ответ мне неизвестен.`;
     }
 
-<<<<<<< HEAD
     // Сохраняем ответ ассистента
     await ctx.prisma.chatMessage.create({
       data: {
@@ -46,18 +45,6 @@ export const askQuestionTrpcRoute = trpcLoggedProcedure
         content: answer,
       },
     });
-=======
-    // Сохраняем ответ ассистента, если есть сессия
-    if (sessionId) {
-      await ctx.prisma.chatMessage.create({
-        data: {
-          sessionId: sessionId,
-          role: 'assistant',
-          content: answer,
-        },
-      });
-    }
->>>>>>> 44c9f78 (added assistant page)
 
     return { answer };
   });
