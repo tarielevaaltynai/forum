@@ -23,6 +23,11 @@ import { getRepliesTrpcRoute } from "./ideas/getReplies";
 import { createReplyTrpcRoute } from "./ideas/createReply";
 import { askQuestionTrpcRoute } from "./assistant/askQuestion";
 import { getSessionHistoryTrpcRoute } from "./assistant/getSessionHistory";
+import { getSessionsTrpcRoute } from './assistant/getSessions';
+import { getSessionMessagesTrpcRoute } from './assistant/getSessionMessages';
+import { createSessionTrpcRoute } from './assistant/createSession';
+import { deleteSessionTrpcRoute } from './assistant/deleteSession';
+import { deleteAllSessionsTrpcRoute } from './assistant/deleteAllSessions';
 import { getMyIdeasTrpcRoute } from "./ideas/getMyIdeas";
 import { rejectSpecialist } from "./ideas/getUnverifiedSpecialists";
 import { verifySpecialist } from "./ideas/getUnverifiedSpecialists";
@@ -43,8 +48,15 @@ export const trpcRouter = createTrpcRouter({
 getLikedIdeas:getLikedIdeasTrpcRoute,
 createReply:createReplyTrpcRoute,
   getMe: getMeTrpcRoute,
-  askQuestion: askQuestionTrpcRoute,
-  getSessionHistory: getSessionHistoryTrpcRoute,
+ 
+    askQuestion: askQuestionTrpcRoute,
+    getSessionHistory: getSessionHistoryTrpcRoute,
+    getSessions: getSessionsTrpcRoute,
+    getSessionMessages: getSessionMessagesTrpcRoute,
+    createSession: createSessionTrpcRoute,
+    deleteSession: deleteSessionTrpcRoute,
+  deleteAllSessions: deleteAllSessionsTrpcRoute,
+
   verifySpecialist:verifySpecialist,
   rejectSpecialist:rejectSpecialist,
   getUnverifiedSpecialists:getUnverifiedSpecialists,
