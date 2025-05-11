@@ -37,10 +37,11 @@ export const SignUpPage = withPageWrapper({
   const signUp = trpc.signUp.useMutation();
 
   const genderOptions = [
-    { value: "Мужской", label: "Мужской" },
-    { value: "Женский", label: "Женский" },
-    { value: "Другой", label: "Другой" },
+    { value: "MALE", label: "Мужской" },
+    { value: "FEMALE", label: "Женский" },
+    { value: "OTHER", label: "Другой" },
   ];
+  
 
   const roleOptions = [
     { value: "USER", label: "Обычный пользователь" },
@@ -56,7 +57,7 @@ export const SignUpPage = withPageWrapper({
       birthDate: "",
       surname: "",
       name: "",
-      gender: "",
+      gender: "MALE",
       role: "USER", // по умолчанию
       specialty: "",
       document: "",
