@@ -7,9 +7,9 @@ export const SelectInput = ({
   label,
   formik,
   options = [
-    { value: 'Мужской', label: 'Мужской' },
-    { value: 'Женский', label: 'Женский' },
-    { value: 'Другой', label: 'Другой' },
+    { value: 'MALE', label: 'Мужской' },
+    { value: 'FEMALE', label: 'Женский' },
+    { value: 'OTHER', label: 'Другой' },
   ],
   maxWidth,
 }: {
