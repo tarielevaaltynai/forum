@@ -1,5 +1,4 @@
-// eslint-disable-next-line node/no-process-env
-const s3Url = process.env.VITE_S3_URL || process.env.S3_URL;
+import { sharedEnv } from './env'
 
 export const getS3UploadName = (path: string) => {
   const filename = path.replace(/^.*[\\/]/, ''); // Убираем путь, оставляем имя файла
@@ -9,7 +8,8 @@ export const getS3UploadName = (path: string) => {
 }
 
 export const getS3UploadUrl = (s3Key: string) => {
-  const url = `${s3Url}/${s3Key}`;
+    return `${sharedEnv.S3_URL}/${s3Key}`
+
   
   // Логируем сгенерированный URL
   console.log('Generated S3 URL:', url); // Добавил логирование

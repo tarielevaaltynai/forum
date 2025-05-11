@@ -1,8 +1,10 @@
 // временно указываем базовый адрес сайта, чтобы проверить, как формируется полный (абсолютный) путь.
-process.env.WEBAPP_URL = "https://example.com";
+import { sharedEnv } from '@forum_project/shared/src/env'
 
 // импортируем функцию pgr, которая помогает удобно создавать пути (routes) в React-приложении с помощью react-router-dom.
 import { pgr } from "./pumpGetRoute";
+sharedEnv.WEBAPP_URL = 'https://example.com'
+
 
 describe("pgr", () => {
   //  Тест: простой путь без параметров
