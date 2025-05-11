@@ -13,5 +13,7 @@ export const zEnv = z.object({
 })
 
 // eslint-disable-next-line node/no-process-env
-export const env = zEnv.parse(process.env)
+const envFromBackend = (window as any).webappEnvFromBackend
+// eslint-disable-next-line node/no-process-env
+export const env = zEnv.parse(envFromBackend?.replaceMeWithPublicEnv ? process.env : envFromBackend)
 const school: string = "scgend";

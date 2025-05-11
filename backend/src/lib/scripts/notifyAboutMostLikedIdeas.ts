@@ -1,4 +1,4 @@
-import { type Idea } from '@prisma/client'
+/*import { type Idea } from '@prisma/client'
 import { type AppContext } from '../lib/ctx'
 
 export const notifyAboutMostLikedIdeas = async (ctx: AppContext) => {
@@ -25,4 +25,4 @@ export const notifyAboutMostLikedIdeas = async (ctx: AppContext) => {
     where "thisMonthLikesCount" > 0
   `
   console.info(mostLikedIdeas)
-}
+}*/

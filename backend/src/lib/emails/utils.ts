@@ -1,3 +1,4 @@
+import { env } from '../env'
 import { promises as fs } from 'fs'
 import path from 'path'
 import { type Idea, type User } from '@prisma/client'
@@ -5,7 +6,6 @@ import fg from 'fast-glob'
 import _ from 'lodash'
 import Handlebars from 'handlebars'
 import { sendEmailThroughBrevo } from '../brevo'
-import { env } from '../env'
 import { logger } from '../logger'
 import { getNewIdeaRoute } from '@forum_project/webapp/src/lib/routes'
 const getHbrTemplates = _.memoize(async () => {

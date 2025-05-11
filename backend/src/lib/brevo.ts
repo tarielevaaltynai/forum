@@ -1,5 +1,5 @@
-import axios, { type AxiosResponse } from 'axios'
 import { env } from './env'
+import axios, { type AxiosResponse } from 'axios'
 import { pick } from '@forum_project/shared/src/pick'
 const makeRequestToBrevo = async ({
   path,

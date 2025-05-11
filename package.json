@@ -11,14 +11,25 @@
     "types": "concurrently 'pnpm b types' 'pnpm w types' 'pnpm sh types'",
     "lint": "concurrently 'pnpm b lint' 'pnpm w lint' 'pnpm sh lint'",
     "prettify": "pnpm -r --parallel prettify",
+    "dcc": "dotenv -e ./.env.docker -e ./backend/.env -e ./webapp/.env -- bash -c 'docker compose config'",
+    "dcb": "dotenv -e ./.env.docker -e ./backend/.env -e ./webapp/.env -- bash -c 'docker compose build'",
+    "dcu": "dotenv -e ./.env.docker -e ./backend/.env -e ./webapp/.env -- bash -c 'docker compose up'",
+    "dth": "docker tag forum_project-image registry.heroku.com/forum-project/web",
+    "hl": "heroku login && heroku container:login",
+    "dph": "docker push registry.heroku.com/forum-project/web",
+    "hr": "heroku container:release web -a forum-project",
     "prepare": "husky install"
+  },
+    "dependencies": {
+    "@prisma/client": "^5.2.0",
+    "dotenv-cli": "^7.3.0",
+    "cross-env": "^7.0.3"
   },
   "devDependencies": {
     "@types/jest": "^29.5.5",
     "@types/supertest": "^6.0.3",
     "concurrently": "^8.2.0",
     "copyfiles": "^2.4.1",
-    "cross-env": "^7.0.3",
     "eslint": "^8.47.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-react-app": "^7.0.1",
@@ -38,9 +49,6 @@
     "ts-patch": "^3.0.2",
     "typescript": "^5.1.6",
     "typescript-transform-paths": "^3.4.6"
-  },
-  "dependencies": {
-    "@prisma/client": "^5.2.0",
-    "dotenv-cli": "^7.3.0"
   }
+ 
 }

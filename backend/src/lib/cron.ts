@@ -1,4 +1,4 @@
-import { CronJob } from 'cron'
+/*import { CronJob } from 'cron'
 import { notifyAboutMostLikedIdeas } from '../scripts/notifyAboutMostLikedIdeas'
 import { type AppContext } from './ctx'
 
@@ -10,3 +10,6 @@ export const applyCron = (ctx: AppContext) => {
     },
     null, // onComplete
     true // start right now
+  ); // ← добавлена закрывающая скобка и точка с запятой
+}
+*/

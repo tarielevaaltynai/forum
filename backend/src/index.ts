@@ -1,14 +1,14 @@
+import { env } from './lib/env'
 import express from "express";
 import cors from 'cors'
 import { applyTrpcToExpressApp } from './lib/trpc'
 import { trpcRouter } from './router'
 import { createAppContext, type AppContext } from './lib/ctx'
 import { applyPassportToExpressApp } from './lib/passport'
-import { env } from './lib/env'
 import { logger } from './lib/logger'
 import { presetDb } from './scripts/presetDb'
 import { initSentry } from './lib/sentry'
-
+import { applyServeWebApp } from './lib/serveWebApp'
 void (async () => {
   let ctx: AppContext | null = null
   try {
@@ -22,6 +22,7 @@ void (async () => {
     })
     applyPassportToExpressApp(expressApp, ctx)
     await applyTrpcToExpressApp(expressApp, ctx, trpcRouter)
+    await applyServeWebApp(expressApp)
     expressApp.use((error: unknown, req: express.Request, res: express.Response, next: express.NextFunction) => {
       logger.error('express', error)
       if (res.headersSent) {

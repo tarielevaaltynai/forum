@@ -93,5 +93,5 @@ export const applyTrpcToExpressApp = async (
 
   console.log("✅ TRPC Playground подключен!");
 };
-
+export const publicProcedure = trpc.procedure;
 export { trpc };
