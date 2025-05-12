@@ -13,6 +13,7 @@ import { trpc } from "../../../lib/trpc";
 import { UploadsToCloudinary } from "../../../components/UploadsToCloudinary";
 import { withPageWrapper } from "../../../lib/pageWrapper";
 import { canEditIdea } from "@forum_project/backend/src/utils/can";
+import css from "./index.module.scss";
 export const EditIdeaPage = withPageWrapper({
   authorizedOnly: true,
   useQuery: () => {
@@ -54,6 +55,7 @@ export const EditIdeaPage = withPageWrapper({
   });
 
   return (
+    <div className={css.container}>
     <Segment title={`Редактировать: ${idea.nick}`}>
       <form onSubmit={formik.handleSubmit}>
         <FormItems>
@@ -73,6 +75,7 @@ export const EditIdeaPage = withPageWrapper({
           <Button {...buttonProps}>Сохранить</Button>
         </FormItems>
       </form>
-    </Segment>
+      </Segment>
+    </div>
   );
 });

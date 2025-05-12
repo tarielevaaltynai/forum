@@ -166,7 +166,7 @@ export const EditProfilePage = withPageWrapper({
       <div className={styles.profile}>
         <Avatar me={me} />
         <div className={styles.profileName}>
-        <br />
+          <br />
           {me.name} <br /> {me.surname}
         </div>
       </div>
@@ -174,12 +174,14 @@ export const EditProfilePage = withPageWrapper({
       {/* Правый блок с сегментами */}
       <div className={styles.segments}>
         <div className={styles.segment}>
-          <Segment title="Профиль" size={2}>
+          <Segment title="" size={2}>
+            <h1 className={styles.pageTitle}>Профиль</h1>
             <General me={me} />
           </Segment>
         </div>
         <div className={styles.segment}>
-          <Segment title="Пароль" size={2}>
+          <Segment title="" size={2}>
+            <h1 className={styles.pageTitle}>Пароль</h1>
             <Password />
           </Segment>
         </div>

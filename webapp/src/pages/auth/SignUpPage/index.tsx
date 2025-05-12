@@ -79,38 +79,76 @@ export const SignUpPage = withPageWrapper({
 
 
   return (
-    <main className="sign-up-page" style={{ display: "flex", height: "100vh" }}>
-      <section className="signup-form" style={{ flex: 1, padding: "2rem" }}>
-        <Segment title="Добро пожаловать!">
-          <h2 className="text-3xl font-bold mb-4">Присоединяйтесь к нам!</h2>
-          <p className="mb-6">Создайте аккаунт и начните делиться своими знаниями и идеями!</p>
-          <form onSubmit={formik.handleSubmit}>
-            <FormItems>
-              <Input label="Ник" name="nick" formik={formik} />
-              <Input label="Имя" name="name" formik={formik} />
-              <Input label="Фамилия" name="surname" formik={formik} />
-              <Input label="E-mail" name="email" formik={formik} />
-              <Input label="Пароль" name="password" type="password" formik={formik} />
-              <Input label="Повторите пароль" name="passwordAgain" type="password" formik={formik} />
-              <DatePickerInput label="Дата рождения" name="birthDate" formik={formik} />
-              <SelectInput options={genderOptions} label="Пол" name="gender" formik={formik} />
-              <SelectInput options={roleOptions} label="Роль" name="role" formik={formik} />
+    <div className={css.container}>
+      <main
+        className="sign-up-page"
+        style={{ display: "flex", height: "100vh" }}
+      >
+        <section className="signup-form" style={{ flex: 1, padding: "2rem" }}>
+          <Segment title="">
+            <h2 className={css.pageTitle}>Добро пожаловать!</h2>
+            <h2 className={css.pageTitle}>Присоединяйтесь к нам!</h2>
+            <p className={css.pageTitle}>
+              Создайте аккаунт и начните делиться своими знаниями и идеями!
+            </p>
+            <form onSubmit={formik.handleSubmit}>
+              <FormItems>
+                <Input label="Ник" name="nick" formik={formik} />
+                <Input label="Имя" name="name" formik={formik} />
+                <Input label="Фамилия" name="surname" formik={formik} />
+                <Input label="E-mail" name="email" formik={formik} />
+                <Input
+                  label="Пароль"
+                  name="password"
+                  type="password"
+                  formik={formik}
+                />
+                <Input
+                  label="Повторите пароль"
+                  name="passwordAgain"
+                  type="password"
+                  formik={formik}
+                />
+                <DatePickerInput
+                  label="Дата рождения"
+                  name="birthDate"
+                  formik={formik}
+                />
+                <SelectInput
+                  options={genderOptions}
+                  label="Пол"
+                  name="gender"
+                  formik={formik}
+                />
+                <SelectInput
+                  options={roleOptions}
+                  label="Роль"
+                  name="role"
+                  formik={formik}
+                />
 
+                {isExpert && (
+                  <>
+                    <Input
+                      label="Специальность"
+                      name="specialty"
+                      formik={formik}
+                    />
+                    <UploadToS3
+                      label="Документ"
+                      name="document"
+                      formik={formik}
+                    />
+                  </>
+                )}
 
-              {isExpert && (
-                <>
-                  <Input label="Специальность" name="specialty" formik={formik} />
-                  <UploadToS3 label="Документ" name="document" formik={formik} />
-
-                </>
-              )}
-
-              <Alert {...alertProps} />
-              <Button {...buttonProps}>Зарегистрироваться</Button>
-            </FormItems>
-          </form>
-        </Segment>
-      </section>
-    </main>
+                <Alert {...alertProps} />
+                <Button {...buttonProps}>Зарегистрироваться</Button>
+              </FormItems>
+            </form>
+          </Segment>
+        </section>
+      </main>
+    </div>
   );
 });

@@ -8,7 +8,7 @@ import { Segment } from "../../../components/Segment";
 import { trpc } from "../../../lib/trpc";
 import Cookies from "js-cookie";
 import { withPageWrapper } from "../../../lib/pageWrapper";
-import "./index.module.scss";
+import css from "./index.module.scss";
 /*
 export const SignInPage = () => {
   
@@ -72,36 +72,43 @@ export const SignInPage = withPageWrapper({
   });
 
   return (
-    <main className="sign-in-page" style={{ display: "flex", height: "100vh" }}>
-      <section className="login-form" style={{ flex: 1, padding: "2rem" }}>
-        <Segment title="Добро пожаловать!">
-          <h2 className="text-3xl font-bold mb-4">Добро пожаловать!</h2>
-          <p className="mb-6">
-            Ваша красота и здоровье — ваш голос! Присоединяйтесь к обсуждению и
-            делитесь своими знаниями!
-          </p>
-          <form onSubmit={formik.handleSubmit}>
-            <FormItems>
-              <Input label="Имя пользователя" name="nick" formik={formik} />
-              <Input
-                label="Пароль"
-                name="password"
-                type="password"
-                formik={formik}
-              />
-              <Alert {...alertProps} />
-              <Button {...buttonProps}>Войти</Button>
-            </FormItems>
-          </form>
-        </Segment>
-      </section>
-      <section className="image-container" style={{ flex: 1 }}>
-        <img
-          src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9kIwqQI4Wm__s70LeqFj4guuBuQuIl9IYWj-TRFFSyoSIkuvNUx6iB6rMhi-L_gfYGCT_tNUGhj_M4WfujL-wvt7dv9NjESoJmRis_6b8wbeuULO1fh-_sL6ADzkSpWtPBY5ISaZwORk/s1440/6f7fd0cb-2293-4fa5-942e-991c1eb3bedb.jpg"
-          alt="Beauty & Health"
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-        />
-      </section>
-    </main>
+    <div className={css.container}>
+      <main
+        className="sign-in-page"
+        style={{ display: "flex", height: "100vh" }}
+      >
+        <section className="login-form" style={{ flex: 1, padding: "2rem" }}>
+          <Segment title="">
+            <h2 className={css.pageTitle}>Добро пожаловать!</h2>
+            <h2 className={css.pageTitle}>
+              Ваша красота и здоровье — ваш голос!
+            </h2>
+            <h2 className={css.pageTitle}>
+              Присоединяйтесь к обсуждению и делитесь своими знаниями!
+            </h2>
+            <form onSubmit={formik.handleSubmit}>
+              <FormItems>
+                <Input label="Имя пользователя" name="nick" formik={formik} />
+                <Input
+                  label="Пароль"
+                  name="password"
+                  type="password"
+                  formik={formik}
+                />
+                <Alert {...alertProps} />
+                <Button {...buttonProps}>Войти</Button>
+              </FormItems>
+            </form>
+          </Segment>
+        </section>
+        {/* <section className="image-container" style={{ flex: 1 }}>
+          <img
+            src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9kIwqQI4Wm__s70LeqFj4guuBuQuIl9IYWj-TRFFSyoSIkuvNUx6iB6rMhi-L_gfYGCT_tNUGhj_M4WfujL-wvt7dv9NjESoJmRis_6b8wbeuULO1fh-_sL6ADzkSpWtPBY5ISaZwORk/s1440/6f7fd0cb-2293-4fa5-942e-991c1eb3bedb.jpg"
+            alt="Beauty & Health"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        </section> */}
+      </main>
+    </div>
   );
 });
