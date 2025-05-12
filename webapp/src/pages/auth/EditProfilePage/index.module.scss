@@ -6,11 +6,18 @@
   flex-wrap: wrap; /* Позволяет элементам переноситься */
 }
 
+.pageTitle {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  line-height: 1.2;
+}
+
 .profile {
   width: 30%;
 
   border-radius: 1rem; /* Ширина блока с аватаром на больших экранах */
-  background-color: #9dd0e3;
+  background-color: rgb(157, 186, 229);
 
   padding: 2rem;
   display: flex;

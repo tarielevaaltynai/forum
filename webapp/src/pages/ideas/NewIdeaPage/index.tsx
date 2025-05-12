@@ -88,24 +88,31 @@ export const NewIdeaPage = withPageWrapper({
   });
 
   return (
-    <Segment title="Создать обсуждение">
-      <form onSubmit={formik.handleSubmit}>
-        <FormItems>
-          <Input name="name" label="Заголовок" formik={formik} />
-          <Input name="nick" label="Nick" formik={formik} />
-          <Input name="description" label="Краткое описание" formik={formik} />
-          <Textarea name="text" label="Текст" formik={formik} />
-          <UploadsToCloudinary
-            label="Images"
-            name="images"
-            type="image"
-            preset="preview"
-            formik={formik}
-          />
-          <Alert {...alertProps} />
-          <Button {...buttonProps}>Создать обсуждение</Button>
-        </FormItems>
-      </form>
-    </Segment>
+    <div className={css.container}>
+      <h1 className={css.pageTitle}>Создать обсуждение</h1>
+      <Segment title="">
+        <form onSubmit={formik.handleSubmit}>
+          <FormItems>
+            <Input name="name" label="Заголовок" formik={formik} />
+            <Input name="nick" label="Nick" formik={formik} />
+            <Input
+              name="description"
+              label="Краткое описание"
+              formik={formik}
+            />
+            <Textarea name="text" label="Текст" formik={formik} />
+            <UploadsToCloudinary
+              label="Images"
+              name="images"
+              type="image"
+              preset="preview"
+              formik={formik}
+            />
+            <Alert {...alertProps} />
+            <Button {...buttonProps}>Создать обсуждение</Button>
+          </FormItems>
+        </form>
+      </Segment>
+    </div>
   );
 });

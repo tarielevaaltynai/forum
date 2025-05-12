@@ -218,18 +218,20 @@ export const AllIdeasPage = withPageWrapper({
   );
 
   return (
-    <Segment title="Форум">
-      <div className={css.filter}>
-        <Input label="Поиск" name="search" formik={formik} />
-      </div>
-      {isLoading || isRefetching ? (
-        <Loader type="section" />
-      ) : isError ? (
-        <Alert color="red">{error.message}</Alert>
-      ) : !data?.pages[0]?.ideas.length ? (
-        <Alert color="brown">Ничего не найдено</Alert>
-      ) : (
-        <div className={css.ideas}>
+    <div className={css.container}>
+      <h1 className={css.pageTitle}>Форум</h1>
+      <Segment title="">
+        <div className={css.filter}>
+          <Input label="Поиск" name="search" formik={formik} />
+        </div>
+        {isLoading || isRefetching ? (
+          <Loader type="section" />
+        ) : isError ? (
+          <Alert color="red">{error.message}</Alert>
+        ) : !data?.pages[0]?.ideas.length ? (
+          <Alert color="brown">Ничего не найдено</Alert>
+        ) : (
+          // <div className={css.ideas}>
           <InfiniteScroll
             threshold={250}
             loadMore={() => {
@@ -254,63 +256,61 @@ export const AllIdeasPage = withPageWrapper({
               .flatMap((page) => page.ideas)
               .map((idea) => (
                 <div className={css.idea} key={idea.id}>
-                  <Segment size={2}>
-                    {/* 1. Автор */}
-                    <div className={css.name}>
-                      {idea.author ? (
-                        <Link
-                          to={`/users/${idea.author.id}`}
-                          className={css.authorLink}
-                        >
-                          {idea.author.nick}
-                        </Link>
-                      ) : (
-                        "Unknown"
-                      )}
-                      {idea.author?.name && <span> ({idea.author.name})</span>}
-                      {idea.author?.specialty && (
-                        <span> ({idea.author.specialty})</span>
-                      )}
-                    </div>
-
-                    {/* 2. Информация об идее */}
-                    <div className={css.ideaContent}>
+                  {/* 1. Автор */}
+                  <div className={css.name}>
+                    {idea.author ? (
                       <Link
-                        className={css.ideaLink}
-                        to={getViewIdeaRoute({ someNick: idea.nick })}
+                        to={`/users/${idea.author.id}`}
+                        className={css.authorLink}
                       >
-                        {idea.name}
+                        {idea.author.nick}
                       </Link>
+                    ) : (
+                      "Unknown"
+                    )}
+                    {idea.author?.name && <span> ({idea.author.name})</span>}
+                    {idea.author?.specialty && (
+                      <span> ({idea.author.specialty})</span>
+                    )}
+                  </div>
 
-                      {idea.text && (
-                        <div className={css.ideaText}>{idea.text}</div>
-                      )}
+                  {/* 2. Информация об идее */}
+                  <div className={css.ideaContent}>
+                    <Link
+                      className={css.ideaLink}
+                      to={getViewIdeaRoute({ someNick: idea.nick })}
+                    >
+                      {idea.name}
+                    </Link>
 
-                      {/* Modified image gallery */}
-                      {idea.images && idea.images.length > 0 && (
-                        <div className={css.ideaImages}>
-                          <ImageGallery
-                            showPlayButton={false}
-                            showFullscreenButton={true}
-                            showThumbnails={false}
-                            showNav={true}
-                            items={idea.images.map((image) => ({
-                              original: getCloudinaryUploadUrl(
-                                image,
-                                "image",
-                                "large" // Use 'large' instead of 'medium'
-                              ),
-                              thumbnail: getCloudinaryUploadUrl(
-                                image,
-                                "image",
-                                "preview"
-                              ),
-                            }))}
-                            additionalClass={css.fullWidthGallery}
-                          />
-                        </div>
-                      )}
-                    </div>
+                    {idea.text && (
+                      <div className={css.ideaText}>{idea.text}</div>
+                    )}
+
+                    {/* Modified image gallery */}
+                    {idea.images && idea.images.length > 0 && (
+                      <div className={css.ideaImages}>
+                        <ImageGallery
+                          showPlayButton={false}
+                          showFullscreenButton={true}
+                          showThumbnails={false}
+                          showNav={true}
+                          items={idea.images.map((image) => ({
+                            original: getCloudinaryUploadUrl(
+                              image,
+                              "image",
+                              "large" // Use 'large' instead of 'medium'
+                            ),
+                            thumbnail: getCloudinaryUploadUrl(
+                              image,
+                              "image",
+                              "preview"
+                            ),
+                          }))}
+                          additionalClass={css.fullWidthGallery}
+                        />
+                      </div>
+                    )}
 
                     {/* 3. Лайки */}
                     <div className={css.likes}>
@@ -331,13 +331,15 @@ export const AllIdeasPage = withPageWrapper({
                       <span className={css.likeCount}>
                         {idea.likesCount} {getLikeWord(idea.likesCount)}
                       </span>
+                      
                     </div>
-                  </Segment>
+                  </div>
                 </div>
               ))}
           </InfiniteScroll>
-        </div>
-      )}
-    </Segment>
+          // </div>
+        )}
+      </Segment>
+    </div>
   );
 });

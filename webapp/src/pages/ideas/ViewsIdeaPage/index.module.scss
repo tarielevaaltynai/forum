@@ -158,6 +158,14 @@
 @import "../../../styles/_vars";
 @import "../../../styles/_mixins";
 
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--bg-primary);
+  min-height: 100vh;
+}
+
 .postWrapper {
   width: 100%;
   background-color: var(--bg-primary);
