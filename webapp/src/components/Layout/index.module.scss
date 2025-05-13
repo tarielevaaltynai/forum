@@ -1,5 +1,6 @@
 @import "../../styles/_vars.scss";
 @import "../../styles/_mixins.scss";
+// В файле Layout/index.module.scss
 
 .layout {
   display: flex;
@@ -10,68 +11,97 @@
   transition: all 0.3s ease;
 }
 
+// В Layout/index.module.scss
 .header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   height: 60px;
-  background-color: var(--header-bg);
-  box-shadow: var(--header-shadow);
   z-index: 1000;
-  border-bottom: 1px solid var(--header-border-color);
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 
-  @media (max-width: 768px) {
-    padding-left: 70px;
-  }
+  // 1. Фон (сделаем его сплошным белым и уберем размытие)
+  background-color: #FFFFFF; // Или ваш var(--header-bg-solid, #FFFFFF)
+  backdrop-filter: none;     // Убираем эффект "полета"
+  -webkit-backdrop-filter: none;
 
-  @media (max-width: 480px) {
-    padding-left: 0;
-  }
+  // 2. Края (сделаем нижнюю границу чуть заметнее)
+  border-bottom: 1px solid #E2E8F0; // Светло-серая линия
 
-  &Content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
+  // 3. Тень (добавим стандартную мягкую тень)
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06); // Мягкая, не слишком навязчивая тень
+
+  // ... остальные стили хедера, включая исправления для позиционирования логотипа ...
+  // (убедитесь, что адаптивные padding-left для .header удалены, как обсуждалось ранее,
+  // чтобы логотип был фиксирован в углу)
+}
+
+// Если вы используете темную тему и класс .dark на layout:
+.layout.dark .header { // Или просто .dark .header, в зависимости от вашей структуры
+  background-color: #1A202C; // Например, темно-сине-серый
+  border-bottom: 1px solid #2D3748; // Темная граница
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); // Тень для темной темы может быть чуть интенсивнее
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between; // Оставляет логотип слева, навигацию справа
+  align-items: center;
+  height: 100%;
+
+  // Чтобы логотип был строго у края экрана (или с постоянным отступом от него):
+  // УДАЛИТЕ или ЗАКОММЕНТИРУЙТЕ max-width и margin: auto для .headerContent,
+  // если вы хотите, чтобы логотип позиционировался относительно края вьюпорта,
+  // а не центрированного контейнера.
+  // max-width: 1200px; // УДАЛИТЬ или ЗАКОММЕНТИРОВАТЬ
+  // margin: 0 auto;    // УДАЛИТЬ или ЗАКОММЕНТИРОВАТЬ
+
+  // Этот padding теперь будет определять отступы от краев экрана.
+  // Если вы хотите, чтобы логотип был ТОЧНО в углу (0px слева):
+  // padding-left: 0;
+  // padding-right: 20px; // Например, для правых элементов навигации
+  // Если вы использовали `padding: 0 20px;` ранее, это давало по 20px слева и справа.
+  // Чтобы логотип был в углу (0px от левого края), установите padding-left: 0.
+  // Если нужен небольшой отступ в 20px слева для логотипа и 20px справа для навигации:
+  padding: 0 20px; // Это нормально, если .headerContent теперь занимает всю ширину.
+                    // Логотип будет первым flex-элементом и окажется у этого левого отступа в 20px.
+                    // Для абсолютного нуля слева для логотипа:
+                    // padding-left: 0;
+                    // padding-right: 20px; // (для правых элементов)
 }
 
 .main {
   display: flex;
   flex: 1;
-  margin-top: 60px;
+  margin-top: 60px; // Отступ для контента под фиксированным хедером
 }
 
 .content {
   flex: 1;
-  padding: 25px; // Отступ равный ширине сайдбара
-  width: 100%;
+  padding: 25px;
+  width: 100%; // width: 100% здесь нормально, т.к. margin-left создает отступ
   box-sizing: border-box;
   background-color: var(--content-bg);
   min-height: calc(100vh - 60px);
   transition: all 0.3s ease;
-  margin-left: 240px;
+  // ИСПРАВЛЕНО: margin-left должен соответствовать ширине развернутого меню
+  margin-left: 280px;
 
   @media (max-width: 768px) {
+    // Этот блок уже корректен, т.к. 70px соответствует сжатому меню
     margin-left: 70px;
-    width: calc(100% - 70px);
+    width: calc(100% - 70px); // Уточнение: эта строка нужна, чтобы контент не вылезал за пределы экрана
     padding: 15px;
   }
 
   @media (max-width: 480px) {
+    // Этот блок для очень маленьких экранов, где меню может быть скрыто или перекрывать контент
     margin-left: 0;
     width: 100%;
     padding: 10px;
   }
 }
-
 .fullWidthContent {
   flex: 1;
   padding: 25px;
@@ -85,39 +115,42 @@
     padding: 15px;
   }
 }
+
 .logo {
   font-size: 1.5rem;
-  width: 250px;
+  width: 250px; // Можно оставить, если это намеренная ширина для кликабельной области лого
   height: 60px;
-  z-index: 1100;
+  z-index: 1100; // Убедитесь, что логотип выше других элементов хедера при необходимости
   text-decoration: none;
-  color: #316fad; // Основной цвет как в оригинале
+  color: #316fad;
   display: flex;
   align-items: center;
   gap: 3px;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease; // Для плавных переходов цвета и т.д.
+  // margin-left не нужен, если padding-left у .headerContent управляет отступом от края.
 
   span:first-child {
-    color: #316fad; // Синяя часть лого
+    color: #316fad;
     transition: color 0.3s ease;
   }
 
   span:last-child {
-    color: #4a9d6e; // Зеленая часть лого
+    color: #4a9d6e;
     transition: color 0.3s ease;
   }
 
   @media (max-width: 480px) {
-    font-size: 1.3rem;
+    font-size: 1.3rem; // Изменение размера шрифта - это нормально
   }
 }
+
 .nav {
   display: flex;
   align-items: center;
   gap: 20px;
 
   .themeToggleWrapper {
-    margin-right: 15px; // Отделяем от меню авторизации
+    margin-right: 15px;
   }
 
   .authMenu {
