@@ -1,5 +1,5 @@
 
-  import { trpcLoggedProcedure } from '../../../lib/trpc';
+/*import { trpcLoggedProcedure } from '../../../lib/trpc';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 
@@ -48,3 +48,33 @@ export const askQuestionTrpcRoute = trpcLoggedProcedure
 
     return { answer };
   });
+*/
+//askQuestion
+import { trpcLoggedProcedure } from '../../../lib/trpc';
+import { z } from 'zod';
+import { TRPCError } from '@trpc/server';
+import { getModelAnswer } from '../../../lib/modelClient';
+
+export const askQuestionTrpcRoute = trpcLoggedProcedure
+  .input(z.object({ question: z.string().min(1), sessionId: z.string().uuid() }))
+  .mutation(async ({ input, ctx }) => {
+    const { question, sessionId } = input;
+    if (!ctx.me) throw new TRPCError({ code: 'UNAUTHORIZED' });
+    const session = await ctx.prisma.chatSession.findUnique({ where: { id: sessionId } });
+    if (!session || session.userId !== ctx.me.id) {
+      throw new TRPCError({ code: 'FORBIDDEN' });
+    }
+    await ctx.prisma.chatMessage.create({ data: { sessionId, role: 'user', content: question } });
+
+    let answer: string;
+    try {
+      answer = await getModelAnswer(question);
+    } catch (err: any) {
+      console.error('Ошибка при запросе к модели:', err);
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Ошибка при обращении к модели' });
+    }
+
+    await ctx.prisma.chatMessage.create({ data: { sessionId, role: 'assistant', content: answer } });
+    return { answer };
+  });
+

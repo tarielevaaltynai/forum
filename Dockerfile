@@ -12,8 +12,9 @@ RUN pnpm install --offline --ignore-scripts --frozen-lockfile
 
 ARG NODE_ENV=production
 ARG SENTRY_AUTH_TOKEN
+ENV SENTRY_AUTH_TOKEN=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
 ARG SOURCE_VERSION
-
+ENV SOURCE_VERSION=123
 RUN pnpm b prepare
 RUN pnpm b build
 RUN pnpm b sentry
@@ -43,5 +44,9 @@ RUN pnpm b pgc
 
 ARG SOURCE_VERSION
 ENV SOURCE_VERSION=$SOURCE_VERSION
+
+# Add these lines for Heroku compatibility
+ENV PORT=3000
+EXPOSE $PORT
 
 CMD pnpm b pmp && pnpm b start

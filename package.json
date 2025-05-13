@@ -18,7 +18,7 @@
     "hl": "heroku login && heroku container:login",
     "dph": "docker push registry.heroku.com/forum-project/web",
     "hr": "heroku container:release web -a forum-project",
-    "prepare": "husky install"
+    "preparpe": "husky install"
   },
     "dependencies": {
     "@prisma/client": "^5.2.0",

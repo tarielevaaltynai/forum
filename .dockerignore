@@ -6,3 +6,5 @@
 **/Dockerfile
 .github
 .git
+backend/venv/
+backend/scripts/venv
