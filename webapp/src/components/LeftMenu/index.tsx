@@ -7,6 +7,7 @@ import {
   getMyIdeasRoute,
   getLikedIdeasRoute,
   getAdminSpecialistRoute,
+  getAssistantRoute
 } from "../../lib/routes";
 import { useMe } from "../../lib/ctx";
 import css from "./index.module.scss";
@@ -46,6 +47,12 @@ export const LeftMenu = () => {
               <Link className={css.link} to={getAllIdeasRoute()}>
                 <i className="fas fa-home"></i>
                 <span className={css.linkText}>Главная страница</span>
+              </Link>
+            </li>
+            <li className={css.item}>
+              <Link className={css.link} to={getAssistantRoute()}>
+                <i className="fas fa-robot"></i>
+                <span className={css.linkText}>AI-ассистент</span>
               </Link>
             </li>
             <li className={css.item}>
