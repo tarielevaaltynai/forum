@@ -15,7 +15,7 @@ export const AdminSpecialistsPage = () => {
         refetch();
       },
       onError: (error) => {
-        console.error("Ошибка при подтверждении специалиста:", error);
+        console.error("Ошибка при подтверждениях специалиста:", error);
         alert("Ошибка при подтверждении специалиста");
       },
     });

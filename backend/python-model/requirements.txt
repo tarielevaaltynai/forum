@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+pandas
+numpy
+spacy
+sentence-transformers
+langchain
+langchain-huggingface
+langchain-community
+pinecone-client
+rank_bm25
