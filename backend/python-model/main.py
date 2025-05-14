@@ -47,7 +47,7 @@ pc = Pinecone(api_key=PINECONE_API_KEY)
 # ----------- Prompt для LLM -----------
 prompt = PromptTemplate(input_variables=["query", "relevant_info"], template="""
 Вы — полезный помощник. На основе следующей информации ответьте на запрос пользователя.
-
+ответь пожалуйста на вопрос ответ находии у себя в базе данных желательно ответить хотя бы каким нибудь ответом
 Запрос: {query}
 Релевантная информация: {relevant_info}
 
@@ -231,7 +231,7 @@ else:
     columns_excl = ["срок годности", "форма выпуска", "код атх", "price", "адрес организации", "link"]
     cols = [c for c in df.columns if c not in columns_excl]
     df = df.loc[:, df.isna().sum() < 2700]
-    df = df.head(10)
+    df = df.head(2000)
     
     df['processed_chunks'] = df[cols].astype(str).apply(
         lambda row: sum([process_text(str(x)) for x in row if pd.notna(x) and x.strip() != ''], []), axis=1

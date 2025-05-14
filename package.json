@@ -18,9 +18,10 @@
     "hl": "heroku login && heroku container:login",
     "dph": "docker push registry.heroku.com/forum-project/web",
     "hr": "heroku container:release web -a forum-project",
-    "preparpe": "husky install"
+    "preparpe": "husky install",
+    "start": "pnpm b pmp && pnpm b start"
   },
-    "dependencies": {
+  "dependencies": {
     "@prisma/client": "^5.2.0",
     "dotenv-cli": "^7.3.0",
     "cross-env": "^7.0.3"
@@ -50,5 +51,4 @@
     "typescript": "^5.1.6",
     "typescript-transform-paths": "^3.4.6"
   }
- 
 }
